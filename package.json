@@ -1,0 +1,19 @@
+{
+  "name": "wristspasm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cal (DrRed96)",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.7.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.2.0",
+    "fs": "^0.0.1-security",
+    "hypixel-api-reborn": "^9.0.3"
+  }
+}
