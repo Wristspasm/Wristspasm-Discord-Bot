@@ -3,20 +3,20 @@ const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
-    data: new SlashCommandBuilder().setName("reqs").setDescription("Shows weather a player meets the requirements ot join the guild"),
+    data: new SlashCommandBuilder()
+        .setName("reqs")
+        .setDescription("Shows weather a player meets the requirements ot join the guild")
+        .addStringOption(option => option.setName("ign").setDescription("Players in game name")),
 
     /**
      * @param {Discord.CommandInteraction} interaction
-     * @param {string[]} args 
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, args, client, hypixel) {
-        if (args.length < 2) {
-            throw "Missing Arguments";
-        }
+    async execute(interaction, client, hypixel) {
+        const ign = interaction.options.getString("ign");
 
-        await hypixel.getPlayer(args[1]).then(player => {
+        hypixel.getPlayer(ign).then(player => {
 
             let bwLvl = player.stats.bedwars.level;
             let swLvl = player.stats.skywars.level;
@@ -29,16 +29,16 @@ module.exports = {
 
             const statsEmbed = new Discord.MessageEmbed();
             statsEmbed.setColor("#ffff55");
-            statsEmbed.setTitle(`Requirements Check for ${player.nickname}`);
-            statsEmbed.addField("BW Stars", `${bwLvl}`, true);
-            statsEmbed.addField("SW Stars", `${swLvl}`, true);
-            statsEmbed.addField("Duels Wins", `${duelsWins}`, true);
-            statsEmbed.addField("UHC Stars", `${uhcStars}`, true);
+            statsEmbed.setTitle(`Requirements Check for '${player.nickname}'`);
+            statsEmbed.addField("BW Stars", `\`${bwLvl}\``, true);
+            statsEmbed.addField("SW Stars", `\`${swLvl}\``, true);
+            statsEmbed.addField("Duels Wins", `\`${duelsWins}\``, true);
+            statsEmbed.addField("UHC Stars", `\`${uhcStars}\``, true);
             statsEmbed.addField("Meets Reqs?", `${meetReqs}`, false);
-            await interaction.reply(statsEmbed);
+            interaction.reply({ embeds: [statsEmbed] });
 
         }).catch(err => {
-            throw err;
+            interaction.reply(`${err}`);
         });
     }
 }
