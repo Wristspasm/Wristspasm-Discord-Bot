@@ -5,7 +5,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
-const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS] });
+const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 
@@ -40,5 +40,16 @@ client.on("interactionCreate", async interaction => {
         interaction.reply({ embeds: [errEmbed] });
 	}
 });
+
+client.on("message", (message) => {
+	if (message.member.roles.cache.has(cfg.cursed_role_id)) {
+		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
+			let msg = message.content.split(/ +/);
+			msg.shift();
+			msg = msg.join(/ +/);
+			message.channel.send(`Hi ${msg}! I'm Dad!\n<@${message.author.id}>`);
+		}
+	}
+})
 
 client.login(env.token);
