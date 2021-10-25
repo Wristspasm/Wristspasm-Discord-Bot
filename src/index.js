@@ -19,6 +19,7 @@ const hypixel = new Hypixel.Client(env.api_key);
 
 client.once("ready", () => {
     console.log(`Client logged in as '${client.user.tag}'`);
+	client.user.setActivity("/g join Wristspasm", { type: "PLAYING" });
 });
 
 client.on("interactionCreate", async interaction => {
