@@ -16,14 +16,14 @@ module.exports = {
      */
     async execute(interaction, client, hypixel) {
         let ign;
-        fs.readFile(`data/${interaction.user.id}`, (err, data) => {
-            if (!err) {
-                ign = `${data}`;
-            }
-        });
-        if (interaction.options.getString("ign").length > 0) {
+        // fs.readFile(`data/${interaction.user.id}`, (err, data) => {
+        //     if (!err) {
+        //         ign = `${data}`;
+        //     }
+        // });
+        // if (interaction.options.getString("ign").length > 0) {
             ign = interaction.options.getString("ign");
-        }
+        // }
 
         hypixel.getPlayer(ign).then(player => {
 
