@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const fs = require("fs");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,7 +15,15 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
-        const ign = interaction.options.getString("ign");
+        let ign;
+        fs.readFile(`data/${interaction.user.id}`, (err, data) => {
+            if (!err) {
+                ign = `${data}`;
+            }
+        });
+        if (interaction.options.getString("ign").length > 0) {
+            ign = interaction.options.getString("ign");
+        }
 
         hypixel.getPlayer(ign).then(player => {
 
