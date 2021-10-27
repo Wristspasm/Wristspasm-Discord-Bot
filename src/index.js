@@ -28,6 +28,20 @@ client.on("interactionCreate", async interaction => {
 
 	if (!command) return;
 
+	fs.readFile("data/banned.json", (err, data) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		data = JSON.parse(data);
+		for (var index of data.bans) {
+			if (index.id === interaction.user.id) {
+				interaction.reply(`You are banned from using Wristspasm Bot. Reason: ${index.reason}`);
+				return;
+			}
+		}
+	});
+
 	try {
 		await command.execute(interaction, client, hypixel);
 	} catch (error) {
