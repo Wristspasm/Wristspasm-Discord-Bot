@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("verify")
         .setDescription("Link your discord id to your minecraft uuid")
-        .addStringOption(option => option.setName("ign").setDescription("Players in game name")),
+        .addStringOption(option => option.setName("ign").setDescription("Players in game name").setRequired(true)),
 
     /**
      * @param {Discord.CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
-        const ign = interaction.options.getString(("ign"));
+        const ign = interaction.options.getString("ign");
 
         hypixel.getPlayer(ign).then(player => {
 
@@ -38,7 +38,8 @@ module.exports = {
             }
 
         }).catch(err => {
-            interaction.reply(`${err}`);
+            console.error(err);
+            interaction.reply(`Was unable to find player with the IGN: ${ign}`);
         });
     }
 }

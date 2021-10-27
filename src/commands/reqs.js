@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("reqs")
         .setDescription("Shows weather a player meets the requirements ot join the guild")
-        .addStringOption(option => option.setName("ign").setDescription("Players in game name")),
+        .addStringOption(option => option.setName("ign").setDescription("Players in game name").setRequired(true)),
 
     /**
      * @param {Discord.CommandInteraction} interaction
@@ -15,15 +15,7 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
-        let ign;
-        // fs.readFile(`data/${interaction.user.id}`, (err, data) => {
-        //     if (!err) {
-        //         ign = `${data}`;
-        //     }
-        // });
-        // if (interaction.options.getString("ign").length > 0) {
-            ign = interaction.options.getString("ign");
-        // }
+        const ign = interaction.options.getString("ign");
 
         hypixel.getPlayer(ign).then(player => {
 
@@ -33,8 +25,8 @@ module.exports = {
             let uhcStars = player.stats.uhc.starLevel;
 
             let meetReqs = "No";
-            if (bwLvl >= 100 || swLvl >= 10 || duelsWins >= 2000 || uhcStars >= 3) meetReqs = "As Novice";
-            if (bwLvl >= 300 || swLvl >= 15 || duelsWins >= 6000 || uhcStars >= 6) meetReqs = "As Elite";
+            if (bwLvl >= 100 || swLvl >= 10 || duelsWins >= 4000 || uhcStars >= 3) meetReqs = "As Novice";
+            if (bwLvl >= 300 || swLvl >= 15 || duelsWins >= 10000 || uhcStars >= 6) meetReqs = "As Elite";
 
             const statsEmbed = new Discord.MessageEmbed();
             statsEmbed.setColor("#ffff55");
@@ -47,7 +39,8 @@ module.exports = {
             interaction.reply({ embeds: [statsEmbed] });
 
         }).catch(err => {
-            interaction.reply(`${err}`);
+            console.error(err);
+            interaction.reply(`Was unable to find player with the IGN: ${ign}`);
         });
     }
 }

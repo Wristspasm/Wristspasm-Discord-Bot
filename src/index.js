@@ -5,7 +5,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
-const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 
