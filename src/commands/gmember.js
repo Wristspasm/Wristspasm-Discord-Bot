@@ -32,22 +32,13 @@ module.exports = {
                     return;
                 }
 
-                // let gexp = 0;
-
-                // if (guild.members[i].expHistory.length >= 7) {
-                //     gexp = 0;
-                //     for (var j = 0; j < 7; j++) {
-                //         gexp += guild.members[i].expHistory[0][0].exp;
-                //     }
-                // }
-
                 const statsEmbed = new Discord.MessageEmbed();
                 statsEmbed.setColor("#ffff55");
                 statsEmbed.setTitle(`Guild Member Information on '${player.nickname}'`);
                 statsEmbed.addField("Rank", `${guild.members[i].rank}`, false);
-                // statsEmbed.addField("GEXP", `${gexp}`, false);
-                statsEmbed.addField("Joined", `${new Date(guild.members[i].joinedAtTimestamp).toUTCString()}`, false);
-                statsEmbed.addField("Last Online", `${new Date(player.lastLoginTimestamp).toUTCString()}`, false);
+                statsEmbed.addField("Weekly GEXP", `\`${guild.members[i].weeklyExperience}\``, false);
+                statsEmbed.addField("Joined", `\`${new Date(guild.members[i].joinedAtTimestamp).toUTCString()}\``, false);
+                statsEmbed.addField("Last Online", `\`${new Date(player.lastLoginTimestamp).toUTCString()}\``, false);
                 interaction.reply({ embeds: [statsEmbed] });
             });
 
