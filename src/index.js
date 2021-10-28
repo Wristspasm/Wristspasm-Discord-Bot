@@ -5,7 +5,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
-const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 
@@ -15,7 +15,6 @@ for (const file of commandFiles) {
 }
 
 const hypixel = new Hypixel.Client(env.api_key);
-
 
 client.once("ready", () => {
     console.log(`Client logged in as '${client.user.tag}'`);
@@ -29,6 +28,20 @@ client.on("interactionCreate", async interaction => {
 
 	if (!command) return;
 
+	fs.readFile("data/banned.json", (err, data) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		data = JSON.parse(data);
+		for (var index of data.bans) {
+			if (index.id === interaction.user.id) {
+				interaction.reply(`You are banned from using Wristspasm Bot. Reason: ${index.reason}`);
+				return;
+			}
+		}
+	});
+
 	try {
 		await command.execute(interaction, client, hypixel);
 	} catch (error) {
@@ -41,15 +54,15 @@ client.on("interactionCreate", async interaction => {
 	}
 });
 
-client.on("message", (message) => {
-	if (message.member.roles.cache.has(cfg.cursed_role_id)) {
-		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
-			let msg = message.content.split(/ +/);
-			msg.shift();
-			msg = msg.join(/ +/);
-			message.channel.send(`Hi ${msg}! I'm Dad!\n<@${message.author.id}>`);
-		}
-	}
-})
+// client.on("message", (message) => {
+// 	if (message.member.roles.cache.has(cfg.cursed_role_id)) {
+// 		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
+// 			let msg = message.content.split(/ +/);
+// 			msg.shift();
+// 			msg = msg.join(/ +/);
+// 			message.channel.send(`Hi ${msg}! I'm Dad!\n<@${message.author.id}>`);
+// 		}
+// 	}
+// })
 
 client.login(env.token);
