@@ -18,14 +18,17 @@ module.exports = {
         const time = interaction.options.getString("time");
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
             if (err) {
-                interaction.reply("You don't have a linked account");
+                interaction.reply("You must link your account with `/verfiy` before you can request to join the guild!");
                 return;
             }
 
             hypixel.getPlayer(`${data}`).then(player => {
                 client.channels.cache.get("740044200942239808").send(`Inactivity request\nIGN: \`${player.nickname}\`\nRequested at \`${new Date(Date.now()).toUTCString()}\`\nRequested Time: \`${time}\``);
                 interaction.reply(`An inactivity request has been sent to the guild staff`);
-            }).catch(console.error);
+            }).catch(err => {
+                console.error(err)
+                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            });
         });
     }
 }

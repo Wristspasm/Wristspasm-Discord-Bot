@@ -1,6 +1,8 @@
+const cfg = require("../../config.json");
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
-const MojangAPI = require('mojang-api');
+// const MojangAPI = require('mojang-api');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 
@@ -20,7 +22,7 @@ module.exports = {
             return;
         }
 
-        hypixel.getGuild("name", "wristspasm").then(guild => {
+        hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
             let expStr = "";
             for (const member of guild.members) {
                 if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - (7*24*60*60*1000)) {
@@ -31,7 +33,7 @@ module.exports = {
             fs.writeFile("data/exp.txt", `UUID : GEXP\n${expStr}`, (err) => {
                 if (err) {
                     console.error(err);
-                    interaction.reply(`There was an error while saving the exp file: ${err}`);
+                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
                     return;
                 }
                 interaction.reply({ files: [ "data/exp.txt" ], content: "Weekly GEXP file" });
@@ -39,7 +41,7 @@ module.exports = {
             });
         }).catch(err => {
             console.error(err);
-            interaction.reply(`Failed to fetch guild data: ${err}`);
+            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
         });
     }
 }

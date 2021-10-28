@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("reqs")
         .setDescription("Shows weather a player meets the requirements ot join the guild")
-        .addStringOption(option => option.setName("ign").setDescription("Players in game name").setRequired(true)),
+        .addStringOption(option => option.setName("ign").setDescription("Players username or UUID").setRequired(true)),
 
     /**
      * @param {Discord.CommandInteraction} interaction
@@ -40,7 +40,7 @@ module.exports = {
 
         }).catch(err => {
             console.error(err);
-            interaction.reply(`Was unable to find player with the IGN: ${ign}`);
+            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
         });
     }
 }

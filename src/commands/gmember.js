@@ -1,3 +1,5 @@
+const cfg = require("../../config.json")
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
@@ -7,7 +9,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("gmember")
         .setDescription("Shows information on a guild member")
-        .addStringOption(option => option.setName("ign").setDescription("Players in game name").setRequired(true)),
+        .addStringOption(option => option.setName("ign").setDescription("Players username or UUID").setRequired(true)),
 
     /**
      * @param {Discord.CommandInteraction} interaction
@@ -18,7 +20,7 @@ module.exports = {
         const ign = interaction.options.getString("ign");
 
         hypixel.getPlayer(ign).then(player => {
-            hypixel.getGuild("name", "wristspasm").then(guild => {
+            hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
                 let index = undefined;
                 for (var i = 0; i < guild.members.length; i++) {
                     if (guild.members[i].uuid === player.uuid) {
@@ -44,7 +46,7 @@ module.exports = {
 
         }).catch(err => {
             console.error(err);
-            interaction.reply(`Was unable to find player with the IGN: ${ign}`);
+            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
         });
     }
 }

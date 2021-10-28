@@ -45,7 +45,7 @@ module.exports = {
                 interaction.reply("A join request has been sent to the guild staff");
             }).catch(err => {
                 console.error(err)
-                interaction.reply(`There was a problem reading your API: ${err}`);
+                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
                 return;
             });
 

@@ -22,7 +22,7 @@ module.exports = {
                 return;
             }
 
-            hypixel.getGuild("name", "Wristspasm").then(async (guild) => {
+            hypixel.getGuild("id", cfg.wristspasm_id).then(async (guild) => {
                 hypixel.getPlayer(`${data}`).then(async (player) => {
                     let playerIsInGuild = false;
                     for (var i = 0; i < guild.members.length; i++) {
@@ -204,11 +204,11 @@ module.exports = {
                     return;
                 }).catch(err => {
                     console.error(err);
-                    interaction.reply(`Error while reading Hypixel API: ${err}`);
+                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
                 });
             }).catch(err => {
                 console.error(err);
-                interaction.reply(`Error while reading Hypixel API: ${err}`);
+                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
             });
         });
     }
