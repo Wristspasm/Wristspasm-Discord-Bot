@@ -29,12 +29,12 @@ module.exports = {
                 if (err) {
                     interaction.reply(`FS Error: ${err}`);
                 }
-                interaction.reply(`Linked \`<@${id}>\` to \`${player.nickname}\``);
+                interaction.reply(`Linked \`${client.users.cache.get(id).tag}\` to \`${player.nickname}\``);
                 return;
             });
 
         }).catch(err => {
-            interaction.reply(`${err}`);
+            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
         });
     }
 }

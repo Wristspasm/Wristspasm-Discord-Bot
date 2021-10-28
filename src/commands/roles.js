@@ -204,11 +204,11 @@ module.exports = {
                     return;
                 }).catch(err => {
                     console.error(err);
-                    interaction.reply(`Error while reading Hypixel API: ${err}`);
+                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
                 });
             }).catch(err => {
                 console.error(err);
-                interaction.reply(`Error while reading Hypixel API: ${err}`);
+                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
             });
         });
     }
