@@ -14,12 +14,15 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+const statChannels = require("./statChannels")
+
 const hypixel = new Hypixel.Client(env.api_key);
 
 client.once("ready", () => {
 	process;
     console.log(`Client logged in as '${client.user.tag}'`);
 	client.user.setActivity("/g join Wristspasm", { type: "PLAYING" });
+	statChannels(client, hypixel);
 });
 
 client.on("interactionCreate", async interaction => {
