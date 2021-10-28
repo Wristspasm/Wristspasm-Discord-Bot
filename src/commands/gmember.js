@@ -1,3 +1,5 @@
+const cfg = require("../../config.json")
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
@@ -18,7 +20,7 @@ module.exports = {
         const ign = interaction.options.getString("ign");
 
         hypixel.getPlayer(ign).then(player => {
-            hypixel.getGuild("name", "wristspasm").then(guild => {
+            hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
                 let index = undefined;
                 for (var i = 0; i < guild.members.length; i++) {
                     if (guild.members[i].uuid === player.uuid) {

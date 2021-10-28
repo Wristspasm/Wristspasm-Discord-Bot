@@ -22,7 +22,7 @@ module.exports = {
                 return;
             }
 
-            hypixel.getGuild("name", "Wristspasm").then(async (guild) => {
+            hypixel.getGuild("id", cfg.wristspasm_id).then(async (guild) => {
                 hypixel.getPlayer(`${data}`).then(async (player) => {
                     let playerIsInGuild = false;
                     for (var i = 0; i < guild.members.length; i++) {

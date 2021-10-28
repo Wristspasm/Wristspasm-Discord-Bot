@@ -1,3 +1,5 @@
+const cfg = require("../config.json");
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
@@ -14,7 +16,7 @@ module.exports = (client, hypixel) => {
     const guildWeeklyExpChannel = discordGuild.channels.cache.get("903085205051555850");
 
     setInterval(() => {
-        hypixel.getGuild("name", "Wristspasm").then(guild => {
+        hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
             guildMembersChannel.setName(`Guild Members: ${guild.members.length}/125`);
             guildLevelChannel.setName(`Guild Level: ${guild.level}`);
             guildWeeklyExpChannel.setName(`Weekly GEXP: ${guild.totalWeeklyGexp}`);

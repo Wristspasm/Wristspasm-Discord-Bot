@@ -1,3 +1,5 @@
+const cfg = require("../../config.json");
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 // const MojangAPI = require('mojang-api');
@@ -20,7 +22,7 @@ module.exports = {
             return;
         }
 
-        hypixel.getGuild("name", "wristspasm").then(guild => {
+        hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
             let expStr = "";
             for (const member of guild.members) {
                 if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - (7*24*60*60*1000)) {
