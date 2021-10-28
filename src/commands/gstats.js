@@ -24,7 +24,7 @@ module.exports = {
             embed.addField("GEXP", `${guild.experience}`, true);
             embed.addField("Member Count", `${guild.members.length}`, true);
             embed.addField("Weekly EXP", `${guild.totalWeeklyGexp}`, true);
-            embed.addField("Legacy Rank", `${guild.legacyRank}`);
+            embed.addField("Legacy Rank", `${guild.legacyRank}`, true);
             interaction.reply({ embeds: [ embed ] });
         }).catch(err => {
             console.error(err);
