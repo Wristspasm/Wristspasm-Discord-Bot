@@ -12,11 +12,16 @@ module.exports = (client, hypixel) => {
     const guildMembersChannel = discordGuild.channels.cache.get("821560951677386762");
     const guildLevelChannel = discordGuild.channels.cache.get("821560990083842089");
 
+    hypixel.getGuild("name", "Wristspasm").then(guild => {
+        guildMembersChannel.setName(`Guild Members: ${guild.members.length}/125`);
+        guildLevelChannel.setName(`Guild Level: ${guild.level}`);
+    }).catch(console.error);
+
     setInterval(() => {
-        hypixel.getGuild("name", "Wirstspasm").then(guild => {
+        hypixel.getGuild("name", "Wristspasm").then(guild => {
             guildMembersChannel.setName(`Guild Members: ${guild.members.length}/125`);
             guildLevelChannel.setName(`Guild Level: ${guild.level}`);
         }).catch(console.error);
-    }, 20000);
+    }, 10000);
 
 }
