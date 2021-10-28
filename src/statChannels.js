@@ -17,7 +17,7 @@ module.exports = (client, hypixel) => {
         hypixel.getGuild("name", "Wristspasm").then(guild => {
             guildMembersChannel.setName(`Guild Members: ${guild.members.length}/125`);
             guildLevelChannel.setName(`Guild Level: ${guild.level}`);
-            guildWeeklyExpChannel.setName(`Guild Weekly EXP: ${guild.totalWeeklyGexp}`);
+            guildWeeklyExpChannel.setName(`Weekly GEXP: ${guild.totalWeeklyGexp}`);
         }).catch(console.error);
     }, 10000);
 
