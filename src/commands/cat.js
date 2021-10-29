@@ -27,7 +27,7 @@ module.exports = {
                 return;
             }
 
-            const fileData = `File contents of data/${file}\n\`\`\`${data}\`\`\``;
+            const fileData = `File contents of \`data/${file}\`\n\`\`\`${data}\`\`\``;
 
             if (fileData.length <= 2000) {
                 interaction.reply(fileData);
