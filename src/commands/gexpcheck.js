@@ -9,7 +9,7 @@ const fs = require("fs");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("gexpcheck")
-        .setDescription("(Admin Command) Shows eeveryone that got less than 50k GEXP in the last 7 days"),
+        .setDescription("(Admin Command) Shows everyone that got less than 50k GEXP in the last 7 days"),
 
     /**
      * @param {Discord.CommandInteraction} interaction
