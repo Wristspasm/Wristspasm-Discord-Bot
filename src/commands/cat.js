@@ -16,6 +16,7 @@ module.exports = {
      */
     async execute(interaction, client, hypixel) {
         if (!interaction.memberPermissions.has("ADMINISTRATOR")) {
+            interaction.reply("You do not have permission to use this command!");
             return;
         }
 
