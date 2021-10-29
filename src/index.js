@@ -63,7 +63,7 @@ client.on("message", (message) => {
 		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
 			let msg = message.content.split(/ +/);
 			msg.shift();
-			msg = msg.join(/ +/);
+			msg = msg.join(" ");
 			message.channel.send(`Hi ${msg}! I'm Dad!\n<@${message.author.id}>`);
 		}
 	}
