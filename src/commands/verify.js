@@ -6,7 +6,7 @@ const fs = require("fs");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("verify")
-        .setDescription("Link your discord id to your minecraft uuid")
+        .setDescription("Link your Discord ID to your Minecraft UUID")
         .addStringOption(option => option.setName("ign").setDescription("Your username or UUID").setRequired(true)),
 
     /**

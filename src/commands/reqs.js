@@ -6,7 +6,7 @@ const fs = require("fs");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("reqs")
-        .setDescription("Shows weather a player meets the requirements ot join the guild")
+        .setDescription("Shows weather a player meets the requirements to join the guild")
         .addStringOption(option => option.setName("ign").setDescription("Players username or UUID").setRequired(true)),
 
     /**

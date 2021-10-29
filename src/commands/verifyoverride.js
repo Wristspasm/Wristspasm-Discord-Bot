@@ -6,7 +6,7 @@ const fs = require("fs");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("verifyoverride")
-        .setDescription("Admin Command")
+        .setDescription("(Admin Command) Force verifies a user")
         .addStringOption(option => option.setName("ign").setDescription("Players in game name").setRequired(true))
         .addStringOption(option => option.setName("id").setDescription("Players Discord ID").setRequired(true)),
 
