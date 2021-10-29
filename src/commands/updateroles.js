@@ -7,8 +7,9 @@ const fs = require("fs");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("roles")
-        .setDescription("Update your roles"),
+        .setName("updateroles")
+        .setDescription("Update someone elses roles")
+        .addUserOption(option => option.setName("user").setDescription("The username of the roles to update").setRequired(true)),
 
     /**
      * @param {Discord.CommandInteraction} interaction
@@ -16,13 +17,13 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
-        fs.readFile(`data/${interaction.user.id}`, (err, data) => {
+        const user = interaction.options.getUser("user");
+        const member = interaction.guild.members.fetch(user);
+        fs.readFile(`data/${user.id}`, (err, data) => {
             if (err) {
-                interaction.reply("You must link your account with `/verfiy` before you can update your roles!");
+                interaction.reply("That user hasn't linked their account!");
                 return;
             }
-
-            const member = interaction.guild.members.fetch(interaction.user);
 
             hypixel.getGuild("id", cfg.wristspasm_id).then(async (guild) => {
                 hypixel.getPlayer(`${data}`).then(async (player) => {
