@@ -18,7 +18,7 @@ module.exports = {
         const time = interaction.options.getString("time");
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
             if (err) {
-                interaction.reply("You must link your account with `/verfiy` before you can request to join the guild!");
+                interaction.reply("You must link your account with `/verfiy` before you can make an inactivity notice!");
                 return;
             }
 
