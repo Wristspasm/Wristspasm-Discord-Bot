@@ -33,6 +33,7 @@ module.exports = {
                             break;
                         }
                     }
+                    
                     if (playerIsInGuild) {
                         (await member).roles.add(interaction.guild.roles.cache.get(cfg.guild_role_id)).catch(console.error);
                     } else {
