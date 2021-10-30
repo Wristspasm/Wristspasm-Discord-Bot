@@ -43,6 +43,16 @@ module.exports = {
                     const bw = player.stats.bedwars.level/100;
                     const sw = player.stats.skywars.level/5;
                     const d = player.stats.duels.wins;
+                    const uhc = player.stats.uhc.starLevel;
+
+                    if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.novice_role_id))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.novice_role_id));
+                    if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.elite_role_id))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.elite_role_id));
+
+                    if (bw >= 4 || sw >= 5 || d >= 10000 || uhc >= 6) {
+                        await (await member).roles.add(interaction.guild.roles.cache.get(cfg.elite_role_id));
+                    } else if (bw >= 2 || sw >= 3 || d >= 4000 || uhc >= 3) {
+                        await (await member).roles.add(interaction.guild.roles.cache.get(cfg.novice_role_id));
+                    }
 
                     if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.stat_roles.bw3k0))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.stat_roles.bw3k0)).catch(console.error);
                     if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.stat_roles.bw2k9))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.stat_roles.bw2k9)).catch(console.error);
