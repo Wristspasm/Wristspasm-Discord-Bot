@@ -25,8 +25,8 @@ module.exports = {
             let uhcStars = player.stats.uhc.starLevel;
 
             let meetReqs = "No";
-            if (bwLvl >= 100 || swLvl >= 10 || duelsWins >= 4000 || uhcStars >= 3) meetReqs = "As Novice";
-            if (bwLvl >= 300 || swLvl >= 15 || duelsWins >= 10000 || uhcStars >= 6) meetReqs = "As Elite";
+            if (bwLvl >= 200 || swLvl >= 15 || duelsWins >= 4000 || uhcStars >= 3) meetReqs = "As Novice";
+            if (bwLvl >= 400 || swLvl >= 25 || duelsWins >= 10000 || uhcStars >= 6) meetReqs = "As Elite";
 
             const statsEmbed = new Discord.MessageEmbed();
             statsEmbed.setColor("#ffff55");
