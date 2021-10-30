@@ -41,16 +41,19 @@ module.exports = {
                     }
 
                     const bw = player.stats.bedwars.level/100;
+                    const bw2 = player.stats.bedwars.finalKDRatio;
                     const sw = player.stats.skywars.level/5;
+                    const sw2 = player.stats.skywars.KDRatio;
                     const d = player.stats.duels.wins;
+                    const d2 = player.stats.duels.WLRatio;
                     const uhc = player.stats.uhc.starLevel;
 
                     if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.novice_role_id))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.novice_role_id));
                     if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.elite_role_id))) await (await member).roles.remove(interaction.guild.roles.cache.get(cfg.elite_role_id));
 
-                    if (bw >= 4 || sw >= 5 || d >= 10000 || uhc >= 6) {
+                    if (bw >= 4 || (bw >= 3 && bw2 >= 5) || sw >= 5 || (sw >= 4 && sw2 >= 4) || d >= 10000 || (d >= 6000 && d2 >= 4) || (bw >= 3 && bw2 >= 5) || uhc >= 6) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.elite_role_id));
-                    } else if (bw >= 2 || sw >= 3 || d >= 4000 || uhc >= 3) {
+                    } else if (bw >= 2 || (bw >= 1 && bw2 >= 3) || sw >= 3 || (sw >= 2 && sw2 >= 2) || d >= 4000 || (d >= 2000 && d2 >= 2) || uhc >= 3) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.novice_role_id));
                     }
 
