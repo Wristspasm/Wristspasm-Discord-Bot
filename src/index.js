@@ -58,7 +58,7 @@ client.on("interactionCreate", async interaction => {
 	}
 });
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
 	if (message.member.roles.cache.has(cfg.cursed_role_id) && message.channelId !== cfg.chain_channel_id) {
 		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
 			let msg = message.content.split(/ +/);
