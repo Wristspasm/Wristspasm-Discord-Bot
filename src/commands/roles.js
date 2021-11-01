@@ -141,7 +141,7 @@ module.exports = {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.stat_roles.bw600)).catch(console.error);
                     } else if (bw >= 5) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.stat_roles.bw500)).catch(console.error);
-                    } else if (bw >= 5) {
+                    } else if (bw >= 4) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.stat_roles.bw400)).catch(console.error);
                     } else if (bw >= 3) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(cfg.stat_roles.bw300)).catch(console.error);
