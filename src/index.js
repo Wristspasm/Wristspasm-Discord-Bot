@@ -5,8 +5,8 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
-import messageEvent from "./messageEvent";
-import statChannels from "./statChannels";
+const messageEvent = require("./messageEvent");
+const statChannels = require("./statChannels");
 
 const client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
 client.commands = new Discord.Collection();
@@ -26,7 +26,7 @@ client.once("ready", () => {
 	statChannels(client, hypixel);
 });
 
-client.on("interactionCreate", async interaction => {
+client.on("interactionCreate", async (interaction) => {
 	if (!interaction.isCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
