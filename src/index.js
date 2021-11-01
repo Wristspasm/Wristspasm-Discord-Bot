@@ -5,6 +5,9 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 
+import messageEvent from "./messageEvent";
+import statChannels from "./statChannels";
+
 const client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
@@ -13,8 +16,6 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
-
-const statChannels = require("./statChannels")
 
 const hypixel = new Hypixel.Client(env.api_key);
 
@@ -59,19 +60,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.on("message", async (message) => {
-	if (message.member.roles.cache.has(cfg.cursed_role_id) && message.channelId !== cfg.chain_channel_id) {
-		if (message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("im")) {
-			let msg = message.content.split(/ +/);
-			msg.shift();
-			msg = msg.join(" ");
-			message.channel.send(`Hi ${msg}! I'm Dad!\n<@${message.author.id}>`);
-		}
-	} else if (message.channelId === cfg.chain_channel_id) {
-		const messages = await message.channel.messages.fetch({limit: 2});
-		if (message.content !== messages.last().content) {
-			message.member.roles.add(message.guild.roles.cache.get(cfg.chain_breaker_role_id));
-		}	
-	}
-})
+	messageEvent(message);
+});
 
 client.login(env.token);
