@@ -1,3 +1,5 @@
+const cfg = require("../../config.json");
+
 const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
@@ -16,6 +18,12 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
+        const member = interaction.guild.members.fetch(interaction.user);
+        if (!(await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.guild_role_id))) {
+            interaction.reply("You must be in teh guild to use this command!");
+            return;
+        }
+
         const reason = interaction.options.getString("reason");
         const time = interaction.options.getString("time");
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
