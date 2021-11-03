@@ -20,7 +20,7 @@ module.exports = {
      * @param {Hypixel.Client} hypixel 
      */
     async execute(interaction, client, hypixel) {
-        const member = interaction.guild.members.fetch(interaction.user);
+        
         const reason = interaction.options.getString("reason");
         const time = interaction.options.getString("time");
         
