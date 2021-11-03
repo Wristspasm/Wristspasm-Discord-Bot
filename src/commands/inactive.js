@@ -19,26 +19,37 @@ module.exports = {
      */
     async execute(interaction, client, hypixel) {
         const member = interaction.guild.members.fetch(interaction.user);
-        if (!(await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.guild_role_id))) {
-            interaction.reply("You must be in teh guild to use this command!");
-            return;
-        }
-
         const reason = interaction.options.getString("reason");
         const time = interaction.options.getString("time");
-        fs.readFile(`data/${interaction.user.id}`, (err, data) => {
-            if (err) {
-                interaction.reply("You must link your account with `/verfiy` before you can make an inactivity notice!");
-                return;
-            }
+        
+        hypixel.getGuild("id", cfg.guild_id).then(hyGuild => {
 
-            hypixel.getPlayer(`${data}`).then(player => {
-                client.channels.cache.get("740044200942239808").send(`Inactivity request\nIGN: \`${player.nickname}\`\nRequested at \`${new Date(Date.now()).toUTCString()}\`\nReason: \`${reason}\`\nRequested Time: \`${time}\``);
-                interaction.reply(`An inactivity request has been sent to the guild staff`);
-            }).catch(err => {
-                console.error(err)
-                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            fs.readFile(`data/${interaction.user.id}`, (err, data) => {
+                if (err) {
+                    interaction.reply("You must link your account with `/verfiy` before you can make an inactivity notice!");
+                    return;
+                }
+
+                let inGuild = false;
+                for (var i = 0; i < hyGuild.members.length; i++) {
+                    if (hyGuild.members[i].uuid === `${data}`) {
+                        inGuild = true;
+                        break;
+                    }
+                }
+                if (!inGuild) {
+                    interaction.reply("You must be in the guild to use this command!");
+                }
+
+                hypixel.getPlayer(`${data}`).then(player => {
+                    client.channels.cache.get("740044200942239808").send(`Inactivity request\nIGN: \`${player.nickname}\`\nRequested at \`${new Date(Date.now()).toUTCString()}\`\nReason: \`${reason}\`\nRequested Time: \`${time}\``);
+                    interaction.reply(`An inactivity request has been sent to the guild staff`);
+                }).catch(err => {
+                    console.error(err)
+                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+                });
             });
+        
         });
     }
 }
