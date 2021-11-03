@@ -5,6 +5,8 @@ const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 
+const memberIsInGuild = require("../util/memberIsInGuild");
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("inactive")
@@ -30,14 +32,7 @@ module.exports = {
                     return;
                 }
 
-                let inGuild = false;
-                for (var i = 0; i < hyGuild.members.length; i++) {
-                    if (hyGuild.members[i].uuid === `${data}`) {
-                        inGuild = true;
-                        break;
-                    }
-                }
-                if (!inGuild) {
+                if (!memberIsInGuild(`${data}`, hypixel)) {
                     interaction.reply("You must be in the guild to use this command!");
                 }
 
