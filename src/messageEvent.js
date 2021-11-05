@@ -17,6 +17,7 @@ async function messageEvent(message) {
 		const messages = await message.channel.messages.fetch({limit: 2});
 		if (message.content !== messages.last().content) {
 			message.member.roles.add(message.guild.roles.cache.get(cfg.chain_breaker_role_id));
+			message.member.setNickname("Chain Breaker");
 		}	
 	}
 }

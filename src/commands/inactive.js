@@ -24,7 +24,7 @@ module.exports = {
         const reason = interaction.options.getString("reason");
         const time = interaction.options.getString("time");
         
-        hypixel.getGuild("id", cfg.guild_id).then(hyGuild => {
+        hypixel.getGuild("id", cfg.wristspasm_id).then(hyGuild => {
 
             fs.readFile(`data/${interaction.user.id}`, (err, data) => {
                 if (err) {

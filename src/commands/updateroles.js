@@ -18,12 +18,14 @@ module.exports = {
      */
     async execute(interaction, client, hypixel) {
 
+        const user = interaction.options.getUser("member");
+
         if (interaction.user.id !== "597603275365285901") {
             interaction.reply("This command is disabled for developement purposes");
             return;
         }
 
-        const member = await interaction.guild.members.fetch(interaction.options.getUser("member"));
+        const member = await interaction.guild.members.fetch(`${user.id}`);
 
         fs.readFile(`data/${member.user.id}`, (err, data) => {
             if (err) {
