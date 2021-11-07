@@ -40,7 +40,7 @@ module.exports = {
                 statsEmbed.addField("Rank", `${guild.members[i].rank}`, false);
                 statsEmbed.addField("Weekly GEXP", `\`${guild.members[i].weeklyExperience}\``, false);
                 statsEmbed.addField("Joined", `\`${new Date(guild.members[i].joinedAtTimestamp).toUTCString()}\``, false);
-                statsEmbed.addField("Last Online", `\`${player.lastLoginTimestamp === undefined ? "Unknown" : new Date(player.lastLoginTimestamp).toUTCString()}\``, false);
+                statsEmbed.addField("Last Online", `\`${player.lastLoginTimestamp < 3715200000 ? "Unknown" : new Date(player.lastLoginTimestamp).toUTCString()}\``, false);
                 interaction.reply({ embeds: [statsEmbed] });
             });
 
