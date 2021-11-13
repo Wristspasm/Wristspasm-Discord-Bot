@@ -37,7 +37,7 @@ module.exports = {
                     if (playerIsInGuild) {
                         (await member).roles.add(interaction.guild.roles.cache.get(cfg.guild_role_id)).catch(console.error);
                     } else {
-                        if ((await member).roles.has(interaction.guild.roles.cache.get(cfg.guild_role_id))) (await member).roles.remove(interaction.guild.roles.cache.get(cfg.guild_role_id)).catch(console.error);
+                        if ((await member).roles.cache.has(interaction.guild.roles.cache.get(cfg.guild_role_id))) (await member).roles.remove(interaction.guild.roles.cache.get(cfg.guild_role_id)).catch(console.error);
                     }
 
                     const bw = player.stats.bedwars.level/100;
