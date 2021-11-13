@@ -7,7 +7,7 @@ const fs = require("fs");
 
 const memberIsInGuild = require("../util/memberIsInGuild");
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("inactive")
         .setDescription("Send an inactivity notice to the guild staff")
@@ -61,3 +61,5 @@ module.exports = {
         });
     }
 }
+
+module.exports = command;
