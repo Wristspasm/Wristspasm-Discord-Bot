@@ -7,7 +7,7 @@ const Hypixel = require("hypixel-api-reborn");
  */
 function memberIsInGuild(uuid, hypixel) {
 
-    hypixel.getGuild("id", cfg.guild_id).then(guild => {
+    hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
         for (var i = 0; i < guild.members.length; i++) {
             if (guild.members[i].uuid === uuid) {
                 return true

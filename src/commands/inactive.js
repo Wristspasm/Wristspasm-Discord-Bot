@@ -32,11 +32,24 @@ module.exports = {
                     return;
                 }
 
-                if (!memberIsInGuild(`${data}`, hypixel)) {
-                    interaction.reply("You must be in the guild to use this command!");
-                }
-
                 hypixel.getPlayer(`${data}`).then(player => {
+
+                    /**
+                     * @type {number}
+                     */
+                    let index = undefined;
+                    for (var i = 0; i < hyGuild.members.length; i++) {
+                        if (hyGuild.members[i].uuid === player.uuid) {
+                            index = 0;
+                            break;
+                        }
+                    }
+
+                    if (index == undefined) {
+                        interaction.reply("You must be in the guild to use this command!");
+                        return;
+                    }
+
                     client.channels.cache.get("740044200942239808").send(`Inactivity request\nIGN: \`${player.nickname}\`\nRequested at \`${new Date(Date.now()).toUTCString()}\`\nReason: \`${reason}\`\nRequested Time: \`${time}\``);
                     interaction.reply(`An inactivity request has been sent to the guild staff`);
                 }).catch(err => {
