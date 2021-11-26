@@ -5,7 +5,7 @@ const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("gstats")
         .setDescription("Shows the guilds stats"),
@@ -32,3 +32,5 @@ module.exports = {
         })
     }
 }
+
+module.exports = command;

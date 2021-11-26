@@ -3,7 +3,7 @@ const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("cat")
         .setDescription("(Admin Command) View the contents of a file")
@@ -39,3 +39,5 @@ module.exports = {
         });
     }
 }
+
+module.exports = command;

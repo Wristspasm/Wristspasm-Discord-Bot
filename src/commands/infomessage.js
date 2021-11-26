@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("infomessage")
         .setDescription("(Admin Command) send the info message"),
@@ -38,3 +38,5 @@ module.exports = {
         interaction.reply("Info Message sent! Please delete this message.");
     }
 }
+
+module.exports = command;

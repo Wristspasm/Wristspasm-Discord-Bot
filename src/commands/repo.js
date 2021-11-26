@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("repo")
         .setDescription("Get the bot repository"),
@@ -20,3 +20,5 @@ module.exports = {
         interaction.reply({ embeds: [embed] });
     }
 }
+
+module.exports = command;

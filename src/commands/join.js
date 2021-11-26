@@ -3,7 +3,7 @@ const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 
-module.exports = {
+const command = {
     data: new SlashCommandBuilder()
         .setName("join")
         .setDescription("Request to join the guild"),
@@ -52,3 +52,5 @@ module.exports = {
         });
     }
 }
+
+module.exports = command;
