@@ -16,7 +16,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         embed.setColor("#5555ff");
         embed.setTitle("Wristspasm Bot Repository");
-        embed.setDescription("https://github.com/DrRed96/Wristspasm");
+        embed.setDescription("https://github.com/Wristspasm/Wristspasm");
         interaction.reply({ embeds: [embed] });
     }
 }
