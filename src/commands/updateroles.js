@@ -16,7 +16,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
 
         const user = interaction.options.getUser("member");
 

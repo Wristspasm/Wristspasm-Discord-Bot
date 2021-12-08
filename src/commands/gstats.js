@@ -15,7 +15,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         hypixel.getGuild("id", cfg.wristspasm_id).then(guild => {
             const embed = new Discord.MessageEmbed();
             embed.setColor("#ffff55");

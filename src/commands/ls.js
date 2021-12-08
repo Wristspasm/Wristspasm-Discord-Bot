@@ -13,7 +13,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         if (!interaction.memberPermissions.has("ADMINISTRATOR")) {
             interaction.reply("You do not have permission to use this command!");
             return;

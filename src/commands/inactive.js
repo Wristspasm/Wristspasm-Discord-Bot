@@ -19,7 +19,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         
         const reason = interaction.options.getString("reason");
         const time = interaction.options.getString("time");

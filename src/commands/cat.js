@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
+const { Player } = require("discord-player");
 
 const command = {
     data: new SlashCommandBuilder()
@@ -13,8 +14,9 @@ const command = {
      * @param {Discord.CommandInteraction} interaction
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
+     * @param {Player} player
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         if (!interaction.memberPermissions.has("ADMINISTRATOR")) {
             interaction.reply("You do not have permission to use this command!");
             return;

@@ -12,7 +12,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         const embed = new Discord.MessageEmbed();
         embed.setColor("#5555ff");
         embed.setTitle("Wristspasm Bot Repository");

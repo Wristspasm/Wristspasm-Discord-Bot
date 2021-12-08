@@ -15,7 +15,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
             if (err) {
                 interaction.reply("You must link your account with `/verfiy` before you can update your roles!");

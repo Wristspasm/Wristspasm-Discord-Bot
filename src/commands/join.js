@@ -13,7 +13,7 @@ const command = {
      * @param {Discord.Client} client 
      * @param {Hypixel.Client} hypixel 
      */
-    async execute(interaction, client, hypixel) {
+    async execute(interaction, client, hypixel, player) {
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
             if (err) {
                 console.error(err);

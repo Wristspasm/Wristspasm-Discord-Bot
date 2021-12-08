@@ -7,10 +7,35 @@ const Hypixel = require('hypixel-api-reborn');
 
 const messageEvent = require("./messageEvent");
 const statChannels = require("./statChannels");
+const { Player } = require("discord-player");
 
-const client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
+const client = new Discord.Client({
+	intents: [
+		Discord.Intents.FLAGS.GUILDS,
+		Discord.Intents.FLAGS.GUILD_MESSAGES,
+		Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Discord.Intents.FLAGS.GUILD_VOICE_STATES
+	],
+	presence: {
+		activities: [
+			{
+				name: "/g join Wristspasm",
+				type: "PLAYING"
+			}
+		],
+		status: "online"
+	}
+});
+
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
+
+const player = new Player(client, {
+	ytdlOptions: {
+		quality: "highestaudio",
+		highWaterMark: 1 << 25
+	}
+});
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -47,8 +72,13 @@ client.on("interactionCreate", async (interaction) => {
 		}
 	});
 
+	if (interaction.guildId !== cfg.guild_id) {
+		interaction.reply("Wristspasm bot cannot be used outside of the Wristspasm Guild Discord");
+		return;
+	}
+
 	try {
-		await command.execute(interaction, client, hypixel);
+		await command.execute(interaction, client, hypixel, player);
 	} catch (error) {
 		console.error(error);
 		const errEmbed = new Discord.MessageEmbed();
@@ -60,6 +90,9 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.on("message", async (message) => {
+	if (message.guildId !== cfg.guild_id) {
+		return;
+	}
 	messageEvent(message);
 });
 
