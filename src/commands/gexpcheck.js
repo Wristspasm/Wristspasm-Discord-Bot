@@ -19,7 +19,7 @@ const command = {
      * @param {Player} player
      */
      async execute(interaction, client, hypixel, player) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR")) {
+        if (!interaction.memberPermissions.has("ADMINISTRATOR")  && !interaction.member.roles.includes(interaction.guild.roles.cache.get(cfg.admin_role_id))) {
             interaction.reply("You do not have permission to use this command");
             return;
         }

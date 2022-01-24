@@ -85,15 +85,15 @@ client.on("interactionCreate", async (interaction) => {
         errEmbed.setColor("#ff0000");
         errEmbed.setTitle("Error");
         errEmbed.setDescription(error);
-        interaction.reply({ embeds: [errEmbed] });
+        interaction.reply({ embeds: [ errEmbed ] });
 	}
 });
 
-client.on("message", async (message) => {
-	if (message.guildId !== cfg.guild_id) {
-		return;
-	}
-	messageEvent(message);
-});
+// client.on("message", async (message) => {
+// 	if (message.guildId !== cfg.guild_id) {
+// 		return;
+// 	}
+// 	messageEvent(message);
+// });
 
 client.login(env.token);
