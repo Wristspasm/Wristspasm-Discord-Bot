@@ -26,8 +26,7 @@ const command = {
         fs.readFile(`data/${file}`, (err, data) => {
             if (err) {
                 console.error(err);
-                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
-                return;
+                throw err;
             }
 
             const fileData = `File contents of \`data/${file}\`\n\`\`\`${data}\`\`\``;

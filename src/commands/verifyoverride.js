@@ -27,14 +27,14 @@ const command = {
         hypixel.getPlayer(ign).then(player => {
             fs.writeFile(`data/${id}`, `${player.uuid}`, (err) => {
                 if (err) {
-                    interaction.reply(`FS Error: ${err}`);
+                    throw err;
                 }
                 interaction.reply(`Linked \`${client.users.cache.get(id).tag}\` to \`${player.nickname}\``);
                 return;
             });
 
         }).catch(err => {
-            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            throw err;
         });
     }
 }

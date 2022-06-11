@@ -44,9 +44,7 @@ const command = {
                 client.channels.cache.get("902775441272737842").send({ embeds: [statsEmbed] });
                 interaction.reply("A join request has been sent to the guild staff");
             }).catch(err => {
-                console.error(err)
-                interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
-                return;
+                throw err;
             });
 
         });

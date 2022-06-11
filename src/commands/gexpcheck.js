@@ -34,16 +34,14 @@ const command = {
 
             fs.writeFile("data/exp.txt", `UUID : GEXP\n${expStr}`, (err) => {
                 if (err) {
-                    console.error(err);
-                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+                    throw err;
                     return;
                 }
                 interaction.reply({ files: [ "data/exp.txt" ], content: "Weekly GEXP file" });
                 return;
             });
         }).catch(err => {
-            console.error(err);
-            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            throw err;
         });
     }
 }

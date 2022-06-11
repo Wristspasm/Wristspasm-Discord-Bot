@@ -28,7 +28,7 @@ const command = {
             if (found) {
                 fs.writeFile(`data/${interaction.user.id}`, `${player.uuid}`, (err) => {
                     if (err) {
-                        interaction.reply(`FS Error: ${err}`);
+                        throw err;
                     }
                     interaction.reply(`Linked your your account to \`${player.nickname}\``);
                     return;
@@ -38,8 +38,7 @@ const command = {
             }
 
         }).catch(err => {
-            console.error(err);
-            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            throw err;
         });
     }
 }

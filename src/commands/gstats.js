@@ -27,8 +27,7 @@ const command = {
             embed.addField("Legacy Rank", `${guild.legacyRank}`, true);
             interaction.reply({ embeds: [ embed ] });
         }).catch(err => {
-            console.error(err);
-            interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+            throw err;
         })
     }
 }

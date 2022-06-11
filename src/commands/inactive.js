@@ -53,8 +53,7 @@ const command = {
                     client.channels.cache.get("740044200942239808").send(`Inactivity request\nIGN: \`${player.nickname}\`\nRequested at \`${new Date(Date.now()).toUTCString()}\`\nReason: \`${reason}\`\nRequested Time: \`${time}\``);
                     interaction.reply(`An inactivity request has been sent to the guild staff`);
                 }).catch(err => {
-                    console.error(err)
-                    interaction.reply(`There was an error while running this command, Console Error: \`${err}\``);
+                    throw err;
                 });
             });
         
