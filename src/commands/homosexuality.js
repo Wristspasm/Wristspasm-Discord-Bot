@@ -29,7 +29,7 @@ const command = {
 
         let homo = 0;
 
-        let fix = true;
+        // let fix = true;
 
         fs.readFile(`data/homo/${id}`, async (err, data) => {
             if (err) {
@@ -55,7 +55,6 @@ const command = {
                 interaction.reply({ embeds: [ embed ] });
             }
         });
-        
     }
 }
 
