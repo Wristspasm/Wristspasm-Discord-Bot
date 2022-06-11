@@ -39,7 +39,7 @@ const command = {
                 });
                 const embed = new Discord.MessageEmbed();
                 embed.setTitle("Homosexuality Test Results");
-                embed.setColor("NAVY");
+                embed.setColor("LUMINOUS_VIVID_PINK");
                 embed.setThumbnail(img);
                 embed.addField("Subject", `<@${id}>`, true);
                 embed.addField("Result", `${homo}%`, true);
@@ -48,7 +48,7 @@ const command = {
                 homo = Number.parseInt(data);
                 const embed = new Discord.MessageEmbed();
                 embed.setTitle("Homosexuality Test Results");
-                embed.setColor("NAVY");
+                embed.setColor("LUMINOUS_VIVID_PINK");
                 embed.setThumbnail(img);
                 embed.addField("Subject", `<@${id}>`, true);
                 embed.addField("Result", `${homo}%`, true);

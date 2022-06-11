@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "deployCommands": "node src/deployCommands"
+    "deployCommands": "node src/deployCommands",
+    "test": "node ."
   },
   "author": "Cal (DrRed96)",
   "license": "MIT",
