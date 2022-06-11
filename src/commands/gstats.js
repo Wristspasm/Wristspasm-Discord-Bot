@@ -23,7 +23,7 @@ const command = {
             embed.addField("Level", `${guild.level}`, true);
             embed.addField("GEXP", `${guild.experience}`, true);
             embed.addField("Member Count", `${guild.members.length}`, true);
-            embed.addField("Weekly EXP", `${guild.totalWeeklyGexp}`, true);
+            embed.addField("Weekly GEXP", `${guild.totalWeeklyGexp}`, true);
             embed.addField("Legacy Rank", `${guild.legacyRank}`, true);
             interaction.reply({ embeds: [ embed ] });
         }).catch(err => {
