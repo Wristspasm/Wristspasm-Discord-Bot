@@ -6,4 +6,3 @@ Made by Calculus#0001 and DuckySoLucky#5181
 - [Node.js](https://nodejs.org/)
 - [Discord.js](https://discord.js.org/)
 - [Hypixel API Reborn](https://www.npmjs.com/package/hypixel-api-reborn/)
-- [Vultr VPS](https://www.vultr.com/)
