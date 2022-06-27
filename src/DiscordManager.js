@@ -23,6 +23,7 @@ class DiscordManager {
     this.client.on('ready', () => this.stateHandler.onReady())
     statsChannel(client)
     this.client.login(config.discord.token).catch(error => {this.app.log.error(error)})
+    this.client.user.setActivity("/g join WristSpasm", {type: "PLAYING"});
 
     // Getting Commands
     client.commands = new Collection();
