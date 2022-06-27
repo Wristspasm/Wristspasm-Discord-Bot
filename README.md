@@ -1,5 +1,6 @@
 ## Wristspasm
-Discord bot made for the [Wristspasm Guild Discord](https://discord.gg/BjcMKKMHUf)
+Discord bot made for the [Wristspasm Guild Discord](https://discord.gg/BjcMKKMHUf)<br />
+Made by Calculus#0001 and DuckySoLucky#5181
 
 ### Powered By
 - [Node.js](https://nodejs.org/)
