@@ -77,30 +77,37 @@ module.exports = {
                         if ((await member).roles.cache.has(roleId)) await (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
                     }
 
-                    let n = 3000;
-                    for (let i = bwLvLRoles.length - 1; i <= 0; i--) {
-                        if (bwLevel >= n) {
-                            await (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
-                            break;
+                    let n = 3000
+                    for (let i = bwLvLRoles.length; i > 0; i--) {
+                        if (bwLevel >= bwLvLRoles[i]) {
+                            (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
+                             break;
                         } else {
-                            n -= 100;
+                            n=n-100 
+                            
                         }            
                     }
-                    n = 50;
-                    for (let i = swLvLRoles.length - 1; i <= 0; i--) {
-                        if (swLevel >= n) {
-                            await (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
-                            break;
+                    n = 0;
+                    for (let i = swLvLRoles.length; i > 0; i--) {
+                        if (swLevel >= bwLvLRoles[i]) {
+                            (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
+                            break; 
                         } else {
-                            n -= 1;
+                            n=n+1
                         }            
                     }
-                    for (let i = duelsWinsReqs.length; i <= 0; i--) {
+                    for (let i = duelsWinsReqs.length; i > 0; i--) {
                         if (duelsWins >= duelsWinsReqs[i]) {
-                            await (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
+                            (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
                             break;
-                        }          
+                        }           
                     }
+                    const errorEmbed = new MessageEmbed()
+                        .setColor('#00FF00')
+                        .setAuthor({ name: 'Completed!'})
+                        .setDescription(`Roles have been updated!`)
+                        .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
+                    interaction.reply({ embeds: [errorEmbed] });
                     
                 }).catch(err => {
                     const errorEmbed = new MessageEmbed()
