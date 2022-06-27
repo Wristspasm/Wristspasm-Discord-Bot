@@ -51,9 +51,9 @@ module.exports = {
                     const uhcStars = player.stats.uhc.starLevel;
 
                     if (bwLevel >= 400 || bwLevel >= 300 && bwFKDR >= 5 || swLevel >= 5 || swLevel >= 4 && swKDR >= 4 || duelsWins >= 10000 || duelsWins >= 6000 && dWLR >= 4 ||uhcStars >= 6) {
-                        wait (await member).roles.add(interaction.guild.roles.cache.get(config.roles.elite_role_id));
+                        await (await member).roles.add(interaction.guild.roles.cache.get(config.roles.elite_role_id));
                     } else if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 3 || swLevel >= 3 || swLevel >= 2 && swKDR >= 2 || duelsWins >= 4000 || duelsWins >= 2000 && dWLR >= 2 || uhcStars >= 3) {
-                        wait (await member).roles.add(interaction.guild.roles.cache.get(config.roles.novice_role_id));
+                        await (await member).roles.add(interaction.guild.roles.cache.get(config.roles.novice_role_id));
                     }
 
                     const bwLvLRoles = ["600314048617119757", "600313179452735498", "600313143398236191", "600311393316765697", "600311885971062784", "601086287285583872", "610930173675831336", "610930335135432879", "610929429635661846", "610929550674886686", "614848336649912342", "829979638495182868", "829980233365061653", "829980892897214484", "829981099248975873", "829981255609221131", "829981553563009034", "829981705548464128", "829981912847482900", "829982128296558623", "829982315831754823", "829982617369575495", "829982840472207440", "829983089539022890", "829983408628432896", "829983680126124053", "829984999948025899", "829985291678253086", "829985446943653898", "829985605144018965", "829983877300486184"]
