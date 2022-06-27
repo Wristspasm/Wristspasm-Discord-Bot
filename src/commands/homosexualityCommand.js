@@ -52,6 +52,7 @@ const command = {
                 embed.setThumbnail(img);
                 embed.addField("Subject", `<@${id}>`, true);
                 embed.addField("Result", `${homo}%`, true);
+                embed.setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
                 interaction.reply({ embeds: [ embed ] });
             }
         });

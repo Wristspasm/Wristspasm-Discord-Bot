@@ -4,7 +4,6 @@ const hypixel = require('../handlers/Hypixel');
 const { Client } = require("discord.js")
 
 /**
- * 
  * @param {Client} client 
  */
 function statsChannel(client) {
