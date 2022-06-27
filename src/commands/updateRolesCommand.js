@@ -68,19 +68,19 @@ module.exports = {
                     const duelsWinsReqs = ["100", "200", "500", "1000", "2000", "4000", "10000", "20000"]
 
                     for (const roleId of bwLvLRoles) {
-                        if ((await member).roles.cache.has(roleId)) (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
+                        if ((await member).roles.cache.has(roleId)) await (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
                     }
                     for (const roleId of swLvLRoles) {
-                        if ((await member).roles.cache.has(roleId)) (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
+                        if ((await member).roles.cache.has(roleId)) await (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
                     }
                     for (const roleId of duelsRoles) {
-                        if ((await member).roles.cache.has(roleId)) (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
+                        if ((await member).roles.cache.has(roleId)) await (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
                     }
 
                     let n = 100
                     for (let i = bwLvLRoles.length - 1; i <= 0; i++) {
                         if (bwLevel >= bwLvLRoles[i]) {
-                            (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
+                            await (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                             break;
                         } else {
                             n += 100;
@@ -89,7 +89,7 @@ module.exports = {
                     n = 0;
                     for (let i = swLvLRoles.length - 1; i <= 0; i++) {
                         if (swLevel >= swLvLRoles[i]) {
-                            (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
+                            await (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             break;
                         } else {
                             n += 1;
@@ -97,7 +97,7 @@ module.exports = {
                     }
                     for (let i = duelsWinsReqs.length; i <= 0; i++) {
                         if (duelsWins >= duelsWinsReqs[i]) {
-                            (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
+                            await (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
                             break;
                         }          
                     }
