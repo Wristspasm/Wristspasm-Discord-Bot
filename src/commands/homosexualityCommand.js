@@ -1,6 +1,4 @@
-const DiscordPlayer = require('discord-player');
 const Discord = require("discord.js");
-const Hypixel = require('hypixel-api-reborn');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
 

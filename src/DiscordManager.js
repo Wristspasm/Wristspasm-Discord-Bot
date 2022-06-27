@@ -1,8 +1,7 @@
 const StateHandler = require('./handlers/StateHandler')
-const MessageHandler = require('./handlers/MessageHandler')
 const statsChannel = require('./events/guildStatsChannel')
 const CommandHandler = require('./handlers/CommandHandler')
-const { Discord, Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, Intents } = require('discord.js');
 const config = require("../config.json");
 const fs = require('fs')
 const path = require('node:path');
@@ -13,7 +12,6 @@ class DiscordManager {
     this.app = app
     this.stateHandler = new StateHandler(this)
     this.commandHandler = new CommandHandler(this)
-    //this.MessageHandler = new MessageHandler(this)
   }
 
   connect() {
@@ -41,7 +39,7 @@ class DiscordManager {
       const filePath = path.join(eventsPath, file);
       const event = require(filePath);
       if (event.once) {client.once(event.name, (...args) => event.execute(...args));} 
-      else {client.on(event.name, (...args) => event.execute(...args));}
+      else {client.on(event.name, (...args) => event.execute(...args));} 
     }
     
   }
