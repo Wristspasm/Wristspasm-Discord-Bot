@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 const config = require ('../../config.json')
 const hypixel = require('../handlers/Hypixel')
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Client } = require('discord.js');
 process.on('uncaughtException', function (err) {console.log(err.stack);});
 
 module.exports = {
@@ -10,6 +10,11 @@ module.exports = {
         .setName("roles")
         .setDescription("Update your roles"),
 
+    /**
+     * 
+     * @param {*} interaction 
+     * @param {Client} client 
+     */
 	async execute(interaction, client) {
         fs.readFile(`data/${interaction.user.id}`, (err, data) => {
             if (err) {
@@ -61,6 +66,17 @@ module.exports = {
                     const swLvLRoles = ["732768990723702915", "732769728006717572", "732769252570038283", "732769874530533407", "732769930562502696", "732770029099024425", "732770104642764910", "732770168366956577", "732770222691319870", "732770273564033026", "732770336407552070"]
                     const duelsRoles =  ["732773026273427476","732773083479408680","732773121425408063","732773215608504373","732773275070890004","732773326262632529","732773376841482260","732773463139418194"]
                     const duelsWinsReqs = ["100", "200", "500", "1000", "2000", "4000", "10000", "20000"]
+
+                    for (const roleId of bwLvLRoles) {
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                    }
+                    for (const roleId of swLvLRoles) {
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                    }
+                    for (const roleId of duelsRoles) {
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                    }
+
                     let n = 100
                     for (let i = bwLvLRoles.length - 1; i <= 0; i++) {
                         if (bwLevel >= bwLvLRoles[i]) {
