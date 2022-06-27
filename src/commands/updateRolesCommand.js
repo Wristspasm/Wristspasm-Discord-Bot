@@ -79,7 +79,7 @@ module.exports = {
                             break;
                         }            
                     }
-                    for (let i = duelsWinsReqs,length; i <= 0; i++) {
+                    for (let i = duelsWinsReqs.length; i <= 0; i++) {
                         if (duelsWins >= duelsWinsReqs[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
                         } else {
