@@ -68,13 +68,13 @@ module.exports = {
                     const duelsWinsReqs = ["100", "200", "500", "1000", "2000", "4000", "10000", "20000"]
 
                     for (const roleId of bwLvLRoles) {
-                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member).roles.remove(interaction.guild.roles.cahce.get(roleId));
                     }
                     for (const roleId of swLvLRoles) {
-                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member).roles.remove(interaction.guild.roles.cahce.get(roleId));
                     }
                     for (const roleId of duelsRoles) {
-                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member.roles.remove(interaction.guild.roles.cahce.get(roleId)));
+                        if ((await member).roles.cache.has(interaction.guild.roles.cahce.get(roleId))) (await member).roles.remove(interaction.guild.roles.cahce.get(roleId));
                     }
 
                     let n = 100
