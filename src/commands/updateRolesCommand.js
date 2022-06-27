@@ -77,8 +77,8 @@ module.exports = {
                         if ((await member).roles.cache.has(roleId)) await (await member).roles.remove(interaction.guild.roles.cache.get(roleId));
                     }
 
-                    let n = 100
-                    for (let i = bwLvLRoles.length - 1; i <= 0; i++) {
+                    let n = 100;
+                    for (let i = bwLvLRoles.length - 1; i <= 0; i--) {
                         if (bwLevel >= bwLvLRoles[i]) {
                             await (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                             break;
@@ -87,7 +87,7 @@ module.exports = {
                         }            
                     }
                     n = 0;
-                    for (let i = swLvLRoles.length - 1; i <= 0; i++) {
+                    for (let i = swLvLRoles.length - 1; i <= 0; i--) {
                         if (swLevel >= swLvLRoles[i]) {
                             await (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             break;
@@ -95,7 +95,7 @@ module.exports = {
                             n += 1;
                         }            
                     }
-                    for (let i = duelsWinsReqs.length; i <= 0; i++) {
+                    for (let i = duelsWinsReqs.length; i <= 0; i--) {
                         if (duelsWins >= duelsWinsReqs[i]) {
                             await (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
                             break;
