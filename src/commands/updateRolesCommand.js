@@ -84,7 +84,7 @@ module.exports = {
                             (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                              break;
                         } else {
-                            n=n-100;
+                            n -= 100;
                             
                         }            
                     }
@@ -94,7 +94,7 @@ module.exports = {
                             (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             break; 
                         } else {
-                            n=n-1;
+                            n -= 1;
                         }            
                     }
                     for (let i = duelsWinsReqs.length; i > 0; i--) {
