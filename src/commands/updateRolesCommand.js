@@ -62,7 +62,7 @@ module.exports = {
                     const duelsRoles =  ["732773026273427476","732773083479408680","732773121425408063","732773215608504373","732773275070890004","732773326262632529","732773376841482260","732773463139418194"]
                     const duelsWinsReqs = ["100", "200", "500", "1000", "2000", "4000", "10000", "20000"]
                     let n = 100
-                    for (let i = 0; i < bwLvLRoles.length; i++) {
+                    for (let i = bwLvLRoles.length - 1; i <= 0; i++) {
                         if (bwLevel >= bwLvLRoles[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                             n=n+100  
@@ -71,15 +71,15 @@ module.exports = {
                         }            
                     }
                     n = 0;
-                    for (let i = 0; i < swLvLRoles.length; i++) {
-                        if (swLevel >= bwLvLRoles[i]) {
+                    for (let i = swLvLRoles.length - 1; i <= 0; i++) {
+                        if (swLevel >= swLvLRoles[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             n=n+1  
                         } else {
                             break;
                         }            
                     }
-                    for (let i = 0; i < duelsWinsReqs.length; i++) {
+                    for (let i = duelsWinsReqs,length; i <= 0; i++) {
                         if (duelsWins >= duelsWinsReqs[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
                         } else {
