@@ -65,26 +65,25 @@ module.exports = {
                     for (let i = bwLvLRoles.length - 1; i <= 0; i++) {
                         if (bwLevel >= bwLvLRoles[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
-                            n=n+100  
-                        } else {
                             break;
+                        } else {
+                            n += 100;
                         }            
                     }
                     n = 0;
                     for (let i = swLvLRoles.length - 1; i <= 0; i++) {
                         if (swLevel >= swLvLRoles[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
-                            n=n+1  
-                        } else {
                             break;
+                        } else {
+                            n += 1;
                         }            
                     }
                     for (let i = duelsWinsReqs.length; i <= 0; i++) {
                         if (duelsWins >= duelsWinsReqs[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(duelsRoles[i])).catch(console.error);
-                        } else {
                             break;
-                        }            
+                        }          
                     }
                     
                 }).catch(err => {
