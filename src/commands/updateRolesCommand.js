@@ -34,6 +34,7 @@ module.exports = {
                         }
                     }
                     
+                    
                     // Adding or Removing Role from Guild Member
                     if (playerIsInGuild) {
                         (await member).roles.add(interaction.guild.roles.cache.get(config.roles.guildMember_role_id)).catch(console.error);
@@ -70,7 +71,7 @@ module.exports = {
                         }            
                     }
                     n = 0;
-                    for (let i = 0; i < swLvL.length; i++) {
+                    for (let i = 0; i < swLvLRoles.length; i++) {
                         if (swLevel >= bwLvLRoles[i]) {
                             (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             n=n+1  
