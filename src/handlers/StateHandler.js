@@ -5,7 +5,7 @@ class StateHandler {
   
     async onReady() {
       this.discord.app.log.discord('Client ready, logged in as ' + this.discord.client.user.tag)
-      this.discord.client.user.setActivity('/g join Wristspasm', { type: 'PLAYING' })
+      this.discord.client.user.setActivity('/g join WristSpasm', { type: 'PLAYING' })
   
     }
   }
