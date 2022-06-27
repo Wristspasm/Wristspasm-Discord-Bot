@@ -79,6 +79,7 @@ module.exports = {
 
                     let n = 3000
                     for (let i = bwLvLRoles.length; i >= 0; i--) {
+                        console.log(`[${i}], ${bwLevel} >= ${n} = ${bwLevel >= n}`);
                         if (bwLevel >= n) {
                             (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                              break;
