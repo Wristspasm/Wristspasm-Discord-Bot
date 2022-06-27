@@ -79,7 +79,7 @@ module.exports = {
 
                     let n = 3000;
                     for (let i = bwLvLRoles.length - 1; i <= 0; i--) {
-                        if (bwLevel >= bwLvLRoles[i]) {
+                        if (bwLevel >= n) {
                             await (await member).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i])).catch(console.error);
                             break;
                         } else {
@@ -88,7 +88,7 @@ module.exports = {
                     }
                     n = 50;
                     for (let i = swLvLRoles.length - 1; i <= 0; i--) {
-                        if (swLevel >= swLvLRoles[i]) {
+                        if (swLevel >= n) {
                             await (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
                             break;
                         } else {
