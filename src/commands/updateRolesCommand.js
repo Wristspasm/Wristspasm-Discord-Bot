@@ -88,7 +88,7 @@ module.exports = {
                             
                         }            
                     }
-                    n = 0;
+                    n = 10;
                     for (let i = swLvLRoles.length - 1; i >= 0; i--) {
                         if (swLevel >= n) {
                             (await member).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i])).catch(console.error);
