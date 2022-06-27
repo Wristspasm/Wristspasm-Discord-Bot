@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 const config = require ('../../config.json')
 const hypixel = require('../handlers/Hypixel')
-const { MessageEmbed, Client } = require('discord.js');
+const { MessageEmbed, Client, Interaction } = require('discord.js');
 process.on('uncaughtException', function (err) {console.log(err.stack);});
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 
     /**
      * 
-     * @param {*} interaction 
+     * @param {Interaction} interaction 
      * @param {Client} client 
      */
 	async execute(interaction, client) {
