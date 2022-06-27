@@ -1,6 +1,12 @@
 const config = require("../../config.json");
 const hypixel = require('../handlers/Hypixel');
 
+const { Client } = require("discord.js")
+
+/**
+ * 
+ * @param {Client} client 
+ */
 function statsChannel(client) {
     setInterval(() => {
         hypixel.getGuild("id", config.minecraft.guild_id).then(guild => {
