@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require("fs");
 const hypixel = require('../handlers/Hypixel')
 const { MessageEmbed } = require('discord.js');
+const cfg = require("../../config.json");
 process.on('uncaughtException', function (err) {console.log(err.stack);});
 
 
@@ -13,7 +14,7 @@ module.exports = {
         .addStringOption(option => option.setName("id").setDescription("Discord").setRequired(true)),
 
 	async execute(interaction, client) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR") && !interaction.member.roles.includes(interaction.guild.roles.cache.get(cfg.admin_role_id))) {
+        if (!interaction.memberPermissions.has("ADMINISTRATOR") && !interaction.member.roles.includes(interaction.guild.roles.cache.get(cfg.admin_role_id)) && interaction.member.user.id != cfg.member_ids.calculus && interaction.member.user.id != cfg.member_ids.ducky) {
 			const exampleEmbed = new MessageEmbed()
 				.setColor('#ff0000')
 				.setAuthor({ name: 'An Error has occured!'})
