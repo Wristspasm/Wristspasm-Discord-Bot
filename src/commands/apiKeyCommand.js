@@ -10,8 +10,8 @@ module.exports = {
     .setDescription("(Admin Command) Change the API key")
     .addStringOption(option => option.setName("key").setDescription("API Key").setRequired(true)),
 
-    async execute(interaction, client) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR") && !interaction.member.roles.includes(interaction.guild.roles.cache.get(config.roles.admin_role_id))) {
+    async execute(interaction, client, member) {
+        if (!(await member).roles.cache.has(config.roles.admin_role_id)) {
 			const exampleEmbed = new MessageEmbed()
 				.setColor('#ff0000')
 				.setAuthor({ name: 'An Error has occured!'})

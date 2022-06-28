@@ -18,11 +18,12 @@ module.exports = {
         .setName("gexpcheck")
         .setDescription("(Admin Command) Shows everyone that got less than 50k GEXP in the last 7 days"),
 
-     async execute(interaction, client) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR")  && !interaction.member.roles.includes(interaction.guild.roles.cache.get(config.roles.admin_role_id))) {
+     async execute(interaction, client, member) {
+        if (!(await member).roles.cache.has(config.roles.admin_role_id)) {
 			interaction.reply({ embeds: [permissionEmbed] });
             return;
         }
+
         hypixel.getGuild("id", config.minecraft.guild_id).then(guild => {
                 let expStr = "";
                 for (const member of guild.members) {
@@ -32,11 +33,11 @@ module.exports = {
                             url: `https://api.hypixel.net/player?key=${config.minecraft.apiKey}&uuid=${member.uuid}`
                         }).then(function (response) {
                             expStr += `${response.data.player.displayname} » ${member.weeklyExperience}\n`;
-                            fs.writeFile("data/exp.txt", `${expStr}`);
-                        }).catch(()=>{});
+                            fs.writeFileSync("data/exp.txt", `${expStr}`);
+                        }).catch((error)=>{console.log(error)});
                     }                  
                 }
-                interaction.reply({ files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**" });
+                await interaction.reply({ files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**" });
 
         }).catch(err => {
             const errorEmbed = new MessageEmbed()
