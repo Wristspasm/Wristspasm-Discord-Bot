@@ -37,7 +37,7 @@ module.exports = {
                         }).catch((error)=>{console.log(error)});
                     }                  
                 }
-                await interaction.reply({ files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**" });
+                interaction.reply({ files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**" });
 
         }).catch(err => {
             const errorEmbed = new MessageEmbed()

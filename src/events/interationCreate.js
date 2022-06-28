@@ -6,8 +6,9 @@ module.exports = {
             if (!command) return;
         
             try {
-                await command.execute(interaction, interaction.client);
+                await command.execute(interaction, interaction.client, interaction.guild.members.fetch(interaction.user));
             } catch (error) {
+                console.log(error)
                 await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
             }
         }
