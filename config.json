@@ -19,9 +19,5 @@
         "guildMember_role_id": "GUILD_MEMBER_ROLE_ID",
         "novice_role_id": "NOVICE_ROLE_ID",
         "elite_role_id": "ELITE_ROLE_ID"
-    },
-    "member_ids": {
-       "calculus": "597603275365285901",
-       "ducky": "486155512568741900"
     }
 }
