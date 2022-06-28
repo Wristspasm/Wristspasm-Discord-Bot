@@ -19,7 +19,7 @@ module.exports = {
         .setDescription("(Admin Command) Shows everyone that got less than 50k GEXP in the last 7 days"),
 
      async execute(interaction, client) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR")  && !interaction.member.roles.includes(interaction.guild.roles.cache.get(cfg.admin_role_id))) {
+        if (!interaction.memberPermissions.has("ADMINISTRATOR")  && !interaction.member.roles.includes(interaction.guild.roles.cache.get(config.roles.admin_role_id))) {
 			interaction.reply({ embeds: [permissionEmbed] });
             return;
         }

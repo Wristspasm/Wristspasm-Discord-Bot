@@ -8,12 +8,6 @@ const command = {
         .setDescription("Wanna know how homo you are?")
         .addUserOption(option => option.setName("user").setDescription("Self explanitory").setRequired(false)),
 
-     /**
-     * @param {Discord.CommandInteraction} interaction
-     * @param {Discord.Client} client 
-     * @param {Hypixel.Client} hypixel 
-     * @param {DiscordPlayer.Player} player
-     */
     async execute(interaction, client) {
         let id;
         let img;

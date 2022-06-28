@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const fs = require("fs");
+const config = require('../../config.json')
 process.on('uncaughtException', function (err) {console.log(err.stack);});
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
     .addStringOption(option => option.setName("key").setDescription("API Key").setRequired(true)),
 
     async execute(interaction, client) {
-        if (!interaction.memberPermissions.has("ADMINISTRATOR") && !interaction.member.roles.includes(interaction.guild.roles.cache.get(cfg.admin_role_id))) {
+        if (!interaction.memberPermissions.has("ADMINISTRATOR") && !interaction.member.roles.includes(interaction.guild.roles.cache.get(config.roles.admin_role_id))) {
 			const exampleEmbed = new MessageEmbed()
 				.setColor('#ff0000')
 				.setAuthor({ name: 'An Error has occured!'})
