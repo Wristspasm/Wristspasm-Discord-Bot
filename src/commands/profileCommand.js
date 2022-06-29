@@ -20,7 +20,7 @@ function addNotation(type, value) {
     }
 
     if (type === "oneLetters") {
-        notList = [" K", " M", " B", " T"];
+        notList = ["K", "M", "B", "T"];
     }
 
     let checkNum = 1000;
@@ -42,18 +42,9 @@ function addNotation(type, value) {
     } else {
         returnVal = numberWithCommas(value.toFixed(0));
     }
-
     return `${returnVal}`;
 }
 
-function embedError(err) {
-    const errorEmbed = new MessageEmbed()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'An Error has occured!'})
-        .setDescription(`${err}`)
-        .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
-    return errorEmbed
-}
 const permissionEmbed = new MessageEmbed()
     .setColor('#ff0000')
     .setAuthor({ name: 'An Error has occured!'})
@@ -66,12 +57,6 @@ module.exports = {
     .setDescription("(Admin Command) Change the API key")
     .addStringOption(option => option.setName("name").setDescription("Username").setRequired(true)),
 
-    /**
-     * 
-     * @param {Interaction} interaction 
-     * @param {Client} client 
-     * @returns 
-     */
     async execute(interaction, client, member) {
         const name = interaction.options.getString("name");
 
@@ -96,14 +81,12 @@ module.exports = {
                 const slayer = `${response.data.data[0].slayer.zombie.level} ${response.data.data[0].slayer.spider.level} ${response.data.data[0].slayer.wolf.level} ${response.data.data[0].slayer.enderman.level} ${response.data.data[0].slayer.blaze.level}`
                 const fairySouls = response.data.data[0].fairy_souls
                 const minionSlots = response.data.data[0].minions.minionSlots
-                console.log(profile + lastSave + ironman + skillAverage + catacombsLevel + senitherWeight + networth + bank + purse + slayer + fairySouls + minionSlots)
                 let type = 'Unknown'
                 if (ironman == false) {
                     type = 'Normal'
                 } else {
                     type = 'Ironman'
                 }
-                console.log(type)
                 const profileData = new MessageEmbed()
                     .setColor("#ffff55")
                     .setTitle(`${name}'s ${profile} Profile`)
@@ -126,7 +109,7 @@ module.exports = {
                     .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
                     interaction.reply({ embeds: [profileData] })
                 
-            }).catch((error)=>{console.log('api ' + error);});       
-        }).catch((error)=>{console.log('username' + error);});
+            }).catch((error)=>{console.log(error);});       
+        }).catch((error)=>{console.log(error);});
     }
 }
