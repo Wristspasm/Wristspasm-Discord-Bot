@@ -74,7 +74,6 @@ module.exports = {
      */
     async execute(interaction, client, member) {
         const name = interaction.options.getString("name");
-        console.log(name)
 
         axios({
             method: 'get',
@@ -85,7 +84,6 @@ module.exports = {
                 method: 'get',
                 url: `http://localhost:3000/v1/profiles/${name}?key=DuckySoLucky`
             }).then(function (response) {
-                console.log('getting data')
                 const profile = response.data.data[0].name
                 const lastSave = response.data.data[0].last_save
                 const ironman = response.data.data[0].isIronman
@@ -126,7 +124,6 @@ module.exports = {
                         { name: '**Minion Slots**', value: `${minionSlots}`, inline: true},
                     )
                     .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
-                    console.log('sending profile')
                     interaction.reply({ embeds: [profileData] })
                 
             }).catch((error)=>{console.log('api ' + error);});       
