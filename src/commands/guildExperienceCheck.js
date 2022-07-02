@@ -1,7 +1,7 @@
 const config = require("../../config.json");
 const hypixel = require('../handlers/Hypixel')
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Client, GuildMember, Interaction } = require('discord.js');
 const fs = require("fs");
 const axios = require('axios');
 process.on('uncaughtException', function (err) {console.log(err.stack);});
@@ -26,8 +26,15 @@ module.exports = {
         .setName("gexpcheck")
         .setDescription("(Admin Command) Shows everyone that got less than 50k GEXP in the last 7 days"),
 
+        /**
+         * 
+         * @param {Interaction} interaction 
+         * @param {Client} client 
+         * @param {GuildMember} member 
+         * @returns 
+         */
         async execute(interaction, client, member) {
-            if (!(await member).roles.cache.has(config.roles.admin_role_id)) {
+            if (!(await member).roles.cache.has(config.roles.admin_role_id) && !(await member).permissions.has("ADMINISTRATOR")) {
                 interaction.reply({ embeds: [permissionEmbed] });
                 return;
             }
