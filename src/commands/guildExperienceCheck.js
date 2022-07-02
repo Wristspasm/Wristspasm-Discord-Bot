@@ -11,7 +11,8 @@ const immune = [
     "82cfa18b83e34f8085c1a0e8fe3c28a3", // Pablo
     "3dca5274c8b4482b8d2e00a07b59dbe3", // Potato
     "2700c8b565c74d8e9be5eb7a6ae19295", // Dark
-    "af7a55015b034990b2f30e7ab44295de"  // Calculus
+    "af7a55015b034990b2f30e7ab44295de", // Calculus
+    "275bdb780e3b4b9e883445536c8251ce"  // Wrist Spasm Bot
 ];
 
 const permissionEmbed = new MessageEmbed()
