@@ -42,7 +42,7 @@ module.exports = {
             hypixel.getGuild("id", config.minecraft.guild_id).then(guild => {
                     let expStr = "";
                     for (const member of guild.members) {
-                        if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - 604800000 && !immune.includes(member.uuid)) {
+                        if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - 604800000 && !immune.includes(member.uuid.toLowerCase())) {
                             axios({
                                 method: 'get',
                                 url: `https://api.hypixel.net/player?key=${config.minecraft.apiKey}&uuid=${member.uuid}`
