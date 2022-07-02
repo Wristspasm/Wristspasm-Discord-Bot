@@ -6,6 +6,14 @@ const fs = require("fs");
 const axios = require('axios');
 process.on('uncaughtException', function (err) {console.log(err.stack);});
 
+// Ye I'm hard coding it because I'm lazy af
+const immune = [
+    "82cfa18b83e34f8085c1a0e8fe3c28a3", // Pablo
+    "3dca5274c8b4482b8d2e00a07b59dbe3", // Potato
+    "2700c8b565c74d8e9be5eb7a6ae19295", // Dark
+    "af7a55015b034990b2f30e7ab44295de"  // Calculus
+];
+
 const permissionEmbed = new MessageEmbed()
     .setColor('#ff0000')
     .setAuthor({ name: 'An Error has occured!'})
@@ -27,7 +35,7 @@ module.exports = {
             hypixel.getGuild("id", config.minecraft.guild_id).then(guild => {
                     let expStr = "";
                     for (const member of guild.members) {
-                        if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - (7*24*60*60*1000)) {
+                        if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - 604800000 && !immune.includes(member.uuid)) {
                             axios({
                                 method: 'get',
                                 url: `https://api.hypixel.net/player?key=${config.minecraft.apiKey}&uuid=${member.uuid}`
