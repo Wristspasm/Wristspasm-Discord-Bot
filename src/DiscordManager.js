@@ -1,6 +1,5 @@
 const StateHandler = require('./handlers/StateHandler')
 const statsChannel = require('./events/guildStatsChannel')
-const botStatus = require("./events/botStatus");
 const CommandHandler = require('./handlers/CommandHandler')
 const { Client, Collection, Intents } = require('discord.js');
 const config = require("../config.json");
@@ -21,7 +20,6 @@ class DiscordManager {
     this.client = client
     this.client.on('ready', () => this.stateHandler.onReady())
     statsChannel(client)
-    botStatus(client);
     this.client.login(config.discord.token).catch(error => {this.app.log.error(error)})
 
     // Getting Commands
