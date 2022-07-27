@@ -1,23 +1,69 @@
 {
-    "discord": {
-        "token": "TOKEN",
-        "clientID": "DISCORD_BOT_CLIENT_ID",
-        "serverID": "SERVER_ID"
-    },
-    "minecraft": {
-        "apiKey": "HYPIXEL_API_KEY",
-        "guild_id": "HYPIXEL_GUILD_ID"
-    },
-    "channels": {
-        "guildMember": "GUILD_MEMBER_CHANNEL",
-        "guildLevel": "GUILD_LEVEL_CHANNEL",
-        "inactivity": "INACTIVITY_REQUESTS_CHANNEL",
-        "joinRequests": "JOIN_REQUESTS_CHANNEL"
-    },
-    "roles": {
-        "admins_role_id": "ADMIN_ROLE_ID",
-        "guildMember_role_id": "GUILD_MEMBER_ROLE_ID",
-        "novice_role_id": "NOVICE_ROLE_ID",
-        "elite_role_id": "ELITE_ROLE_ID"
+  "minecraft": {
+    "prefix": "!",
+    "guildID": "5b8dd8cb0cf24573ab84c9ad",
+    "guildExp": 50000,
+    "messageRepeatBypass": true,
+    "messageRepeatBypassLength": 24
+  },
+  "discord": {
+    "token": "SECRET",
+    "clientID": "737095235242295337",
+    "serverID": "600311056627269642",
+    "guildChatChannel": "600317865429565490",
+    "officerChannel": "999439762664468603",
+    "loggingChannel": "992017011959943238",
+    "commandRole": "975972476020490300",
+    "messageMode": "minecraft",
+    "filterMessages": true,
+    "joinMessage": false
+  },
+  "channels": {
+    "guildMember": "821560951677386762",
+    "guildLevel": "821560990083842089",
+    "inactivity": "740044200942239808",
+    "joinRequests": "902775441272737842"
+  },
+  "roles": {
+    "admins_role_id": "902689472448200724",
+    "guildMember_role_id": "600313217603993617",
+    "novice_role_id": "903345611863126126",
+    "elite_role_id": "903878793859575818"
+  },
+  "console": {
+    "maxEventSize": 50,
+    "debug": false,
+    "debugChannel": "CHANNEL_ID"
+  },
+  "api": {
+    "hypixelAPI": "https://api.hypixel.net",
+    "hypixelAPIkey": "HYPIXEL_API_KEY",
+
+    "skyHelperAPI": "http://176.31.203.28:1195/v1",
+    "skyHelperKey": "DuckySoLucky",
+
+    "antiSniperAPI": "https://api.antisniper.net",
+    "antiSniperKey": "3a55ea8f-9e85-4003-9912-6198122cd27f",
+
+    "skyShiiyuAPI": "https://sky.shiiyu.moe/api/v2",
+
+    "playerDBAPI": "https://playerdb.co/api/player/minecraft"
+  },
+  "event": {
+    "enabled": true,
+    "notifiers": {
+      "BANK_INTEREST": true,
+      "DARK_AUCTION": true,
+      "ELECTION_BOOTH_OPENS": true,
+      "ELECTION_OVER": true,
+      "FALLEN_STAR_CULT": true,
+      "FEAR_MONGERER": true,
+      "JACOBS_CONTEST": true,
+      "JERRYS_WORKSHOP": true,
+      "NEW_YEAR_CELEBRATION": true,
+      "SEASON_OF_JERRY": true,
+      "SPOOKY_FESTIVAL": true,
+      "TRAVELING_ZOO": true
     }
+  }
 }

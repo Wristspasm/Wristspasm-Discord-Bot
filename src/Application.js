@@ -1,13 +1,19 @@
-const DiscordManager = require('./DiscordManager')
-const Logger = require('./Logger')
+const DiscordManager = require('./discord/DiscordManager')
+const MinecraftManager = require('./minecraft/MinecraftManager')
 
 class Application {
   async register() {
+
     this.discord = new DiscordManager(this)
-    this.log = new Logger()
+    this.minecraft = new MinecraftManager(this)
+
+    this.discord.setBridge(this.minecraft)
+    this.minecraft.setBridge(this.discord)
   }
+
   async connect() {
     this.discord.connect()
+    this.minecraft.connect()
   }
 }
 
