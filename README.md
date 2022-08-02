@@ -1,10 +1,11 @@
 # Wrist Spasm
-Official Discord Bot of [Wristspasm Guild](https://discord.gg/BjcMKKMHUf)<br />
+Official Discord Bot of [Hypixel Network Wristspasm Guild](https://discord.gg/BjcMKKMHUf)<br />
 
 Made by Calculus#0001 and DuckySoLucky#5181
 <hr>
 
 ### To-Do List
+
 - [ ] None
   - None
 
