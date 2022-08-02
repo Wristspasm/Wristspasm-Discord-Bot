@@ -73,4 +73,43 @@ function getRarityColor(rarity) {
 
 }
 
-module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor }
+function addCommas(num) {
+    try {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } catch (error) {
+        return 0;
+    }
+}
+
+function toFixed(num, fixed) {
+    let response = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
+    return num.toString().match(response)[0];
+}
+
+function timeSince(timeStamp) {
+    var now = new Date(),
+      secondsPast = (now.getTime() - timeStamp) / 1000;
+      secondsPast = Math.abs(secondsPast)
+    
+    if (secondsPast < 60) {
+      return parseInt(secondsPast) + 's';
+    }
+    if (secondsPast < 3600) {
+      return parseInt(secondsPast / 60) + 'm';
+    }
+    if (secondsPast <= 86400) {
+      return parseInt(secondsPast / 3600) + 'h';
+    }
+    if (secondsPast > 86400) {
+        const d = toFixed(parseInt(secondsPast / 86400), 0)
+        secondsPast -= 3600*24*d
+        const h =  toFixed(parseInt(secondsPast / 3600), 0)
+        secondsPast -= 3600*h
+        const m = toFixed(parseInt(secondsPast / 60), 0)
+        secondsPast -= 60*m
+        const s = toFixed(parseInt(secondsPast), 0)
+        return(d + 'd ' + h + 'h ' + m + 'm ' + s + 's')
+    }
+}
+
+module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor, addCommas, toFixed, timeSince }

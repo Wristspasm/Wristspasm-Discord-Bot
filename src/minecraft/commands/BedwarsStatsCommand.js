@@ -1,6 +1,6 @@
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
 
 async function bwStats(username) {
   try {
@@ -11,9 +11,8 @@ async function bwStats(username) {
     return error.toString().replaceAll('[hypixel-api-reborn] ', '')
   }
 }
-	
 
-class BwstatsCommand extends MinecraftCommand {
+class bedwarsCommand extends MinecraftCommand {
   constructor(minecraft) {
     super(minecraft)
 
@@ -25,10 +24,14 @@ class BwstatsCommand extends MinecraftCommand {
   }
 
   async onCommand(username, message) {
-    let msg = this.getArgs(message);
-    if(msg[0]) username = msg[0]
-    this.send(`/gc ${await bwStats(username)}`)
+    try {
+      let msg = this.getArgs(message);
+      if(msg[0]) username = msg[0]
+      this.send(`/gc ${await bwStats(username)}`)
+    } catch (error) {
+      this.send('There is no player with the given UUID or name or player has never joined Hypixel.')
+    }
   }
 }
 
-module.exports = BwstatsCommand
+module.exports = bedwarsCommand

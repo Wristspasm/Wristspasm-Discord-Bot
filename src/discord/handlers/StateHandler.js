@@ -8,46 +8,37 @@ class StateHandler {
 
   async onReady() {
     Logger.discordMessage('Client ready, logged in as ' + this.discord.client.user.tag)
-    //this.discord.client.user.setActivity('Guild Chat', { type: 'WATCHING' })
+    this.discord.client.user.setActivity('Guild Chat', { type: 'WATCHING' })
+    global.uptime = new Date().getTime()
 
-    if (config.discord.messageMode == 'webhook') {
-      this.discord.webhook = getWebhook(this.discord, 'Guild')
-    }
-
-    this.discord.client.channels.fetch(config.discord.guildChatChannel).then(channel => {
-      channel.send({
-        embeds: [{
-          author: { name: `Chat Bridge is Online` },
-          color: '47F049'
-        }]
-      })
+    const channel = await getChannel('Guild')
+    channel.send({
+      embeds: [{
+        author: { name: `Chat Bridge is Online` },
+        color: '47F049'
+      }]
     })
   }
 
-  onClose() {
-    this.discord.client.channels.fetch(config.discord.guildChatChannel).then(channel => {
-      channel.send({
-        embeds: [{
-          author: { name: `Chat Bridge is Offline` },
-          color: 'F04947'
-        }]
-      }).then(() => { process.exit() })
-    }).catch(() => { process.exit() })
+  async onClose() {
+    const channel = await getChannel('Guild')
+    channel.send({
+      embeds: [{
+        author: { name: `Chat Bridge is Offline` },
+        color: 'F04947'
+      }]
+    })
   }
 }
 
-async function getWebhook(discord, type) {
-  let channel = discord.client.channels.cache.get(config.discord.guildChatChannel)
-  if (type == 'Officer') {channel = discord.client.channels.cache.get(config.discord.officerChannel)}
-
-  let webhooks = await channel.fetchWebhooks()
-  if (webhooks.first()) {
-    return webhooks.first()
+async function getChannel(type) {
+  if (type == 'Officer') {
+    return client.channels.fetch(config.discord.officerChannel)
+  }
+  else if (type == 'Logger') {
+    return client.channels.fetch(config.discord.loggingChannel)
   } else {
-    var res = await channel.createWebhook(discord.client.user.username, {
-      avatar: discord.client.user.avatarURL(),
-    })
-    return res
+    return client.channels.fetch(config.discord.guildChatChannel)
   }
 }
 

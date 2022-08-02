@@ -1,8 +1,13 @@
-let guildInfo = [], guildRanks = [], members = [], guildTop = [], guildQuestCompletion = []
-const helperFunctions = require('../../contracts/helperFunctions')
-const mineflayer = require('mineflayer')
+const { replaceAllRanks, toFixed, addCommas } = require('../../contracts/helperFunctions')
+const { getSenitherWeightUsername } = require('../../contracts/weight/senitherWeight')
+const { getLilyWeightUsername } = require('../../contracts/weight/lilyWeight')
+const { getUsername, getUUID } = require('../../contracts/API/PlayerDBAPI')
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+let guildInfo = [], guildRanks = [], members = [], guildTop = []
+const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const EventHandler = require('../../contracts/EventHandler')
 const messages = require('../../../messages.json')
+const linked = require('../../../data/minecraftLinked.json')
 const config = require('../../../config.json')
 const Logger = require('../../Logger')
 const fs = require('fs')
@@ -25,30 +30,10 @@ class StateHandler extends EventHandler {
     const message = event.toString()
     const colouredMessage = event.toMotd();
 
-    if (config.console.debug) {
-        this.minecraft.broadcastMessage({
-            fullMessage: colouredMessage,
-            message: 'debug_temp_message_ignore',
-            chat: "debugChannel"
-        }
-    )}
-
     if (this.isPartyMessage(message)) {
-      function waity(seconds) {
-        var waitTill = new Date(new Date().getTime() + seconds * 1000)
-        while (waitTill > new Date()) {}
-      }
-      function getname(message) {
-        let user = message.substr(54);
-        if (user[0] !== '[') {
-          return user.split(' ')[0];
-        }else {
-          return user.split(' ')[1];
-        }
-      }
-      const name = getname(message)
-      this.send(`/party accept ${name}`)
-      waity(5)
+      let username = replaceAllRanks(message.substr(54))
+      this.send(`/party accept ${username}`)
+      await delay(5000)
       this.send(`/party leave`)        
     }
 
@@ -59,7 +44,7 @@ class StateHandler extends EventHandler {
         guildTop.push(message)
         let title = guildTop[0].split('  '), description = '', guildTopInfo = []
         for (let i = 1; i < guildTop.length; i++) {
-          guildTop[i] = helperFunctions.replaceAllRanks(guildTop[i])
+          guildTop[i] = replaceAllRanks(guildTop[i])
           guildTopInfo = guildTop[i].split(' ')
           description = `${description}\n${guildTopInfo[0]} \`${guildTopInfo[1]}\` ${guildTopInfo[2]} ${guildTopInfo[3]} ${guildTopInfo[4]}`
         }
@@ -75,31 +60,39 @@ class StateHandler extends EventHandler {
       }
     }
 
-    if (this.isGuildQuestCompletion(message)) { 
-      if (!message.includes('+') && !message.includes('Guild Experience')) {
-        guildQuestCompletion.push(message)
-      } else {
-        guildQuestCompletion.push(message)
+    if (this.isRequestMessage(message)) {
+      let username = replaceAllRanks(message.split('has')[0].replaceAll('-----------------------------------------------------\n', ''))
+      if (config.guildRequirement.enabled) {
+        const player = await hypixel.getPlayer(username)
+        const senither = await getSenitherWeightUsername(username)
+        const senitherW = senither.skills.weight + senither.skills.weight_overflow + senither.dungeons.weight + senither.dungeons.weight_overflow + senither.slayers.weight + senither.slayers.weight_overflow
+        const lily = await getLilyWeightUsername(username)
+        const lilyW = lily.total
 
-        if (messages.guildQuestCompletedShortFormat) {
-          this.minecraft.broadcastHeadedEmbed({ 
-            title: guildQuestCompletion[0], 
-            icon: `https://hypixel.paniek.de/guild/${config.minecraft.guildID}/banner.png`, 
-            color: 'FFD700', 
-            channel: 'Guild'
-          })
+        if(config.guildRequirement.autoAccept) {
+          if (config.guildRequirement.requirements.bedwarsStars > 0) if (player.stats.bedwars.level > config.guildRequirement.requirements.bedwarsStars) bot.chat(`/g accept ${username}`)
+          if (config.guildRequirement.requirements.skywars > 0) if (player.stats.skywars.level > config.guildRequirement.requirements.skywars) bot.chat(`/g accept ${username}`)
+          if (config.guildRequirement.requirements.senitherWeight > 0) if (senitherW > config.guildRequirement.requirements.senitherWeight) bot.chat(`/g accept ${username}`)
+          if (config.guildRequirement.requirements.lilyWeight > 0) if (lilyW > config.guildRequirement.requirements.lilyWeight) bot.chat(`/g accept ${username}`)
+
         } else {
-          this.minecraft.broadcastHeadedEmbed({ 
-            title: guildQuestCompletion[0], 
-            icon: `https://hypixel.paniek.de/guild/${config.minecraft.guildID}/banner.png`, 
-            message: `${guildQuestCompletion[1]}\n \n${guildQuestCompletion[2]}`,
-            color: 'FFD700', 
-            channel: 'Guild'
+          let meetRequirements = false;
+          if (config.guildRequirement.requirements.bedwarsStars > 0) if (player.stats.bedwars.level > config.guildRequirement.requirements.bedwarsStars) meetRequirements = true;
+          if (config.guildRequirement.requirements.skywars > 0) if (player.stats.skywars.level > config.guildRequirement.requirements.skywars) meetRequirements = true;
+          if (config.guildRequirement.requirements.senitherWeight > 0) if (senitherW > config.guildRequirement.requirements.senitherWeight) meetRequirements = true;
+          if (config.guildRequirement.requirements.lilyWeight > 0) if (lilyW > config.guildRequirement.requirements.lilyWeight) meetRequirements = true;
+
+          this.minecraft.broadcastHeadedEmbed({
+            message: `**Meets Requirements?**\n${meetRequirements ? 'Yes' : 'No'}\n \n**Hypixel Network Level**\n${player.level}\n \n**Bedwars Level**\n${player.stats.bedwars.level}\n \n**Skywars Level**\n${player.stats.skywars.level}\n \n**Senither Weight**\n${addCommas(toFixed(senitherW, 0))}\n \n**Lily Weight**\n${addCommas(toFixed(lilyW, 0))}`,
+            title: `${username} has requested to join the Guild!`,
+            icon: `https://www.mc-heads.net/avatar/${username}`,
+            color: `${meetRequirements ? '#00FF00' : '#ff0000'}`,
+            channel: 'Logger'
           })
         }
-        guildQuestCompletion = []
       }
-   }
+
+    }
 
     if (this.isGuildListMessage(message)) {
       if(!message.includes('Online Members')) {
@@ -116,7 +109,7 @@ class StateHandler extends EventHandler {
         let guildInfoSplit2 = guildInfo[1].split(' ');
         let guildInfoSplit3 = guildInfo[2].split(' ');
         for (let i = 0; i < members.length; i++) {
-          members[i] = helperFunctions.replaceAllRanks(members[i])
+          members[i] = replaceAllRanks(members[i])
           members[i] = members[i].replaceAll('  ', ' ')
           members[i] = members[i].replaceAll(' ● ', '` ᛫ `')
           String.prototype.reverse = function () {return this.split('').reverse().join('')}
@@ -194,6 +187,11 @@ class StateHandler extends EventHandler {
 
     if (this.isLeaveMessage(message)) {
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+
+      const uuid = await getUUID(user)
+      const member = await guild.members.fetch(linked?.[uuid]?.data[0])
+      member.roles.remove(config.discord.guildMemberRole)
+
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.leaveMessage}`,
         title: `Member Left`,
@@ -211,6 +209,11 @@ class StateHandler extends EventHandler {
 
     if (this.isKickMessage(message)) {
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+
+      const uuid = await getUUID(user)
+      const member = await guild.members.fetch(linked?.[uuid]?.data[0])
+      member.roles.remove(config.discord.guildMemberRole)
+      
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.kickMessage}`,
         title: `Member Kicked`,
@@ -287,6 +290,47 @@ class StateHandler extends EventHandler {
         color: 'DC143C', 
         channel: 'Guild' 
       })
+    }
+    
+    if(this.isAlreadyBlacklistedMessage(message)) {
+      return this.minecraft.broadcastHeadedEmbed({
+        message: `${messages.alreadyBlacklistedMessage}`,
+        title: `Blacklist`,
+        color: '47F049',
+        channel: 'Guild'
+      })
+    }
+
+    if (this.isBlacklistMessage(message)) {
+      let user = message.split(' ')[1]
+      return [this.minecraft.broadcastHeadedEmbed({
+        message: `${user}${messages.blacklistMessage}`,
+        title: `Blacklist`,
+        color: '47F049',
+        channel: 'Guild'
+      }),
+      this.minecraft.broadcastHeadedEmbed({
+        message: `${user}${messages.blacklistMessage}`,
+        title: `Blacklist`,
+        color: '47F049',
+        channel: 'Logger'
+      })]
+    }
+
+    if (this.isBlacklistRemovedMessage(message)) {
+      let user = message.split(' ')[1]
+      return [this.minecraft.broadcastHeadedEmbed({
+        message: `${user}${messages.blacklistRemoveMessage}`,
+        title: `Blacklist`,
+        color: '47F049',
+        channel: 'Guild'
+      }),
+      this.minecraft.broadcastHeadedEmbed({
+        message: `${user}${messages.blacklistRemoveMessage}`,
+        title: `Blacklist`,
+        color: '47F049',
+        channel: 'Logger'
+      })]
     }
 
     if (this.isOnlineInvite(message)) {
@@ -391,6 +435,16 @@ class StateHandler extends EventHandler {
       })
     }
 
+    if (this.isGuildQuestCompletion(message)) { 
+      this.minecraft.broadcastHeadedEmbed({ 
+        title: guildQuestCompletion[0], 
+        icon: `https://hypixel.paniek.de/guild/${config.minecraft.guildID}/banner.png`, 
+        message: `${message}`,
+        color: 'FFD700', 
+        channel: 'Guild'
+      })
+    }
+
     if (this.isAlreadyMuted(message)) {
       return this.minecraft.broadcastCleanEmbed({ 
         message: `${messages.alreadyMutedMessage}`, 
@@ -437,10 +491,6 @@ class StateHandler extends EventHandler {
       })
     }
 
-    if (!this.isGuildMessage(message) && !this.isOfficerChatMessage(message)) {
-      return
-    }
-
     if (this.isPartyMessage(message)) {
       console.log(message)
       this.minecraft.broadcastCleanEmbed({ 
@@ -450,6 +500,14 @@ class StateHandler extends EventHandler {
       })  
     }
 
+    if (config.console.debug) {
+      this.minecraft.broadcastMessage({
+        fullMessage: colouredMessage,
+        message: 'debug_temp_message_ignore',
+        chat: 'debugChannel'
+      }
+    )}
+
     let parts = message.split(':')
     let group = parts.shift().trim()
     let hasRank = group.endsWith(']')
@@ -458,23 +516,14 @@ class StateHandler extends EventHandler {
     let userParts = group.split(' ')
     let username = userParts[userParts.length - (hasRank ? 2 : 1)]
     let guildRank = userParts[userParts.length - 1].replace(/[\[\]]/g, '')
-
-    if (guildRank == username) {
-      guildRank = 'Member'
-    }
-
-    if (this.isMessageFromBot(username)) {
-      return
-    }
-
     const playerMessage = parts.join(':').trim()
-    if (playerMessage.length == 0 || this.command.handle(username, playerMessage)) {
-      return
-    }
 
-    if (playerMessage == '@') {
-      return
-    }
+    if (!this.isGuildMessage(message) && !this.isOfficerChatMessage(message)) return
+    if (guildRank == username) guildRank = 'Member'
+    if (this.isMessageFromBot(username)) return
+    if (playerMessage.length == 0 || this.command.handle(username, playerMessage)) return
+    if (playerMessage == '@') return
+
     this.minecraft.broadcastMessage({
       fullMessage: colouredMessage,
       username: username,
@@ -489,6 +538,17 @@ class StateHandler extends EventHandler {
     return bot.username === username
   }
 
+  isAlreadyBlacklistedMessage(message) {
+    return message.includes(`You've already ignored that player! /ignore remove Player to unignore them!`) && !message.includes(':')
+  }
+  isBlacklistRemovedMessage(message) {
+    return message.startsWith('Removed') && message.includes('from your ignore list.') && !message.includes(':')
+  }
+
+  isBlacklistMessage(message) {
+    return message.startsWith('Added') && message.includes('to your ignore list.') && !message.includes(':')
+  }
+
   isGuildMessage(message) {
     return message.startsWith('Guild >') && message.includes(':')
   }
@@ -498,7 +558,7 @@ class StateHandler extends EventHandler {
   }
 
   isGuildQuestCompletion(message) {
-    return message.includes('GUILD QUEST TIER ') && message.includes('COMPLETED') && !message.includes(':') && !message.includes('Guild Experience') || message.includes('The guild has completed Tier') && message.includes('of this week\'s Guild Quest!') && !message.includes(':') && !message.includes('Guild Experience') || message.includes('Guild Experience') && message.includes('+') && !message.includes(':') && !message.includes('Guild Experience') 
+    return message.includes('GUILD QUEST TIER ') && message.includes('COMPLETED') && !message.includes(':')
   }
 
   isPartyMessage(message) {

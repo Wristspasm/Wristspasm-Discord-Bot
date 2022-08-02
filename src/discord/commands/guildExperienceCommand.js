@@ -2,25 +2,20 @@ const config = require ('../../../config.json')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Client, GuildMember, Interaction } = require('discord.js');
+const { getUsername } = require('../../contracts/API/PlayerDBAPI')
 const fs = require("fs");
-const axios = require('axios');
-process.on('uncaughtException', function (err) {console.log(err.stack);});
+process.on('uncaughtException', function (err) {console.log(err.stack)})
+const immune  = require('../../../data/guildKickImmunity.json')
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-// Hardcoded because Cal is lazy :D
-const immune = [
-    "82cfa18b83e34f8085c1a0e8fe3c28a3", // Pablo
-    "3dca5274c8b4482b8d2e00a07b59dbe3", // Potato
-    "2700c8b565c74d8e9be5eb7a6ae19295", // Dark
-    "af7a55015b034990b2f30e7ab44295de", // Calculus
-    "275bdb780e3b4b9e883445536c8251ce",  // Wrist Spasm Bot
-    "4855c53ee4fb4100997600a92fc50984" // Ducky
-];
+//console.log(immune)
+
 
 const permissionEmbed = new MessageEmbed()
     .setColor('#ff0000')
     .setAuthor({ name: 'An Error has occured!'})
     .setDescription(`You do not have permission to use this command!`)
-    .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
+    .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
 
 
 module.exports = {
@@ -28,41 +23,29 @@ module.exports = {
         .setName("gexpcheck")
         .setDescription("(Admin Command) Shows everyone that got less than 50k GEXP in the last 7 days"),
 
-        /**
-         * 
-         * @param {Interaction} interaction 
-         * @param {Client} client 
-         * @param {GuildMember} member 
-         * @returns 
-         */
-        async execute(interaction, client, member) {
-            if (!(await member).roles.cache.has(config.roles.admin_role_id) && !(await member).permissions.has("ADMINISTRATOR")) {
-                interaction.reply({ embeds: [permissionEmbed] });
+    async execute(interaction, client, member) {
+        try {
+            await interaction.reply({content: `${client.user.username} is thinking...`, ephemeral: true });
+            if (!(await member).roles.cache.has(config.discord.commandRole) && !(await member).permissions.has("ADMINISTRATOR")) {
+                interaction.editReply({ content: `\u200B`, embeds: [permissionEmbed] });
                 return;
             }
-    
-            hypixel.getGuild("id", config.minecraft.guild_id).then(guild => {
-                    let expStr = "";
-                    for (const member of guild.members) {
-                        if (member.weeklyExperience < 50000 && member.joinedAtTimestamp < Date.now() - 604800000 && !immune.includes(member.uuid.toLowerCase())) {
-                            axios({
-                                method: 'get',
-                                url: `https://api.hypixel.net/player?key=${config.minecraft.apiKey}&uuid=${member.uuid}`
-                            }).then(function (response) {
-                                expStr += `${response.data.player.displayname} » ${member.weeklyExperience}\n`;
-                                fs.writeFileSync("data/exp.txt", `${expStr}`);
-                            }).catch((error)=>{console.log(error)});
-                        }                  
-                    }
-                    interaction.reply({ files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**" });
-    
-            }).catch(err => {
-                const errorEmbed = new MessageEmbed()
-                    .setColor('#ff0000')
-                    .setAuthor({ name: 'An Error has occured!'})
-                    .setDescription(`${err}`)
-                    .setFooter({ text: '© Wrist Spasm 2022', iconURL: 'https://cdn.discordapp.com/avatars/737095235242295337/0f2231e412654906a658fa4873bd7933.png?size=4096' });
-                interaction.reply({ embeds: [errorEmbed] });
-            });
+            let expStr = ""
+            hypixel.getGuild("id", config.minecraft.guildID).then(async guild => {
+                for (const member of guild.members) {
+                    //console.log(member.weeklyExperience < 50000, member.joinedAtTimestamp < Date.now()/1000 - 604800, immune?.[`${member.uuid}`]?.data[1] > new Date().getTime()/1000)
+                    let inactivity = immune?.[`${member.uuid}`]?.data[1] > new Date().getTime()/1000
+                    if (member.weeklyExperience < 50000 && !member.joinedAtTimestamp < Date.now()/1000 - 604800 && !inactivity ? true : false) {
+                        const username = await getUsername(member.uuid)
+                        expStr += `${username} » ${member.weeklyExperience}\n`;
+                    }   
+
+                }
+                fs.writeFileSync('data/exp.txt', `${expStr}`, err => {if (err) {console.error(err)}}) 
+                interaction.editReply({ content: `\u200B`, files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**", components: [row], ephemeral: false })
+            }).catch((error)=>{console.log(error)});
+        } catch (error) {
+            console.log(error)
         }
+    }
 }

@@ -1,9 +1,8 @@
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-const axios = require('axios');
+const axios = require('axios')
 
-process.on('uncaughtException', function (err) {console.log(err.stack)});
-
-class eightballCommand extends MinecraftCommand {
+class eightBallCommand extends MinecraftCommand {
   constructor(minecraft) {
     super(minecraft)
 
@@ -15,15 +14,12 @@ class eightballCommand extends MinecraftCommand {
   }
 
   onCommand(username, message) {
-      let args = this.getArgs(message)
-      let temp = this;
-      axios({
-          method: 'get',
-          url: `https://8ball.delegator.com/magic/JSON/${args}`
-      }).then(function (response) {
-          temp.send(`/gc ${response.data.magic.answer}`)
-      }).catch(()=>{this.send(`/gc ${username} an error occured.`)});
+    try {
+      this.send(axios.get(`https://8ball.delegator.com/magic/JSON/${message}`)).data.magic.answer
+    } catch (error) {
+      this.send('/gc Something went wrong..')
+    }
   }
 }
 
-module.exports = eightballCommand
+module.exports = eightBallCommand

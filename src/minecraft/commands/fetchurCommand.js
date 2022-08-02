@@ -1,8 +1,8 @@
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
 const skyHelperAPI = require('../../contracts/API/SkyHelperAPI')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 
-class InfoCommand extends MinecraftCommand {
+class fetchurCommand extends MinecraftCommand {
   constructor(minecraft) {
     super(minecraft)
 
@@ -13,10 +13,14 @@ class InfoCommand extends MinecraftCommand {
   }
 
   async onCommand(username, message) {
-    const fetchur = await skyHelperAPI.getFetchur()
-    this.send(`/gc Fetchur Requests » ${fetchur.data.text}`)
+    try {
+      const fetchur = await skyHelperAPI.getFetchur()
+      this.send(`/gc Fetchur Requests » ${fetchur.data.text}`)
+    } catch (error) {
+      this.send('/gc Something went wrong..')
+    }
   }
 }
 
-module.exports = InfoCommand
+module.exports = fetchurCommand
 

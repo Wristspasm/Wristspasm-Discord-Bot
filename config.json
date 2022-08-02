@@ -7,7 +7,7 @@
     "messageRepeatBypassLength": 24
   },
   "discord": {
-    "token": "SECRET",
+    "token": "",
     "clientID": "737095235242295337",
     "serverID": "600311056627269642",
     "guildChatChannel": "600317865429565490",
@@ -16,28 +16,27 @@
     "commandRole": "975972476020490300",
     "messageMode": "minecraft",
     "filterMessages": true,
-    "joinMessage": false
+    "joinMessage": false,
+
+    "linkedRole": "1003353024720277504",
+    "guildMemberRole": "600313217603993617",
+    "eliteRole": "903878793859575818",
+    "noviceRole": "903345611863126126"
   },
   "channels": {
     "guildMember": "821560951677386762",
     "guildLevel": "821560990083842089",
     "inactivity": "740044200942239808",
-    "joinRequests": "902775441272737842"
-  },
-  "roles": {
-    "admins_role_id": "902689472448200724",
-    "guildMember_role_id": "600313217603993617",
-    "novice_role_id": "903345611863126126",
-    "elite_role_id": "903878793859575818"
+    "joinRequests": "992017011959943238"
   },
   "console": {
     "maxEventSize": 50,
-    "debug": false,
-    "debugChannel": "CHANNEL_ID"
+    "debug": true,
+    "debugChannel": "667191844903452672"
   },
   "api": {
     "hypixelAPI": "https://api.hypixel.net",
-    "hypixelAPIkey": "HYPIXEL_API_KEY",
+    "hypixelAPIkey": "",
 
     "skyHelperAPI": "http://176.31.203.28:1195/v1",
     "skyHelperKey": "DuckySoLucky",
@@ -47,7 +46,9 @@
 
     "skyShiiyuAPI": "https://sky.shiiyu.moe/api/v2",
 
-    "playerDBAPI": "https://playerdb.co/api/player/minecraft"
+    "playerDBAPI": "https://playerdb.co/api/player/minecraft",
+
+    "imgurAPIkey": ""
   },
   "event": {
     "enabled": true,
@@ -64,6 +65,16 @@
       "SEASON_OF_JERRY": true,
       "SPOOKY_FESTIVAL": true,
       "TRAVELING_ZOO": true
+    }
+  },
+  "guildRequirement": {
+    "enabled": true,
+    "autoAccept": false,
+    "requirements": {
+      "skywarsStars": 0,
+      "bedwarsStars": 0,
+      "senitherWeight": 0,
+      "lilyWeight": 0
     }
   }
 }

@@ -1,5 +1,5 @@
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 
 class CalculateCommand extends MinecraftCommand {
     constructor(minecraft) {
@@ -15,9 +15,7 @@ class CalculateCommand extends MinecraftCommand {
     onCommand(username, message) { 
         try {
           let str = this.getArgs(message).join(' ').replace(/[^-()\d/*+.]/g, '');
-          let result = eval(str);
-          if(isNaN(result)) this.send('/gc Invalid input!');
-          else this.send(`/gc ${result}`);
+          this.send(`/gc ${!isNaN(eval(str)) ? `${eval(str)}` : '' }`);
         } catch {
           this.send('/gc Invalid input!');
         }

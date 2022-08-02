@@ -1,5 +1,5 @@
-const config = require('../../config.json')
 const helperFunctions = require('./helperFunctions')
+const config = require('../../config.json')
 
 class MinecraftCommand {
   constructor(minecraft) {

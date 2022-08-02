@@ -1,7 +1,7 @@
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
 
-class InfoCommand extends MinecraftCommand {
+class helpCommand extends MinecraftCommand {
   constructor(minecraft) {
     super(minecraft)
 
@@ -13,10 +13,13 @@ class InfoCommand extends MinecraftCommand {
   }
 
   onCommand(username, message) {
-    let temp = this;
-    temp.send(`/gc https://imgur.com/xWyKJNA`)
+    try {
+      this.send(`/gc https://imgur.com/vDHV5eS.png`)
+    } catch (error) {
+      this.send('/gc Something went wrong..')
+    }
   }
 }
 
-module.exports = InfoCommand
+module.exports = helpCommand
 

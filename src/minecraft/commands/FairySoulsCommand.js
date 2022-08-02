@@ -1,19 +1,17 @@
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-const skyShiiyuAPI = require('../../contracts/API/SkyShiiyuAPI')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
+const { getPlayer } = require('../../contracts/getSkyblockProfile')
 
-async function fairySouls(username) {
-    try {
-      const profile = await skyShiiyuAPI.getProfile(username)
-      if(profile.data.profile.game_mode == 'ironman') username = `♲ ${username}`
-      return `${username}\'s Fairy Souls: ${profile.data.fairy_souls.collected}/${profile.data.fairy_souls.total} | Progress: ${Math.round(profile.data.fairy_souls.progress * 100) / 100*100}%`
-    }
-    catch (error) {
-      return error//.toString().replaceAll('[hypixel-api-reborn] ', '')
-    }
+async function getFairySouls(username) {
+  try {
+    const response = await getPlayer(username)
+    return `${username}\'s Fairy Souls: ${response.memberData.fairy_souls_collected}/238 | Progress: ${Math.round(response.memberData.fairy_souls_collected/238 * 100) / 100*100}%`
+  } catch(error) {
+    return error
+  }
 }
 
-class StatsCommand extends MinecraftCommand {
+class fairySoulsCommand extends MinecraftCommand {
     constructor(minecraft) {
         super(minecraft)
 
@@ -25,9 +23,13 @@ class StatsCommand extends MinecraftCommand {
     }
 
     async onCommand(username, message) {
+      try {
         let msg = this.getArgs(message);
         if(msg[0]) username = msg[0]
-        this.send(`/gc ${await fairySouls(username)}`)   
+        this.send(`/gc ${await getFairySouls(username)}`)   
+      } catch (error) {
+        this.send('/gc There is no player with the given UUID or name or the player has no Skyblock profiles')
+      }
     }
 }
-module.exports = StatsCommand
+module.exports = fairySoulsCommand

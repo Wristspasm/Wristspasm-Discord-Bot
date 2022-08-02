@@ -1,28 +1,25 @@
+// Rewrite needed
+
+process.on('uncaughtException', function (err) {console.log(err.stack)})
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-const skyShiiyuAPI = require('../../contracts/API/SkyShiiyuAPI')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
+const { getProfile } = require('../../contracts/API/SkyHelperAPI')
+const { addCommas } = require('../../contracts/helperFunctions')
 
 async function getSlayer(username, input) {
     try {
-        const profile = await skyShiiyuAPI.getSlayer(username)
+        const profile = await getProfile(username)
         if (profile.isIronman) username = `♲ ${username}`
-        let zL = profile.slayers.zombie.level.currentLevel
-        let sL = profile.slayers.spider.level.currentLevel
-        let wL = profile.slayers.wolf.level.currentLevel
-        let eL = profile.slayers.enderman.level.currentLevel
-        let bL= profile.slayers.blaze.level.currentLevel
-        let zE = profile.slayers.zombie.xp
-        let sE = profile.slayers.spider.xp
-        let wE = profile.slayers.wolf.xp
-        let eE = profile.slayers.enderman.xp
-        let bE = profile.slayers.blaze.xp
-        total = zE + sE + wE + eE + bE
-        if(input == 'zombie') return `${username}\'s Zombie Slayer Experience: ${zE} | Level: ${zL}`
-        else if (input == 'spider') return `${username}\'s Spider Slayer Experience: ${sE} | Level: ${sL} `
-        else if(input == 'wolf') return `${username}\'s Wolf Slayer Experience: ${wE} | Level: ${wL}`
-        else if(input == 'enderman') return `${username}\'s Enderman Slayer Experience: ${eE} | Level: ${eL} `
-        else if(input == 'blaze') return `${username}\'s Blaze Slayer Experience: ${bE} | Level: ${eL} `
-        else return `${username}\'s Slayer Experience - ${total} | ${zL} ${sL} ${wL} ${eL} ${bL}`
+        for (let i = 0; i < Object.keys(profile.slayer).length; i++) {
+            for (let j = 0; j < Object.keys(profile.slayer?.[Object.keys(profile.slayer)[i]]).length; j++) {
+                let total = profile.slayer?.[Object.keys(profile.slayer)[0]].xp + profile.slayer?.[Object.keys(profile.slayer)[1]].xp + profile.slayer?.[Object.keys(profile.slayer)[2]].xp + profile.slayer?.[Object.keys(profile.slayer)[3]].xp + profile.slayer?.[Object.keys(profile.slayer)[4]].xp
+                if (input == 'zombie') return `${username}\'s Zombie Slayer Experience: ${addCommas(profile.slayer?.[Object.keys(profile.slayer)[0]].xp)} | Level: ${profile.slayer?.[Object.keys(profile.slayer)[0]].level} | T5 - ${profile.slayer?.[Object.keys(profile.slayer)[0]].kills?.[5]} | T4 - ${profile.slayer?.[Object.keys(profile.slayer)[0]].kills?.[4]} | T3 - ${profile.slayer?.[Object.keys(profile.slayer)[0]].kills?.[3]} | T2 - ${profile.slayer?.[Object.keys(profile.slayer)[0]].kills?.[2]} | T1 - ${profile.slayer?.[Object.keys(profile.slayer)[0]].kills?.[1]}`
+                else if (input == 'spider') return `${username}\'s Spider Slayer Experience: ${addCommas(profile.slayer?.[Object.keys(profile.slayer)[1]].xp)} | Level: ${profile.slayer?.[Object.keys(profile.slayer)[1]].level} | T5 - ${profile.slayer?.[Object.keys(profile.slayer)[1]].kills?.[5]} | T4 - ${profile.slayer?.[Object.keys(profile.slayer)[1]].kills?.[4]} | T3 - ${profile.slayer?.[Object.keys(profile.slayer)[1]].kills?.[3]} | T2 - ${profile.slayer?.[Object.keys(profile.slayer)[1]].kills?.[2]} | T1 - ${profile.slayer?.[Object.keys(profile.slayer)[1]].kills?.[1]}`
+                else if(input == 'wolf') return `${username}\'s Wolf Slayer Experience: ${addCommas(profile.slayer?.[Object.keys(profile.slayer)[2]].xp)} | Level: ${profile.slayer?.[Object.keys(profile.slayer)[2]].level} | T5 - ${profile.slayer?.[Object.keys(profile.slayer)[2]].kills?.[5]} | T4 - ${profile.slayer?.[Object.keys(profile.slayer)[2]].kills?.[4]} | T3 - ${profile.slayer?.[Object.keys(profile.slayer)[2]].kills?.[3]} | T2 - ${profile.slayer?.[Object.keys(profile.slayer)[2]].kills?.[2]} | T1 - ${profile.slayer?.[Object.keys(profile.slayer)[2]].kills?.[1]}`
+                else if(input == 'enderman') return `${username}\'s Enderman Slayer Experience: ${addCommas(profile.slayer?.[Object.keys(profile.slayer)[3]].xp)} | Level: ${profile.slayer?.[Object.keys(profile.slayer)[3]].level} | T5 - ${profile.slayer?.[Object.keys(profile.slayer)[3]].kills?.[5]} | T4 - ${profile.slayer?.[Object.keys(profile.slayer)[3]].kills?.[4]} | T3 - ${profile.slayer?.[Object.keys(profile.slayer)[3]].kills?.[3]} | T2 - ${profile.slayer?.[Object.keys(profile.slayer)[3]].kills?.[2]} | T1 - ${profile.slayer?.[Object.keys(profile.slayer)[3]].kills?.[1]}`
+                else if(input == 'blaze') return `${username}\'s Blaze Slayer Experience: ${addCommas(profile.slayer?.[Object.keys(profile.slayer)[4]].xp)} | Level: ${profile.slayer?.[Object.keys(profile.slayer)[4]].level} | T5 - ${profile.slayer?.[Object.keys(profile.slayer)[4]].kills?.[5]} | T4 - ${profile.slayer?.[Object.keys(profile.slayer)[4]].kills?.[4]} | T3 - ${profile.slayer?.[Object.keys(profile.slayer)[4]].kills?.[3]} | T2 - ${profile.slayer?.[Object.keys(profile.slayer)[4]].kills?.[2]} | T1 - ${profile.slayer?.[Object.keys(profile.slayer)[4]].kills?.[1]}`
+                else return `${username}\'s Slayer Experience - ${addCommas(total)} | ${profile.slayer?.[Object.keys(profile.slayer)[0]].level} ${profile.slayer?.[Object.keys(profile.slayer)[1]].level} ${profile.slayer?.[Object.keys(profile.slayer)[2]].level} ${profile.slayer?.[Object.keys(profile.slayer)[3]].level} ${profile.slayer?.[Object.keys(profile.slayer)[4]].level}`
+            }
+        }
     }
     catch (error) {
         return error.toString().replaceAll('Request failed with status code 404', 'There is no player with the given UUID or name or the player has no Skyblock profiles').replaceAll('Request failed with status code 500', 'There is no player with the given UUID or name or the player has no Skyblock profiles')
@@ -41,9 +38,14 @@ class SlayersCommand extends MinecraftCommand {
     }
 
     async onCommand(username, message) {
-        let msg = this.getArgs(message);
-        if(msg[0]) username = msg[0]
-        this.send(`/gc ${await getSlayer(username, msg[1])}`)
+        try {
+            let type, msg = this.getArgs(message);
+            if (msg[0]) if (msg[0].toLowerCase() == "zombie" || msg[0].toLowerCase() == "rev" || msg[0].toLowerCase() == "spider" || msg[0].toLowerCase() == "tara" || msg[0].toLowerCase() == "wolf" || msg[0].toLowerCase() == "sven"  || msg[0].toLowerCase() == "eman" || msg[0].toLowerCase() == "enderman" || msg[0].toLowerCase() == "blaze"  || msg[0].toLowerCase() == "demonlord") type = msg[0]
+            else if (msg[0]) username = msg[0]; if (msg[1]) type = msg[1]
+            this.send(`/gc ${await getSlayer(username, type)}`)
+        } catch (error) {
+            this.send('/gc There is no player with the given UUID or name or the player has no Skyblock profiles')
+        }
     }
 }
 

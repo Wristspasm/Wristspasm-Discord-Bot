@@ -1,5 +1,8 @@
-const Canvas = require('canvas');
-Canvas.registerFont('src/contracts/Fonts/MinecraftRegular-Bmg3.ttf', { family: 'Minecraft' });
+// Credits https://github.com/Altpapier/
+// Modified
+
+const Canvas = require('canvas')
+Canvas.registerFont('src/contracts/Fonts/MinecraftRegular-Bmg3.ttf', { family: 'Minecraft' })
 
 const RGBA_COLOR = {
     0: 'rgba(0,0,0,1)',

@@ -1,10 +1,14 @@
+// Rewrite needed¸
+
+const { ImgurClient } = require('imgur')
+const config = require('../../../config.json')
+const imgurClient = new ImgurClient({ clientId: config.api.imgurAPIkey })
+process.on('uncaughtException', function (err) {console.log(err.stack)})
+const { getRarityColor } = require('../../contracts/helperFunctions')
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
-process.on('uncaughtException', function (err) {console.log(err.stack)});
 const { getProfile } = require('../../contracts/API/SkyShiiyuAPI')
 const { renderLore } = require('../../contracts/renderItem')
-const { getRarityColor } = require('../../contracts/helperFunctions')
-const { ImgurClient } = require('imgur');
-const imgurClient = new ImgurClient({ clientId: '5fd67f62f4f1a59' });
+
 
 class renderCommand extends MinecraftCommand {
   constructor(minecraft) {
@@ -51,7 +55,7 @@ class renderCommand extends MinecraftCommand {
       if (!received) this.send(`/gc ${username} does not have pet equiped.`)
     }  
     catch (error) {
-      this.send(error.toString().replaceAll('Request failed with status code 404', 'There is no player with the given UUID or name or the player has no Skyblock profiles').replaceAll('Request failed with status code 500', 'There is no player with the given UUID or name or the player has no Skyblock profiles').replaceAll(`TypeError: Cannot read properties of undefined (reading 'status')`, 'There is no player with the given UUID or name or the player has no Skyblock profiles'))
+      this.send('/gc There is no player with the given UUID or name or the player has no Skyblock profiles')
     }
   }
 }

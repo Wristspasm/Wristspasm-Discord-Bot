@@ -1,8 +1,8 @@
 const Canvas = require('canvas');
-Canvas.registerFont('src/contracts/Fonts/MinecraftRegular-Bmg3.ttf', { family: 'Minecraft' });
-Canvas.registerFont('src/contracts/Fonts/minecraft-bold.otf', { family: 'MinecraftBold' });
-Canvas.registerFont('src/contracts/Fonts/2_Minecraft-Italic.otf', { family: 'MinecraftItalic' });
-Canvas.registerFont('src/contracts/Fonts/unifont.ttf', { family: 'MinecraftUnicode' });
+Canvas.registerFont('src/contracts/Fonts/2_Minecraft-Italic.otf', { family: 'MinecraftItalic' })
+Canvas.registerFont('src/contracts/Fonts/MinecraftRegular-Bmg3.ttf', { family: 'Minecraft' })
+Canvas.registerFont('src/contracts/Fonts/minecraft-bold.otf', { family: 'MinecraftBold' })
+Canvas.registerFont('src/contracts/Fonts/unifont.ttf', { family: 'MinecraftUnicode' })
 
 const RGBA_COLOR = {
     0: 'rgba(0,0,0,1)',

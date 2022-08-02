@@ -1,7 +1,7 @@
-const config = require('../../../config.json');
 const hypixel = require('../../contracts/API/HypixelRebornAPI');
+const config = require('../../../config.json');
 
-function statsChannel(client) {
+function statsChannel() {
     setInterval(() => {
         hypixel.getGuild("id", config.minecraft.guildID).then(guild => {
             client.channels.cache.get(config.channels.guildMember).setName(`Guild Members: ${guild.members.length}/125`);
