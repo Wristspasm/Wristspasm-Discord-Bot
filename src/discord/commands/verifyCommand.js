@@ -57,14 +57,14 @@ module.exports = {
 					.setThumbnail('https://thumbs.gfycat.com/DentalTemptingLeonberger-size_restricted.gif') 
 					.setTimestamp()
 					.setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-				interaction.reply({ embeds: [ verificationTutorialEmbed] });
+				interaction.reply({ content: 'Your Minecraft\'s linked account does not match with the Discord.', embeds: [ verificationTutorialEmbed] });
 			}
 
 		}).catch(err => {
 			const errorEmbed = new MessageEmbed()
 				.setColor('#ff0000')
 				.setAuthor({ name: 'An Error has occurred!'})
-				.setDescription(`This player does not exist.`)
+				.setDescription(`This username does not exist.`)
 				.setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
 			interaction.reply({ embeds: [errorEmbed] });
 		});

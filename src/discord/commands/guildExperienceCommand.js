@@ -42,7 +42,7 @@ module.exports = {
 
                 }
                 fs.writeFileSync('data/exp.txt', `${expStr}`, err => {if (err) {console.error(err)}}) 
-                interaction.editReply({ content: `\u200B`, files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**", components: [row], ephemeral: false })
+                interaction.editReply({ content: `\u200B`, files: [ "data/exp.txt" ], content: "**Weekly Guild Experience**", ephemeral: false })
             }).catch((error)=>{console.log(error)});
         } catch (error) {
             console.log(error)

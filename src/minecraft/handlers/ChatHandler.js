@@ -269,10 +269,11 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isRepeatMessage(message)) {
-      return this.minecraft.broadcastCleanEmbed({ 
-        message: `${messages.repeatMessage}`, 
-        color: 'DC143C', 
-        channel: 'Guild' 
+      return client.channels.cache.get(bridgeChat).send({
+        embeds: [{
+          color: 'DC143C',
+          description: `${messages.repeatMessage}`,
+        }]
       })
     }
 

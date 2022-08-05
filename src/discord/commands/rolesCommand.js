@@ -1,5 +1,6 @@
 process.on('uncaughtException', function (err) {console.log(err.stack)})
 const { getUsername }= require('../../contracts/API/PlayerDBAPI')
+const { getSenitherWeightUsername } = require('../../contracts/weight/senitherWeight')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const config = require ('../../../config.json')
@@ -31,6 +32,8 @@ module.exports = {
                         if ((await member).roles.cache.has(interaction.guild.roles.cache.get(config.discord.guildMemberRole))) (await member).roles.remove(interaction.guild.roles.cache.get(config.discord.guildMemberRole)).catch(console.error);
                     }
 
+                    const weight = await getSenitherWeightUsername(username)
+
                     const bwLevel = player.stats.bedwars.level;
                     const bwFKDR = player.stats.bedwars.finalKDRatio;
 
@@ -40,9 +43,12 @@ module.exports = {
                     const duelsWins = player.stats.duels.wins;
                     const dWLR = player.stats.duels.WLRatio;
 
-                    if (bwLevel >= 400 || bwLevel >= 300 && bwFKDR >= 5 || swLevel >= 5 || swLevel >= 4 && swKDR >= 4 || duelsWins >= 10000 || duelsWins >= 6000 && dWLR >= 4) {
+                    if (bwLevel >= 400 || bwLevel >= 300 && bwFKDR >= 5 || swLevel >= 25 || swLevel >= 20 && swKDR >= 4 || duelsWins >= 10000 || duelsWins >= 5000 && dWLR >= 4 || weight >= 4000) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(config.discord.eliteRole));
-                    } else if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 3 || swLevel >= 3 || swLevel >= 2 && swKDR >= 2 || duelsWins >= 4000 || duelsWins >= 2000 && dWLR >= 2) {
+                    } 
+
+                    
+                    else if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 2 || swLevel >= 15 || swLevel >= 10 && swKDR >= 2 || duelsWins >= 2500 || duelsWins >= 1500 && dWLR >= 2 || weight >= 2500) {
                         await (await member).roles.add(interaction.guild.roles.cache.get(config.discord.noviceRole));
                     }
 

@@ -26,6 +26,7 @@
     "@discordjs/rest": "^1.0.0",
     "axios": "^0.27.2",
     "bad-words": "^3.0.4",
+    "canvas": "^2.9.3",
     "chalk": "^4.1.0",
     "discord-buttons": "^4.0.0-deprecated",
     "discord.js": "^13.9.0",

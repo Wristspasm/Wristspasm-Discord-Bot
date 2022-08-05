@@ -2,12 +2,12 @@
   "minecraft": {
     "prefix": "!",
     "guildID": "5b8dd8cb0cf24573ab84c9ad",
-    "guildExp": 50000,
+    "guildExp": 150000,
     "messageRepeatBypass": true,
     "messageRepeatBypassLength": 24
   },
   "discord": {
-    "token": "",
+    "token": " ",
     "clientID": "737095235242295337",
     "serverID": "600311056627269642",
     "guildChatChannel": "600317865429565490",
@@ -36,7 +36,7 @@
   },
   "api": {
     "hypixelAPI": "https://api.hypixel.net",
-    "hypixelAPIkey": "",
+    "hypixelAPIkey": " ",
 
     "skyHelperAPI": "http://176.31.203.28:1195/v1",
     "skyHelperKey": "DuckySoLucky",
@@ -48,7 +48,7 @@
 
     "playerDBAPI": "https://playerdb.co/api/player/minecraft",
 
-    "imgurAPIkey": ""
+    "imgurAPIkey": " "
   },
   "event": {
     "enabled": true,

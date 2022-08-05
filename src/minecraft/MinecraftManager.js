@@ -43,23 +43,17 @@ class MinecraftManager extends CommunicationBridge {
   }
 
   async onBroadcast({ member, channel, username, message, replyingTo  }) { 
-    /*
-     ! NOTE: (To dev)
-     TODO: REWRITE THIS PART ON GUILD REVAMP
-     ? Remove on guild Discord Revamp ^^
-
-     * if (linked?.[member?.id]?.data[0]) 
-    */
-    Logger.broadcastMessage(`${minecraftUsername ? minecraftUsername : username}: ${message}`, 'Minecraft')
+    Logger.broadcastMessage(`${username}: ${message}`, 'Minecraft')
+    global.bridgeChat = channel
     if(config.discord.filterMessages){
       if (this.bot.player !== undefined) {
-        if (channel == config.discord.officerChannel) {this.bot.chat(filter.clean(`/oc ${replyingTo ? `${minecraftUsername ? minecraftUsername : username} replying to ${replyingTo} »` : `${minecraftUsername ? minecraftUsername : username} »`} ${message}`))}
-        else { this.bot.chat(filter.clean(`/gc ${replyingTo ? `${minecraftUsername ? minecraftUsername : username} replying to ${replyingTo} »` : `${minecraftUsername ? minecraftUsername : username} »`} ${message}`))}
+        if (channel == config.discord.officerChannel) {this.bot.chat(filter.clean(`/oc ${replyingTo ? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`))}
+        else { this.bot.chat(filter.clean(`/gc ${replyingTo ? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`))}
       }
     } else{
       if (this.bot.player !== undefined) {
-        if (channel == config.discord.officerChannel) {this.bot.chat(`/oc ${replyingTo ? `${minecraftUsername ? minecraftUsername : username} replying to ${replyingTo} »` : `${minecraftUsername ? minecraftUsername : username} »`} ${message}`)}
-        else { this.bot.chat(`/gc ${replyingTo ? `${minecraftUsername ? minecraftUsername : username} replying to ${replyingTo} »` : `${minecraftUsername ? minecraftUsername : username} »`} ${message}`)}
+        if (channel == config.discord.officerChannel) {this.bot.chat(`/oc ${replyingTo ? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)}
+        else { this.bot.chat(`/gc ${replyingTo ? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)}
       }
     }
   }

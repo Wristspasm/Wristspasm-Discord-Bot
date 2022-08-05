@@ -23,13 +23,20 @@ module.exports = {
                 const username = await getUsername(uuid)   
                 hypixel.getPlayer(username).then(async player => {
                     let meetRequirements = false
-                    const senither = await getSenitherWeightUsername(username)
-                    const senitherW = senither.skills.weight + senither.skills.weight_overflow + senither.dungeons.weight + senither.dungeons.weight_overflow + senither.slayers.weight + senither.slayers.weight_overflow
-                
-                    if (config.guildRequirement.requirements.bedwarsStars > 0) if (player.stats.bedwars.level > config.guildRequirement.requirements.bedwarsStars) meetRequirements = true;
-                    if (config.guildRequirement.requirements.skywars > 0) if (player.stats.skywars.level > config.guildRequirement.requirements.skywars) meetRequirements = true;
-                    if (config.guildRequirement.requirements.senitherWeight > 0) if (senitherW > config.guildRequirement.requirements.senitherWeight) meetRequirements = true;
+                    const weight = await getSenitherWeightUsername(username)
+
+                    const bwLevel = player.stats.bedwars.level;
+                    const bwFKDR = player.stats.bedwars.finalKDRatio;
+
+                    const swLevel = player.stats.skywars.level/5;
+                    const swKDR = player.stats.skywars.KDRatio;
                     
+                    const duelsWins = player.stats.duels.wins;
+                    const dWLR = player.stats.duels.WLRatio;
+                    if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 2 || swLevel >= 15 || swLevel >= 10 && swKDR >= 2 || duelsWins >= 2500 || duelsWins >= 1500 && dWLR >= 2 || weight >= 2500) {
+                        meetRequirements = true
+                    }
+
                     if (meetRequirements) {
                         const applicationEmbed = new MessageEmbed()
                             .setColor('#00FF00')
