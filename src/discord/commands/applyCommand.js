@@ -2,7 +2,7 @@
 
 const { getSenitherWeightUsername } = require('../../contracts/weight/senitherWeight')
 const { toFixed, addCommas } = require('../../contracts/helperFunctions')
-process.on('uncaughtException', function (err) {console.log(err.stack)})
+
 const { getUsername } = require('../../contracts/API/PlayerDBAPI')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const { SlashCommandBuilder } = require('@discordjs/builders')

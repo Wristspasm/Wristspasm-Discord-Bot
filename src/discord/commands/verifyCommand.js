@@ -1,4 +1,4 @@
-process.on('uncaughtException', function (err) {console.log(err.stack)})
+
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const config = require ('../../../config.json')
