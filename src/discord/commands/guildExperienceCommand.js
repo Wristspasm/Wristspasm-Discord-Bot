@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Client, GuildMember, Interaction } = require('discord.js');
 const { getUsername } = require('../../contracts/API/PlayerDBAPI')
 const fs = require("fs");
-process.on('uncaughtException', function (err) {console.log(err.stack)})
+
 const immune  = require('../../../data/guildKickImmunity.json')
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 

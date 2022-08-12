@@ -1,4 +1,4 @@
-process.on('uncaughtException', function (err) {console.log(err.stack)})
+
 const { getUsername } = require('../../contracts/API/PlayerDBAPI')
 const immunity = require('../../../data/guildKickImmunity.json')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
