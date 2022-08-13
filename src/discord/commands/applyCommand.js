@@ -51,8 +51,8 @@ module.exports = {
                             .setDescription(`**Hypixel Network Level**\n${player.level}\n`)
                             .addFields(
                                 { name: 'Bedwars Level', value: `${player.stats.bedwars.level}`, inline: true },
-                                { name: 'Skywars Level', value: `${ player.stats.skywars.level}`, inline: true },
-                                { name: 'Senither Weight', value: `${addCommas(toFixed(senitherW, 0))}`, inline: true },
+                                { name: 'Skywars Level', value: `${player.stats.skywars.level}`, inline: true },
+                                { name: 'Senither Weight', value: `${addCommas(toFixed((weight.weight + weight.weight_overflow), 2))}`, inline: true },
                             )
                             .setThumbnail(`https://www.mc-heads.net/avatar/${player.nickname}`) 
                             .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
