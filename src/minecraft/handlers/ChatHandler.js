@@ -187,10 +187,11 @@ class StateHandler extends EventHandler {
 
     if (this.isLeaveMessage(message)) {
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-
-      const uuid = await getUUID(user)
-      const member = await guild.members.fetch(linked?.[uuid]?.data[0])
-      member.roles.remove(config.discord.guildMemberRole)
+	  if (linked?.[uuid]?.data[0]) {
+      	const uuid = await getUUID(user)
+      	const member = await guild.members.fetch(linked?.[uuid]?.data[0])
+      	member.roles.remove(config.discord.guildMemberRole)
+	  }
 
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.leaveMessage}`,
@@ -438,7 +439,7 @@ class StateHandler extends EventHandler {
 
     if (this.isGuildQuestCompletion(message)) { 
       this.minecraft.broadcastHeadedEmbed({ 
-        title: guildQuestCompletion[0], 
+        title: 'Guild Quest Completion', 
         icon: `https://hypixel.paniek.de/guild/${config.minecraft.guildID}/banner.png`, 
         message: `${message}`,
         color: 'FFD700', 
@@ -491,6 +492,14 @@ class StateHandler extends EventHandler {
         channel: 'Guild'
       })
     }
+
+    /*if (this.isPartyMessage(message)) {
+      this.minecraft.broadcastCleanEmbed({ 
+        message: `${message}`, 
+        color: 'DC143C', 
+        channel: 'Guild' 
+      })  
+    }*/
 
     if (config.console.debug) {
       this.minecraft.broadcastMessage({
