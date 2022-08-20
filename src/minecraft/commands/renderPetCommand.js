@@ -33,7 +33,7 @@ class renderCommand extends MinecraftCommand {
           // Lore splitting
           for (const line of lore) {
             if (!line.includes('Total XP')) {
-              newLine = line.split('.')
+              newLine = line.split('. ')
               if (newLine.length > 0) {
                 for (const l of newLine) {
                   newLore.push(l)
@@ -48,7 +48,7 @@ class renderCommand extends MinecraftCommand {
 
           const renderedItem = await renderLore(`§7[${pet.level}] §${getRarityColor(pet.tier)}${pet.display_name}`, newLore)
           const upload = await imgurClient.upload({image: renderedItem, type: 'stream'})
-          this.send(`/gc ${username}'s Active Pet » ${upload.data.link}`)
+          this.send(`/gc ${username}'s Active Pet » ${upload.data.link ?? 'Something went Wrong..'}`)
           return;
         }
       }
