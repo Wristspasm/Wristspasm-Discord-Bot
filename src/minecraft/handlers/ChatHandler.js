@@ -210,10 +210,11 @@ class StateHandler extends EventHandler {
 
     if (this.isKickMessage(message)) {
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-
       const uuid = await getUUID(user)
-      const member = await guild.members.fetch(linked?.[uuid]?.data[0])
-      member.roles.remove(config.discord.guildMemberRole)
+      if (linked?.[uuid]?.data[0]) {
+        const member = await guild.members.fetch(linked?.[uuid]?.data[0])
+        member.roles.remove(config.discord.guildMemberRole)
+      }
       
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.kickMessage}`,
