@@ -43,7 +43,7 @@ module.exports = {
                             .setAuthor({ name: 'Guild Application.'})
                             .setDescription(`Guild Application has been successfully sent to the guild staff.`)
                             .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                        interaction.editReply({content: `\u200B`, embeds: [ applicationEmbed ] })
+                        interaction.editReply({content: `\u200B`, embeds: [applicationEmbed] })
         
                         const statsEmbed = new MessageEmbed()
                             .setColor(`${meetRequirements ? '#00FF00' : '#ff0000'}`)
