@@ -1,6 +1,5 @@
 const itemGenerator = require('../constants/maro_networth/generators/itemGenerator');
 const networthGenerator = require('../constants/maro_networth/generators/networthGenerator');
-const config = require('../../config.json');
 const fs = require('fs');
 
 let prices = {};
@@ -12,7 +11,7 @@ const retrievePrices = async function () {
     const slug = (prices['slug_boots']?.price || 300000) / 15;
     prices['crimson_essence'] = { price: moogma > slug ? slug : moogma, name: 'Crimson Essence' };
 
-    if (config.console.debug) console.log('Prices retrieved successfully');
+    console.log('Prices retrieved successfully');
 };
 
 retrievePrices();
