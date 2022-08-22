@@ -1,13 +1,12 @@
 const { replaceAllRanks, toFixed, addCommas } = require('../../contracts/helperFunctions')
 const { getSenitherWeightUsername } = require('../../contracts/weight/senitherWeight')
 const { getLilyWeightUsername } = require('../../contracts/weight/lilyWeight')
-const { getUsername, getUUID } = require('../../contracts/API/PlayerDBAPI')
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 let guildInfo = [], guildRanks = [], members = [], guildTop = []
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
+const { getUUID } = require('../../contracts/API/PlayerDBAPI')
 const EventHandler = require('../../contracts/EventHandler')
 const messages = require('../../../messages.json')
-const linked = require('../../../data/minecraftLinked.json')
 const config = require('../../../config.json')
 const Logger = require('../../Logger')
 const fs = require('fs')
@@ -174,6 +173,8 @@ class StateHandler extends EventHandler {
 
     if (this.isJoinMessage(message)) {
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      await delay(1000)
+      bot.chat('/gc Welcome to the guild! Make sure to join our discord /g discord! To view my commands run !help, Have a nice day :D')
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.joinMessage}`,
         title: `Member Joined`,
@@ -187,17 +188,16 @@ class StateHandler extends EventHandler {
         color: '47F049',
         channel: 'Guild'
       })]  
-      await delay(1500)
-      bot.chat('/gc Welcome to the guild! Make sure to join our discord /g discord! To view my commands run !help, Have a nice day :D')
     }
 
     if (this.isLeaveMessage(message)) {
+      const linked = require('../../../data/minecraftLinked.json')
       let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
       const uuid = await getUUID(user)
-	  if (linked?.[uuid]?.data[0]) {
-      	const member = await guild.members.fetch(linked?.[uuid]?.data[0])
-      	member.roles.remove(config.discord.guildMemberRole)
-	  }
+      if (linked?.[uuid]?.data[0]) {
+          const member = await guild.members.fetch(linked?.[uuid]?.data[0])
+          member.roles.remove(config.discord.guildMemberRole)
+      }
 
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user} ${messages.leaveMessage}`,
@@ -534,7 +534,7 @@ class StateHandler extends EventHandler {
     this.minecraft.broadcastMessage({
       fullMessage: colouredMessage,
       username: username,
-      message: playerMessage,
+      message: playerMessage.replaceAll('@everyone', '').replaceAll('@here', ''),
       guildRank: guildRank,
       chat: chatType,
     })
