@@ -56,6 +56,7 @@ module.exports = {
         }   
         if (interaction.isButton()) {
             try {
+                await interaction.deferReply({ ephemeral: true }).catch(() => { });
                 // ? Apply Button
                 if (interaction.customId.includes('guild.apply_button')) {
                     const linked = require('../../../data/discordLinked.json')
@@ -65,8 +66,8 @@ module.exports = {
                             if (!uuid) interaction.followUp({ embeds: [verifyEmbed] });
 
                             hypixel.getPlayer(uuid).then(async player => {
-                                const weightData = (await getSenitherWeight(uuid)).data
-                                const weight = weightData.weight + weightData.weight_overflow
+                                const weightData = (await getSenitherWeight(uuid)).data ?? 0
+                                const weight = weightData == 0 ? 0 : weightData.weight + weightData.weight_overflow
 
                                 const bwLevel = player.stats.bedwars.level;
                                 const bwFKDR = player.stats.bedwars.finalKDRatio;
@@ -94,7 +95,7 @@ module.exports = {
                                         .setAuthor({ name: 'Guild Application.'})
                                         .setDescription(`Guild Application has been successfully sent to the staff.`)
                                         .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
-                                    await interaction.reply({ embeds: [applicationEmbed], ephemeral: true })
+                                    await interaction.editReply({ embeds: [applicationEmbed], ephemeral: true })
 
                                     const statsEmbed = new EmbedBuilder()
                                         .setColor(2067276)
@@ -119,11 +120,18 @@ module.exports = {
                                         .setAuthor({ name: 'An Error has occurred'})
                                         .setDescription(`You do not meet requirements.`)
                                         .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
-                                    await interaction.followUp({ embeds: [noRequirementsEmbed], ephemeral: true });  
+                                    await interaction.editReply({ embeds: [noRequirementsEmbed], ephemeral: true });  
                                 }
+                            }).catch(error => {
+                                const errorEmbed = new EmbedBuilder()
+                                    .setColor(15548997)
+                                    .setAuthor({ name: 'An Error has occurred'})
+                                    .setDescription(error?.data.reason)
+                                    .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+                                interaction.followUp({ embeds: [errorEmbed], ephemeral: true });  
                             })
                     } else {
-                        await interaction.reply({ embeds: [verifyEmbed], ephemeral: true });  
+                        await interaction.editReply({ embeds: [verifyEmbed], ephemeral: true });  
                     }
                 }
             
