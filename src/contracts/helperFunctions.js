@@ -1,3 +1,8 @@
+const fs = require('fs-promise')
+const { set } = require('lodash')
+const mkdirp = require('mkdirp')
+const getDirName = require('path').dirname
+
 function replaceAllRanks(input) {
     input = input.replaceAll('[OWNER] ', '')
     input = input.replaceAll('[ADMIN] ', '')
@@ -112,4 +117,20 @@ function timeSince(timeStamp) {
     }
 }
 
-module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor, addCommas, toFixed, timeSince }
+function writeAt(filePath, jsonPath, value) {
+    mkdirp.sync(getDirName(filePath))
+  
+    return fs
+      .readJson(filePath)
+      .then(function(json) {
+        set(json, jsonPath, value)
+        return fs.writeJson(filePath, json)
+      })
+      .catch(function(error) {
+        let json = {}
+        set(json, jsonPath, value)
+        return fs.writeJson(filePath, json)
+      })
+  }
+
+module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor, addCommas, toFixed, timeSince, writeAt }

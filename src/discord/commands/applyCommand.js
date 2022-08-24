@@ -1,96 +1,95 @@
-// Wrist Spasm Bot
-
-const { getSenitherWeightUsername } = require('../../contracts/weight/senitherWeight')
+const { getSenitherWeight } = require('../../contracts/weight/senitherWeight')
 const { toFixed, addCommas } = require('../../contracts/helperFunctions')
-
-const { getUsername } = require('../../contracts/API/PlayerDBAPI')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const config = require ('../../../config.json')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require("discord.js")
+
+const verifyEmbed = new EmbedBuilder()
+    .setColor(15548997)
+    .setAuthor({ name: 'An Error has occurred'})
+    .setDescription(`You must link your account using \`/verify\` before using this command.`)
+    .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
 module.exports = {
-	data: new SlashCommandBuilder()
-        .setName("apply")
-        .setDescription("Request to join the guild"),
-
-	async execute(interaction, client, member) {
+    name: 'apply',
+    description: 'Request to join the guild.',
+  
+    execute: async (interaction, client) => {
         const linked = require('../../../data/discordLinked.json')
         try {
-            await interaction.reply({content: `${client.user.username} is thinking...`, ephemeral: true });
-            const uuid = linked?.[interaction?.user?.id]?.data[0]
-            if (uuid) {
-                const username = await getUsername(uuid)   
-                hypixel.getPlayer(username).then(async player => {
-                    let meetRequirements = false
-                    const weight = await getSenitherWeightUsername(username)
+            let meetRequirements = false
+            const uuid = linked?.[interaction.user.id]?.data[0] ?? null
+            if (!uuid) interaction.followUp({ embeds: [verifyEmbed] });
 
-                    const bwLevel = player.stats.bedwars.level;
-                    const bwFKDR = player.stats.bedwars.finalKDRatio;
+            hypixel.getPlayer(uuid).then(async player => {
+                const weightData = (await getSenitherWeight(uuid)).data
+                const weight = weightData.weight + weightData.weight_overflow
 
-                    const swLevel = player.stats.skywars.level/5;
-                    const swKDR = player.stats.skywars.KDRatio;
-                    
-                    const duelsWins = player.stats.duels.wins;
-                    const dWLR = player.stats.duels.WLRatio;
-                    if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 2 || swLevel >= 15 || swLevel >= 10 && swKDR >= 2 || duelsWins >= 2500 || duelsWins >= 1500 && dWLR >= 2 || weight >= 2500) {
-                        meetRequirements = true
-                    }
+                const bwLevel = player.stats.bedwars.level;
+                const bwFKDR = player.stats.bedwars.finalKDRatio;
+    
+                const swLevel = player.stats.skywars.level/5;
+                const swKDR = player.stats.skywars.KDRatio;
+                
+                const duelsWins = player.stats.duels.wins;
+                const dWLR = player.stats.duels.WLRatio;
 
-                    if (meetRequirements) {
-                        const applicationEmbed = new MessageEmbed()
-                            .setColor('#00FF00')
-                            .setAuthor({ name: 'Guild Application.'})
-                            .setDescription(`Guild Application has been successfully sent to the guild staff.`)
-                            .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                        interaction.editReply({content: `\u200B`, embeds: [applicationEmbed] })
-        
-                        const statsEmbed = new MessageEmbed()
-                            .setColor(`${meetRequirements ? '#00FF00' : '#ff0000'}`)
-                            .setTitle(`${player.nickname} has requested to join the Guild!`)
-                            .setDescription(`**Hypixel Network Level**\n${player.level}\n`)
-                            .addFields(
-                                { name: 'Bedwars Level', value: `${player.stats.bedwars.level}`, inline: true },
-                                { name: 'Skywars Level', value: `${player.stats.skywars.level}`, inline: true },
-                                { name: 'Senither Weight', value: `${addCommas(toFixed((weight.weight + weight.weight_overflow), 2))}`, inline: true },
-                            )
-                            .setThumbnail(`https://www.mc-heads.net/avatar/${player.nickname}`) 
-                            .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                        client.channels.cache.get(config.channels.joinRequests).send({ embeds: [statsEmbed] })
+                if (weight > config.guildRequirement.requirements.senitherWeight) meetRequirements = true;
 
-                    } else {
-                        const errorEmbed = new MessageEmbed()
-                        .setColor('#ff0000')
+                if (bwLevel > config.guildRequirement.requirements.bedwarsStars) meetRequirements = true;
+                if (bwLevel > config.guildRequirement.requirements.bedwarsStarsWithFKDR && bwFKDR > config.guildRequirement.requirements.bedwarsFKDR) meetRequirements = true;
+
+                if (swLevel > config.guildRequirement.requirements.skywarsStars) meetRequirements = true;
+                if (swLevel > config.guildRequirement.requirements.skywarsStarsWithKDR && swKDR > config.guildRequirement.requirements.skywarsStarsWithKDR) meetRequirements = true;
+
+                if (duelsWins > config.guildRequirement.requirements.duelsWins) meetRequirements = true;
+                if (duelsWins > config.guildRequirement.requirements.duelsWinsWithWLR && dWLR > config.guildRequirement.requirements.duelsWinsWithWLR) meetRequirements = true;
+
+                if (meetRequirements) {
+                    const applicationEmbed = new EmbedBuilder()
+                        .setColor(2067276)
+                        .setAuthor({ name: 'Guild Application.'})
+                        .setDescription(`Guild Application has been successfully sent to the guild staff.`)
+                        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+                    interaction.followUp({ embeds: [applicationEmbed] })
+
+
+                    const statsEmbed = new EmbedBuilder()
+                        .setColor(2067276)
+                        .setTitle(`${player.nickname} has requested to join the Guild!`)
+                        .setDescription(`**Hypixel Network Level**\n${player.level}\n`)
+                        .addFields(
+                            { name: 'Bedwars Level', value: `${player.stats.bedwars.level}`, inline: true },
+                            { name: 'Skywars Level', value: `${player.stats.skywars.level}`, inline: true },
+                            { name: 'Duels Wins', value: `${player.stats.duels.wins}`, inline: true },
+                            { name: 'Bedwars FKDR', value: `${player.stats.bedwars.finalKDRatio}`, inline: true },
+                            { name: 'Skywars KDR', value: `${player.stats.skywars.KDRatio}`, inline: true },
+                            { name: 'Duels WLR', value: `${player.stats.duels.KDRatio}`, inline: true },
+                            { name: 'Senither Weight', value: `${addCommas(toFixed((weight), 2))}`, inline: true },
+                        )
+                        .setThumbnail(`https://www.mc-heads.net/avatar/${player.nickname}`) 
+                        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+                    client.channels.cache.get(config.channels.joinRequests).send({ embeds: [statsEmbed] })
+
+
+
+                } else {
+                    const errorEmbed = new EmbedBuilder()
+                        .setColor(15548997)
                         .setAuthor({ name: 'An Error has occurred!'})
                         .setDescription(`You do not meet requirements.`)
-                        .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                    interaction.editReply({content: `\u200B`, embeds: [errorEmbed] });
-                    }
-                }).catch(err => {
-                    console.log(err)
-                    const errorEmbed = new MessageEmbed()
-                        .setColor('#ff0000')
-                        .setAuthor({ name: 'An Error has occurred!'})
-                        .setDescription(`Something went wrong.. Please report to the staff.`)
-                        .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                    interaction.editReply({content: `\u200B`, embeds: [errorEmbed] });
-                });
-                
-            } else {
-                const errorEmbed = new MessageEmbed()
-                    .setColor('#ff0000')
-                    .setAuthor({ name: 'An Error has occurred'})
-                    .setDescription(`You must link your account using `/verify` before using this command.`)
-                    .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-                interaction.reply({ embeds: [errorEmbed] });
-            }
-        } catch(error) {
-            const errorEmbed = new MessageEmbed()
-                .setColor('#ff0000')
+                        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+                    interaction.followUp({ embeds: [errorEmbed] });
+                }
+
+            })
+        } catch (error) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(15548997)
                 .setAuthor({ name: 'An Error has occurred'})
-                .setDescription(`You must link your account using `/verify` before using this command.`)
-                .setFooter({ text: 'by DuckySoLucky#5181', iconURL: 'https://cdn.discordapp.com/avatars/486155512568741900/164084b936b4461fe9505398f7383a0e.png?size=4096' });
-            interaction.reply({ embeds: [errorEmbed] });
+                .setDescription(error)
+                .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+            interaction.followUp({ embeds: [errorEmbed] });
         }
-    }
+    },
 }
