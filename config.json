@@ -71,10 +71,20 @@
     "enabled": true,
     "autoAccept": false,
     "requirements": {
-      "skywarsStars": 0,
-      "bedwarsStars": 0,
-      "senitherWeight": 0,
-      "lilyWeight": 10
+      "bedwarsStars": 200,
+      "bedwarsStarsWithFKDR": 100,
+      "bedwarsFKDR": 2,
+
+      "skywarsStars": 15,
+      "skywarsStarsWithKDR": 10,
+      "skywarsKDR": 2,
+
+      "duelsWins": 2500,
+      "duelsWinsWithWLR": 1500,
+      "duelsWLR": 2.5,
+
+      "senitherWeight": 2500,
+      "lilyWeight": 0
     }
   }
 }
