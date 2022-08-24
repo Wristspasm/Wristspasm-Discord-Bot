@@ -9,7 +9,7 @@ Made by Calculus#0001 and DuckySoLucky#5181
 - [ ] None
   - None
 
-### Powered By
+### Credits
 
 - [AltPapier](https://github.com/Altpapier/hypixel-discord-guild-bridge)
 - [DawJaw](https://dawjaw.net/jacobs)
