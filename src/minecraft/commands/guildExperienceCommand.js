@@ -1,6 +1,7 @@
 const MinecraftCommand = require('../../contracts/MinecraftCommand')
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const config = require('../../../config.json')
+const { addCommas } = require('../../contracts/helperFunctions')
 
 class guildExperienceCommand extends MinecraftCommand {
         constructor(minecraft) {
@@ -20,18 +21,10 @@ class guildExperienceCommand extends MinecraftCommand {
                 hypixel.getGuild("id", config.minecraft.guildID).then(guild => {
                     for (let i = 0; i < guild.members.length; i++) {
                         if (guild.members[i].uuid === player.uuid) {
-                            const player = guild.members[i]
-                            break;
+                            return this.send(`/gc ${username == arg[0] ? `${arg[0]}'s` : `Your`} Weekly Guild Experience » ${addCommas(guild.members[i].weeklyExperience)}.`)
                         }
-                        if (i == guild.members.length-1) {
-                            this.send(`/gc ${username} is not in the Guild.`)
-                            return;
-                        }
+                        if (i == guild.members.length - 1) return this.send(`/gc ${username} is not in the Guild.`)
                     }
-
-                    this.send(`/gc ${username == arg[0] ? `${arg[0]}'s` : `Your`} Weekly Guild Experience » ${player.weeklyExperience}.`)
-
-                    
                 }).catch(error => {this.send('/gc ' + error.toString().replaceAll('[hypixel-api-reborn] ', ''))})
             }).catch(error => {this.send('/gc ' + error.toString().replaceAll('[hypixel-api-reborn] ', ''))})
 
