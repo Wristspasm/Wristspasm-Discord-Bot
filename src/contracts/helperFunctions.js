@@ -131,6 +131,16 @@ function writeAt(filePath, jsonPath, value) {
         set(json, jsonPath, value)
         return fs.writeJson(filePath, json)
       })
-  }
+}
 
-module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor, addCommas, toFixed, timeSince, writeAt }
+function capitalize(str) {
+    const words = str.replace(/_/g, ' ').toLowerCase().split(' ');
+  
+    const upperCased = words.map(word => {
+      return word.charAt(0).toUpperCase() + word.substr(1);
+    });
+  
+    return upperCased.join(' ');
+};
+
+module.exports = { replaceAllRanks, addNotation, generateID, getRarityColor, addCommas, toFixed, timeSince, writeAt, capitalize }

@@ -3,8 +3,8 @@ const fs = require('fs');
 const Rss = require('rss-parser');
 const parser = new Rss();
 
-setInterval(checkForSkyblockUpdates, 1000);
-setInterval(checkForIncidents, 1000);
+setInterval(checkForSkyblockUpdates, 10000);
+setInterval(checkForIncidents, 10000);
 
 async function checkForIncidents() {
     try {

@@ -42,7 +42,8 @@
     "mkdirp": "^1.0.4",
     "path": "^0.12.7",
     "prismarine-nbt": "^1.6.0",
-    "util": "^0.12.4",
-    "rss-parser": "^3.12.0"
+    "rss-parser": "^3.12.0",
+    "skyhelper-networth": "^1.0.10",
+    "util": "^0.12.4"
   }
 }

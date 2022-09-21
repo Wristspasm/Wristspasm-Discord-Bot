@@ -19,7 +19,11 @@
     "[April 1] Tool Reforges Patch | https://hypixel.net/threads/april-1-tool-reforges-patch.4887972/",
     "[March 31] The SkyBlock Wiki In-Game | https://hypixel.net/threads/march-31-the-skyblock-wiki-in-game.4887357/",
     "[March 8th] Small Dungeons Patch | https://hypixel.net/threads/march-8th-small-dungeons-patch.4855706/",
-    "[April 18] QoL Bug Fixes | https://hypixel.net/threads/april-18-qol-bug-fixes.4905729/"
+    "[April 18] QoL Bug Fixes | https://hypixel.net/threads/april-18-qol-bug-fixes.4905729/",
+    "[September 15] Temporary Minion Simulation Patch | https://hypixel.net/threads/september-15-temporary-minion-simulation-patch.5112401/",
+    "[September 6] Moby's Fishing Speed Chumpdate | https://hypixel.net/threads/september-6-mobys-fishing-speed-chumpdate.5103151/",
+    "[September 8] Test Of Control - SkyBlock Dojo Challenge | https://hypixel.net/threads/september-8-test-of-control-skyblock-dojo-challenge.5104568/",
+    "[September 11] Profile Actions Cooldown | https://hypixel.net/threads/september-11-profile-actions-cooldown.5107971/"
   ],
   "skyblockStatus": [
     "SkyBlock Dungeons Disabled | Update - We are continuing to work on bringing dungeons back online and have added additional potential fixes to the Alpha Network. | Aug 29, 14:05 EDT",
@@ -109,6 +113,20 @@
     "Players unable to join | Resolved - This incident has been resolved. | Jan 2, 23:09 EST",
     "Players unable to join | Monitoring - A fix has been implemented and we are monitoring the results. | Jan 2, 20:58 EST",
     "Players unable to join | Identified - The issue has been identified and a fix is being implemented. | Jan 2, 20:29 EST",
-    "Players unable to join | Investigating - We are currently investigating an issue where players are unable to join or have an increased latency to the server | Jan 2, 19:59 EST"
+    "Players unable to join | Investigating - We are currently investigating an issue where players are unable to join or have an increased latency to the server | Jan 2, 19:59 EST",
+    "SkyBlock Profile Management Disabled | Resolved - This incident has been resolved. | Sep 11, 12:46 EDT",
+    "SkyBlock Profile Management Disabled | Monitoring - A fix has been implemented and we are monitoring the results. | Sep 11, 06:33 EDT",
+    "SkyBlock Profile Management Disabled | Investigating - SkyBlock Profile Management has been disabled as we investigate potential issues. | Sep 10, 13:02 EDT",
+    "SkyBlock Bazaar Disabled | Resolved - This incident has been resolved. | Sep 11, 12:46 EDT",
+    "SkyBlock Bazaar Disabled | Update - We are continuing to monitor for any further issues. | Sep 11, 06:34 EDT",
+    "SkyBlock Bazaar Disabled | Monitoring - The SkyBlock Bazaar has been disabled temporarily whilst we perform some backend changes. | Sep 10, 02:41 EDT",
+    "Parties unavailable | Resolved - This incident has been resolved. | Sep 10, 13:28 EDT",
+    "Parties unavailable | Monitoring - A fix has been implemented and we are monitoring the results. | Sep 10, 13:20 EDT",
+    "Parties unavailable | Investigating - We are currently investigating issues with party commands failing and other issues related to the parties service. | Sep 10, 13:18 EDT",
+    "SkyBlock Hex Disabled | Resolved - This incident has been resolved. | Sep 7, 19:48 EDT",
+    "SkyBlock Hex Disabled | Monitoring - A fix has been implemented, the hex is now re-enabled and we are monitoring the results. | Sep 7, 12:46 EDT",
+    "SkyBlock Hex Disabled | Identified - An issue has been identified with the Hex and a fix is being implemented. | Sep 6, 05:50 EDT",
+    "SkyBlock Bazaar Disabled | Resolved - This incident has been resolved. | Sep 5, 14:28 EDT",
+    "SkyBlock Bazaar Disabled | Monitoring - A fix has been implemented and we are monitoring the results. | Sep 4, 20:00 EDT"
   ]
 }

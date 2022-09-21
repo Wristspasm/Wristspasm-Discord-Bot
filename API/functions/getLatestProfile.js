@@ -16,8 +16,10 @@ async function getLatestProfile(uuid) {
             }
         }
 
-        const playerRes = await axios.get(`https://api.hypixel.net/player?key=${config.api.hypixelAPIkey}&uuid=${uuid}`);
-        const profileRes = await axios.get(`https://api.hypixel.net/skyblock/profiles?key=${config.api.hypixelAPIkey}&uuid=${uuid}`);
+        const [ playerRes, profileRes ] = await Promise.all([
+            axios.get(`https://api.hypixel.net/player?key=${config.api.hypixelAPIkey}&uuid=${uuid}`),
+            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${config.api.hypixelAPIkey}&uuid=${uuid}`)
+        ]);
         const player = parseHypixel(playerRes, uuid);
 
         if (profileRes.data.hasOwnProperty('profiles') && profileRes.data.profiles == null) {
