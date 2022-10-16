@@ -45,7 +45,7 @@
     "path": "^0.12.7",
     "prismarine-nbt": "^1.6.0",
     "rss-parser": "^3.12.0",
-    "skyhelper-networth": "^1.0.10",
+    "skyhelper-networth": "^1.2.6",
     "util": "^0.12.4"
   }
 }
