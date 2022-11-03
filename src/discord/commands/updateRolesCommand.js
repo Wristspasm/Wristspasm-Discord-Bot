@@ -1,7 +1,7 @@
-const { getSenitherWeight } = require('../../contracts/weight/senitherWeight');
 const hypixel = require('../../contracts/API/HypixelRebornAPI')
 const config = require ('../../../config.json')
-const { EmbedBuilder } = require("discord.js")
+const { EmbedBuilder } = require("discord.js");
+const { calculateSenitherWeight } = require('../../../API/constants/senitherWeight');
 
 module.exports = {
     name: 'roles',
@@ -25,7 +25,7 @@ module.exports = {
                         if (playerIsInGuild) ((await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.guildMemberRole)))
                         if (!playerIsInGuild) if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.guildMemberRole))) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(config.discord.guildMemberRole))
 
-                        const weightData = (await getSenitherWeight(uuid)).data
+                        const weightData = (await calculateSenitherWeight(uuid)).data
                         const weight = weightData.weight + weightData.weight_overflow
     
                         const bwLevel = player.stats.bedwars.level;
