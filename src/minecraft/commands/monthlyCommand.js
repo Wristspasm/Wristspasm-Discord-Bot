@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/MinecraftCommand.js");
+const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
 const { getStats } = require("../../contracts/helperFunctions.js");
 const fetch = (...args) =>
@@ -19,13 +19,42 @@ class MonthlyStatsCommand extends minecraftCommand {
 
   async onCommand(username, message) {
     const args = this.getArgs(message);
-    let mode, player = username;
+    let mode,
+      player = username;
 
-    if (["bw", "bedwars", "bedwar", "bws", "sw", "skywars", "skywar", "sws", "duels", "duel", "d"].includes(args[0])) {
+    if (
+      [
+        "bw",
+        "bedwars",
+        "bedwar",
+        "bws",
+        "sw",
+        "skywars",
+        "skywar",
+        "sws",
+        "duels",
+        "duel",
+        "d",
+      ].includes(args[0])
+    ) {
       mode = args[0];
       if (args[1]) player = args[1];
-    } 
-    if (["bw", "bedwars", "bedwar", "bws", "sw", "skywars", "skywar", "sws", "duels", "duel", "d"].includes(args[1])) {
+    }
+    if (
+      [
+        "bw",
+        "bedwars",
+        "bedwar",
+        "bws",
+        "sw",
+        "skywars",
+        "skywar",
+        "sws",
+        "duels",
+        "duel",
+        "d",
+      ].includes(args[1])
+    ) {
       mode = args[1];
       player = args[0];
     }
@@ -33,7 +62,7 @@ class MonthlyStatsCommand extends minecraftCommand {
     const uuid = await getUUID(player);
 
     try {
-      this.send(await getStats(player, uuid, mode, 'monthly', username));
+      this.send(await getStats(player, uuid, mode, "monthly", username));
     } catch (error) {
       if (error.response?.data?.error == "Player not in database") {
         this.send(

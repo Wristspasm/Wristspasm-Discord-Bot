@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/MinecraftCommand.js");
+const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const { capitalize } = require("../../contracts/helperFunctions.js");
 
@@ -19,7 +19,9 @@ class GuildInformationCommand extends minecraftCommand {
         return this.send("/gc This guild does not exist.");
       });
 
-      this.send(`/gc Guild ${guildName} | Tag: ${guild.tag} | Members: ${guild.members.length} | Level: ${guild.level} | Weekly GEXP: ${guild.totalWeeklyGexp}`);
+      this.send(
+        `/gc Guild ${guildName} | Tag: ${guild.tag} | Members: ${guild.members.length} | Level: ${guild.level} | Weekly GEXP: ${guild.totalWeeklyGexp}`
+      );
     } catch (error) {
       console.log(error);
       this.send("/gc Something went wrong..");
