@@ -1,6 +1,5 @@
-// Credits https://github.com/Altpapier/
-// Modified
-
+// Credits https://github.com/Altpapier/ (Modified)
+// eslint-disable-next-line
 const Canvas = require("canvas");
 Canvas.registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
   family: "Minecraft",
@@ -88,7 +87,7 @@ function generateMessageImage(message) {
     ctx.fillText(currentMessage, width, height);
     width += ctx.measureText(currentMessage).width;
   }
-  return canvas.toBuffer();
+  return canvas.toBuffer()
 }
 
 module.exports = generateMessageImage;

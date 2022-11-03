@@ -1,17 +1,20 @@
-const { replaceAllRanks, toFixed, addCommas } = require('../../contracts/helperFunctions')
-const { getLatestProfile } = require('../../../API/functions/getLatestProfile')
+const { replaceAllRanks, toFixed, addCommas } = require('../../contracts/helperFunctions.js')
+const { getLatestProfile } = require('../../../API/functions/getLatestProfile.js')
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 let guildInfo = [], guildRanks = [], members = [], guildTop = []
-const hypixel = require('../../contracts/API/HypixelRebornAPI')
-const { getUUID } = require('../../contracts/API/PlayerDBAPI')
-const EventHandler = require('../../contracts/EventHandler')
-const getWeight = require('../../../API/stats/weight')
+const hypixel = require('../../contracts/API/HypixelRebornAPI.js')
+const { getUUID } = require('../../contracts/API/PlayerDBAPI.js')
+const eventHandler = require('../../contracts/EventHandler.js')
+const getWeight = require('../../../API/stats/weight.js')
 const messages = require('../../../messages.json')
+/*eslint-disable */
+const { EmbedBuilder } = require('discord.js')
 const config = require('../../../config.json')
-const Logger = require('../../Logger')
+const Logger = require('../../Logger.js')
+/*eslint-enable */
 const fs = require('fs')
 
-class StateHandler extends EventHandler {
+class StateHandler extends eventHandler {
   constructor(minecraft, command, discord) {
     super()
     this.minecraft = minecraft
@@ -33,7 +36,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isPartyMessage(message)) {
-      let username = replaceAllRanks(message.substr(54))
+      const username = replaceAllRanks(message.substr(54))
       await delay(69)
       this.send(`/party accept ${username}`)
       await delay(5000)
@@ -63,12 +66,14 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isRequestMessage(message)) {
-      let username = replaceAllRanks(message.split('has')[0].replaceAll('-----------------------------------------------------\n', ''))
+      const username = replaceAllRanks(message.split('has')[0].replaceAll('-----------------------------------------------------\n', ''))
+      const uuid = await getUUID(username);
       if (config.guildRequirement.enabled) {
         const [player, profile] = await Promise.all([
           hypixel.getPlayer(uuid),
           getLatestProfile(uuid)
         ])
+        let meetRequirements = false;
 
         const weight = (await getWeight(profile.profile, profile.uuid)).weight.senither.total
 
@@ -128,9 +133,9 @@ class StateHandler extends EventHandler {
         }
       } else {
         guildInfo.push(message)
-        let guildInfoSplit = guildInfo[0].split(' ');
-        let guildInfoSplit2 = guildInfo[1].split(' ');
-        let guildInfoSplit3 = guildInfo[2].split(' ');
+        const guildInfoSplit = guildInfo[0].split(' ');
+        const guildInfoSplit2 = guildInfo[1].split(' ');
+        const guildInfoSplit3 = guildInfo[2].split(' ');
         for (let i = 0; i < members.length; i++) {
           members[i] = replaceAllRanks(members[i])
           members[i] = members[i].replaceAll('  ', ' ')
@@ -162,9 +167,9 @@ class StateHandler extends EventHandler {
   
 
     if (this.isLoginMessage(message)) {
-      var data = JSON.parse(fs.readFileSync('config.json'));
+      const data = JSON.parse(fs.readFileSync('config.json'));
       if (data.discord.joinMessage) { 
-        let user = message.split('>')[1].trim().split('joined.')[0].trim()
+        const user = message.split('>')[1].trim().split('joined.')[0].trim()
         return this.minecraft.broadcastPlayerToggle({ 
           fullMessage: colouredMessage,
           username: user, 
@@ -176,9 +181,9 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isLogoutMessage(message)) {
-      var data = JSON.parse(fs.readFileSync('config.json'));
+      const data = JSON.parse(fs.readFileSync('config.json'));
       if (data.discord.joinMessage) { 
-        let user = message.split('>')[1].trim().split('left.')[0].trim()
+        const user = message.split('>')[1].trim().split('left.')[0].trim()
         return this.minecraft.broadcastPlayerToggle({ 
           fullMessage: colouredMessage,
           username: user, 
@@ -190,7 +195,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isJoinMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
       await delay(1000)
       bot.chat('/gc Welcome to the guild! Make sure to join our discord /g discord! To view my commands run !help, Have a nice day :D | By DuckySoLucky#5181')
       return [this.minecraft.broadcastHeadedEmbed({
@@ -209,7 +214,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isLeaveMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
       try {
         await delay(500)
         bot.chat('/gc RIP Bozo L')
@@ -237,7 +242,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isKickMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
       try {
         const linked = require('../../../data/minecraftLinked.json')
         const uuid = await getUUID(user)
@@ -262,8 +267,8 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isPromotionMessage(message)) {
-      let username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-      let newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
+      const username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      const newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
       return [this.minecraft.broadcastCleanEmbed({ 
         message: `${username} ${messages.promotionMessage} ${newRank}`, 
         color: 2067276, 
@@ -277,8 +282,8 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isDemotionMessage(message)) {
-      let username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-      let newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
+      const username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      const newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
       return [this.minecraft.broadcastCleanEmbed({ 
         message: `${username} ${messages.demotionMessage} ${newRank}`, 
         color: 15548997, 
@@ -300,9 +305,9 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isBlockedMessage(message)) {
-      let blockedMsg = message.match(/".+"/g)[0].slice(1, -1)
+      const blockedMsg = message.match(/".+"/g)[0].slice(1, -1)
       return this.minecraft.broadcastCleanEmbed({ 
-        message: `${messages.blockedMessageFirst} ${blockedMsg} ${blockedMessageSecond}`, 
+        message: `${messages.blockedMessageFirst} ${blockedMsg} ${messages.blockedMessageSecond}`, 
         color: 15548997, 
         channel: 'Guild' 
       })
@@ -343,7 +348,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isBlacklistMessage(message)) {
-      let user = message.split(' ')[1]
+      const user = message.split(' ')[1]
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user}${messages.blacklistMessage}`,
         title: `Blacklist`,
@@ -359,7 +364,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isBlacklistRemovedMessage(message)) {
-      let user = message.split(' ')[1]
+      const user = message.split(' ')[1]
       return [this.minecraft.broadcastHeadedEmbed({
         message: `${user}${messages.blacklistRemoveMessage}`,
         title: `Blacklist`,
@@ -375,7 +380,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isOnlineInvite(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[2]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[2]
       return [this.minecraft.broadcastCleanEmbed({ 
         message: `${user} ${messages.onlineInvite}`, 
         color: 2067276, 
@@ -389,7 +394,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isOfflineInvite(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[6].match(/\w+/g)[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[6].match(/\w+/g)[0]
       return [this.minecraft.broadcastCleanEmbed({ 
         message: `${user} ${messages.offlineInvite}`, 
         color: 2067276, 
@@ -415,7 +420,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isGuildMuteMessage(message)) {
-      let time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[7]
+      const time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[7]
       return [ this.minecraft.broadcastCleanEmbed({ 
         message: `${messages.guildMuteMessage} ${time}`, 
         color: 15548997, 
@@ -441,8 +446,8 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isUserMuteMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3].replace(/[^\w]+/g, '')
-      let time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[5]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3].replace(/[^\w]+/g, '')
+      const time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[5]
       return [ this.minecraft.broadcastCleanEmbed({ 
         message: `${user} ${messages.userMuteMessage} ${time}`, 
         color: 15548997, channel: 'Guild' 
@@ -455,7 +460,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isUserUnmuteMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3]
       return [ this.minecraft.broadcastCleanEmbed({
         message: `${user} ${messages.userUnmuteMessage}`, 
          color: 2067276, 
@@ -495,7 +500,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isNotInGuild(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
       return this.minecraft.broadcastCleanEmbed({ 
         message: `${user} ${messages.notInGuildMessage}`, 
         color: 15548997, 
@@ -504,7 +509,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isLowestRank(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
+      const user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
       return this.minecraft.broadcastCleanEmbed({ 
         message: `${user} ${messages.lowestRankMessage}`, 
         color: 15548997, 
@@ -524,7 +529,7 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isPlayerNotFound(message)) {
-      let user = message.split(' ')[8].slice(1, -1)
+      const user = message.split(' ')[8].slice(1, -1)
       return this.minecraft.broadcastCleanEmbed({ 
         message: `${messages.playerNotFoundMessageFirst} ${user} ${messages.playerNotFoundMessageSecond}`, 
         color: 15548997,
@@ -548,14 +553,14 @@ class StateHandler extends EventHandler {
       }
     )}
 
-    let parts = message.split(':')
-    let group = parts.shift().trim()
-    let hasRank = group.endsWith(']')
-    let chat = message.split('>')
-    let chatType = chat.shift().trim()
-    let userParts = group.split(' ')
-    let username = userParts[userParts.length - (hasRank ? 2 : 1)]
-    let guildRank = userParts[userParts.length - 1].replace(/[\[\]]/g, '')
+    const parts = message.split(':')
+    const group = parts.shift().trim()
+    const hasRank = group.endsWith(']')
+    const chat = message.split('>')
+    const chatType = chat.shift().trim()
+    const userParts = group.split(' ')
+    const username = userParts[userParts.length - (hasRank ? 2 : 1)]
+    let guildRank = userParts[userParts.length - 1].replace('[', '').replace(']', '')
     const playerMessage = parts.join(':').trim()
 
     if (!this.isGuildMessage(message) && !this.isOfficerChatMessage(message)) return
@@ -599,10 +604,6 @@ class StateHandler extends EventHandler {
 
   isGuildQuestCompletion(message) {
     return message.includes('GUILD QUEST TIER ') && message.includes('COMPLETED') && !message.includes(':')
-  }
-
-  isPartyMessage(message) {
-    return message.startsWith('Party >')
   }
 
   isLoginMessage(message) {

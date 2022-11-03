@@ -1,10 +1,17 @@
-const express = require('express');
+const express = require("express");
 const server = express();
-server.listen(1439, () => { console.log("Web Server is Ready!") });
- 
-server.all('/', (req, res) => {
-  res.send(` `)
-})
+
+function start() {
+  server.listen(1439, () => {
+    console.log("Web Server is Ready!");
+  });
+}
+
+server.all("/", (req, res) => {
+  res.send(` `);
+});
+
+module.exports = { start };
 
 //--------------------------------
 // If u wanna have fancy website
@@ -22,4 +29,3 @@ fs.readFile('./src/web/index.html', function (err, html) {
         response.end();  
     }).listen(PORT);
 });*/
- 
