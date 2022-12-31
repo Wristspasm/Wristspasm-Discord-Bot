@@ -421,6 +421,14 @@ const parseTimestamp = function (text) {
   return dateMath ? dateMath.valueOf() : undefined;
 };
 
+function formatUsername(username, gamemode) {
+  if (gamemode === "ironman") return `♲ ${username}`;
+  if (gamemode === "bingo") return `Ⓑ ${username}`
+  if (gamemode === "island") return `	☀ ${username}`
+
+  return username;
+}
+
 module.exports = {
   replaceAllRanks,
   addNotation,
@@ -436,4 +444,5 @@ module.exports = {
   getStats,
   nth,
   parseTimestamp,
+  formatUsername,
 };
