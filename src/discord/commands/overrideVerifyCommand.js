@@ -2,7 +2,7 @@ const hypixel = require("../../contracts/API/HypixelRebornAPI");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { writeAt } = require("../../contracts/helperFunctions");
-const { getUUID } = require("../../contracts/API/playerDBAPI");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI");
 
 module.exports = {
   name: "overrideverify",

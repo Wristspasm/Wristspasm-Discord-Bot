@@ -5,7 +5,7 @@ const {
   writeAt,
 } = require("../../contracts/helperFunctions");
 const { EmbedBuilder } = require("discord.js");
-const { getUsername, getUUID } = require("../../contracts/API/playerDBAPI");
+const { getUsername, getUUID } = require("../../contracts/API/PlayerDBAPI");
 const hypixel = require("../../contracts/API/HypixelRebornAPI");
 
 const verifyEmbed = new EmbedBuilder()

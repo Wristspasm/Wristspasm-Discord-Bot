@@ -2,7 +2,7 @@ const { isUuid } = require("../utils/uuid.js");
 const config = require("../../config.json");
 const { parseHypixel } = require("../utils/hypixel.js");
 const axios = require("axios");
-const { getUUID } = require("../../src/contracts/API/playerDBAPI.js");
+const { getUUID } = require("../../src/contracts/API/PlayerDBAPI.js");
 
 async function getLatestProfile(uuid) {
   // eslint-disable-next-line no-useless-catch
