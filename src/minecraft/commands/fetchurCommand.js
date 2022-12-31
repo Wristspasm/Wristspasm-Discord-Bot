@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const { getFetchur } = require("../../../API/functions/getFetchur.js");
 
 class FetchurCommand extends minecraftCommand {
@@ -15,10 +15,10 @@ class FetchurCommand extends minecraftCommand {
     try {
       const fetchur = getFetchur();
 
-      this.send(`/gc Fetchur Requests » ${fetchur.text} | Description: ${fetchur.description}`);
-
+      this.send(
+        `/gc Fetchur Requests » ${fetchur.text} | Description: ${fetchur.description}`
+      );
     } catch (error) {
-      
       this.send(`/gc Error: ${error || "Something went wrong.."}`);
     }
   }

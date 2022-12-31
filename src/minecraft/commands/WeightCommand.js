@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const {
   getLatestProfile,
 } = require("../../../API/functions/getLatestProfile.js");
@@ -54,7 +54,7 @@ class StatsCommand extends minecraftCommand {
       await delay(690);
       this.send(`/gc ${username}'s ${lilyW}`);
     } catch (error) {
-      this.send(`/gc Error: ${error}`)
+      this.send(`/gc Error: ${error}`);
     }
   }
 }

@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const config = require("../../../config.json");
 const axios = require("axios");
@@ -40,7 +40,9 @@ class DenickerCommand extends minecraftCommand {
       );
     } catch (error) {
       if (error.player == null) {
-        this.send("/gc Error: This player does not exist in AntiSniper database.");
+        this.send(
+          "/gc Error: This player does not exist in AntiSniper database."
+        );
       } else {
         this.send(`/gc Error: ${error?.response?.data?.error}`);
       }

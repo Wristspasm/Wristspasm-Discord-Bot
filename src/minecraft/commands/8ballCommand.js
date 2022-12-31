@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const axios = require("axios");
 
 class EightBallCommand extends minecraftCommand {
@@ -12,13 +12,11 @@ class EightBallCommand extends minecraftCommand {
     this.optionsDescription = ["Any kind of question"];
   }
 
-
   async onCommand(username, message) {
     try {
-      const { data } = await axios.get(`https://www.eightballapi.com/api`)
+      const { data } = await axios.get(`https://www.eightballapi.com/api`);
 
       this.send(`/gc ${data.reading}`);
-      
     } catch (error) {
       this.send(`/gc Error: ${error?.response?.data?.error}`);
     }

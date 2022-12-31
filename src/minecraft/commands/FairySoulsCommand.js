@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const {
   getLatestProfile,
 } = require("../../../API/functions/getLatestProfile.js");
@@ -21,14 +21,19 @@ class FairySoulsCommand extends minecraftCommand {
 
       const data = await getLatestProfile(username);
       username = formatUsername(username, data.profileData.game_mode);
-      
+
       const total = data.profileData.game_mode === "island" ? 5 : 238;
 
-      this.send(`/gc ${username}'s Fairy Souls: ${data.profile.fairy_souls_collected}/${total} | Progress: ${(data.profile.fairy_souls_collected / total * 100).toFixed(2)}%`);
-    
+      this.send(
+        `/gc ${username}'s Fairy Souls: ${
+          data.profile.fairy_souls_collected
+        }/${total} | Progress: ${(
+          (data.profile.fairy_souls_collected / total) *
+          100
+        ).toFixed(2)}%`
+      );
     } catch (error) {
       this.send(`/gc Error: ${error}`);
-
     }
   }
 }

@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const config = require("../../../config.json");
 const axios = require("axios");
 const { toFixed } = require("../../contracts/helperFunctions.js");
@@ -56,7 +56,7 @@ class WoolwarsCommand extends minecraftCommand {
         }`
       );
     } catch (error) {
-      this.send(`/gc Error: ${error}`)
+      this.send(`/gc Error: ${error}`);
     }
   }
 }

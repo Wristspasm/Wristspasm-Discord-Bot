@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const { addCommas } = require("../../contracts/helperFunctions.js");
 const { capitalize } = require("../../contracts/helperFunctions.js");

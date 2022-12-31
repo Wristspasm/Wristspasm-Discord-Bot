@@ -1,6 +1,9 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const getDungeons = require("../../../API/stats/dungeons.js");
-const { numberWithCommas, formatUsername } = require("../../contracts/helperFunctions.js");
+const {
+  numberWithCommas,
+  formatUsername,
+} = require("../../contracts/helperFunctions.js");
 const {
   getLatestProfile,
 } = require("../../../API/functions/getLatestProfile.js");
@@ -28,14 +31,16 @@ class CatacombsCommand extends minecraftCommand {
 
       if (dungeons == null) {
         // eslint-disable-next-line no-throw-literal
-        throw `${username} has never played dungeons on ${data.profileData.cute_name}.`
+        throw `${username} has never played dungeons on ${data.profileData.cute_name}.`;
       }
 
       this.send(
         `/gc ${username}'s Catacombs: ${
           dungeons.catacombs.skill.level
         } | Class Average: ${
-          (Object.keys(dungeons.classes).map((className) => dungeons.classes[className].level).reduce((a, b) => a + b, 0) / Object.keys(dungeons.classes).length)
+          Object.keys(dungeons.classes)
+            .map((className) => dungeons.classes[className].level)
+            .reduce((a, b) => a + b, 0) / Object.keys(dungeons.classes).length
         } | Secrets Found: ${numberWithCommas(
           dungeons.secrets_found || 0
         )} | Classes: H-${dungeons.classes.healer.level} M-${
@@ -45,11 +50,9 @@ class CatacombsCommand extends minecraftCommand {
         } T-${dungeons.classes.tank.level}`
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
 
-      this.send(
-        `/gc Error: ${error}`
-      );
+      this.send(`/gc Error: ${error}`);
     }
   }
 }
