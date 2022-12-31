@@ -2,7 +2,7 @@ const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const config = require("../../../config.json");
 const { addCommas } = require("../../contracts/helperFunctions.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/playerDBAPI.js");
 
 class GuildExperienceCommand extends minecraftCommand {
   constructor(minecraft) {

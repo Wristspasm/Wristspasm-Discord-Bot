@@ -1,6 +1,6 @@
 const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const { getStats } = require("../../contracts/helperFunctions.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/playerDBAPI.js");
 const config = require("../../../config.json");
 const axios = require("axios");
 

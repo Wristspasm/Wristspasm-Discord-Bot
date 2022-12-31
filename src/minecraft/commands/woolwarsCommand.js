@@ -2,7 +2,7 @@ const minecraftCommand = require("../../contracts/MinecraftCommand.js");
 const config = require("../../../config.json");
 const axios = require("axios");
 const { toFixed } = require("../../contracts/helperFunctions.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/playerDBAPI.js");
 
 function getWoolWarsStar(exp) {
   const minimalExp = [0, 1e3, 3e3, 6e3, 1e4, 15e3];
