@@ -66,7 +66,9 @@ async function getLatestProfile(uuid) {
       player: player,
       uuid: uuid,
     };
+
   } catch (error) {
+    
     throw error;
   }
 }
