@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/MinecraftCommand.js");
+const minecraftCommand = require("../../contracts/minecraftCommand.js");
 
 class CalculateCommand extends minecraftCommand {
   constructor(minecraft) {
@@ -13,17 +13,10 @@ class CalculateCommand extends minecraftCommand {
 
   onCommand(username, message) {
     try {
-      const calculation = this.getArgs(message)
-        .join(" ")
-        .replace(/[^-()\d/*+.]/g, "");
+      const calculation = this.getArgs(message).join(" ").replace(/[^-()\d/*+.]/g, "");
 
-      this.send(
-        `/gc ${calculation.split("").join(" ")} = ${
-          eval(calculation) === Infinity
-            ? "Something went wrong.."
-            : `${eval(calculation)} (${Math.round(eval(calculation))})`
-        }`
-      );
+      this.send(`/gc ${calculation.split("").join(" ")} = ${eval(calculation) === Infinity ? "Something went wrong.." : `${eval(calculation)} (${Math.round(eval(calculation))})` }`);
+
     } catch (error) {
       this.send(`/gc Error: ${error}`);
     }

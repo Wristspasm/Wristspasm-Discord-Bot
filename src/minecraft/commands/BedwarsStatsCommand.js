@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/MinecraftCommand.js");
+const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const { addCommas } = require("../../contracts/helperFunctions.js");
 const { capitalize } = require("../../contracts/helperFunctions.js");
@@ -20,7 +20,7 @@ class BedwarsCommand extends minecraftCommand {
       const modes = ["solo", "doubles", "threes", "fours", "4v4"];
 
       const mode = modes.includes(msg[0]) ? msg[0] : "overall";
-      username = modes.includes(msg[0]) ? msg[1] : msg[0];
+      username = modes.includes(msg[0]) ? msg[1] : msg[0] || username;
 
       const player = await hypixel.getPlayer(username);
 
