@@ -16,14 +16,14 @@ specifiers:
   hypixel-api-reborn: ^10.0.0
   imgur: ^2.2.0
   json-crate: ^0.1.3
-  lilyweight: ^2.6.3
+  lilyweight: ^2.7.0
   lodash: ^4.17.21
   mineflayer: ^4.3.0
   mkdirp: ^1.0.4
   path: ^0.12.7
   prismarine-nbt: ^1.6.0
   rss-parser: ^3.12.0
-  skyhelper-networth: ^1.0.10
+  skyhelper-networth: ^1.3.0
   util: ^0.12.4
 
 dependencies:
@@ -49,7 +49,7 @@ dependencies:
   path: 0.12.7
   prismarine-nbt: 1.6.0
   rss-parser: 3.12.0
-  skyhelper-networth: 1.2.6
+  skyhelper-networth: 1.8.6
   util: 0.12.4
 
 packages:
@@ -1860,8 +1860,8 @@ packages:
       simple-concat: 1.0.1
     dev: false
 
-  /skyhelper-networth/1.2.6:
-    resolution: {integrity: sha512-Paii9XBM7/H/8BJQ0qU43hd4BjSwmOQj9kkVl/Z6PoQ2zHeNVLVCbnVk4bvzA/ypk4LxWsQo7OzxIYhW8CdW0A==}
+  /skyhelper-networth/1.8.6:
+    resolution: {integrity: sha512-jXrXAifW0NuMpw7QRnErRusCGfYAymfy8UctcXbVQ2/pZ8KoFwE5vi96mpefG77vordi+pqHp/JTbjHJ0O2z2A==}
     dependencies:
       axios: 0.27.2
       prismarine-nbt: 2.2.1

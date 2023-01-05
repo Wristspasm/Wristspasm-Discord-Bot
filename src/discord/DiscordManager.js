@@ -62,7 +62,12 @@ class DiscordManager extends CommunicationBridge {
 
     global.guild = await client.guilds.fetch(config.discord.serverID);
 
-    process.on("SIGINT", () => this.stateHandler.onClose());
+    process.on("SIGINT", () => {
+      Logger.discordMessage("Client successfuly logged out " + client.user.tag).then(() => {
+        client.destroy();
+        process.kill(process.pid);
+      });
+    });
   }
 
   async getChannel(type) {

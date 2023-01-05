@@ -2,7 +2,7 @@ const hypixel = require("../../contracts/API/HypixelRebornAPI");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { writeAt } = require("../../contracts/helperFunctions");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI");
+const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI");
 
 module.exports = {
   name: "overrideverify",
@@ -10,7 +10,7 @@ module.exports = {
   options: [
     {
       name: "name",
-      description: "Minecraft Username",
+      description: "Minecraft Username or UUID",
       type: 3,
       required: true,
     },
@@ -23,57 +23,48 @@ module.exports = {
   ],
 
   execute: async (interaction, client) => {
-    const username = interaction.options.getString("name");
-    const id = interaction.options._hoistedOptions[1].value;
-    if (
-      (await interaction.guild.members.fetch(interaction.user)).roles.cache.has(
-        config.discord.commandRole
-      )
-    ) {
-      try {
-        (await interaction.guild.members.fetch(id)).roles.add(
-          interaction.guild.roles.cache.get(config.discord.linkedRole)
-        );
+    try {
+      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.commandRole) === false) throw new Error("You do not have permission to use this command.");
 
-        const uuid = await getUUID(username);
-        await writeAt("data/discordLinked.json", `${id}.data`, [`${uuid}`]);
-        await writeAt("data/minecraftLinked.json", `${uuid}.data`, [`${id}`]);
-        const successfullyLinked = new EmbedBuilder()
-          .setColor(5763719)
-          .setAuthor({ name: "Successfully linked!" })
-          .setDescription(
-            `\`${username}\` has been successfully linked to \`${
-              (await interaction.guild.members.fetch(id)).user.username
-            }#${
-              (await interaction.guild.members.fetch(id)).user.discriminator
-            }\``
-          )
-          .setFooter({
-            text: `by DuckySoLucky#5181 | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
-        await interaction.followUp({ embeds: [successfullyLinked] });
-      } catch (error) {
-        const errorEmbed = new EmbedBuilder()
-          .setColor(15548997)
-          .setAuthor({ name: "An Error has occurred" })
-          .setDescription(error)
-          .setFooter({
-            text: `by DuckySoLucky#5181 | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
-        interaction.followUp({ embeds: [errorEmbed] });
+      let uuid = interaction.options.getString("name");
+      const id = interaction.options._hoistedOptions[1].user.id;
+      let username;
+
+      if (/^[0-9a-fA-F]{8}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{12}$/.test(uuid) === false || /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(uuid) === false) {
+        username = uuid;
+        uuid = await getUUID(uuid);
+      } else {
+        username = await getUsername(uuid);
       }
-    } else {
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(`You do not have permission to run this command.`)
+      
+
+      (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.linkedRole));
+
+      writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`).then(
+        writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
+      )
+
+      const successfullyLinked = new EmbedBuilder()
+        .setColor(5763719)
+        .setAuthor({ name: "Successfully linked!" })
+        .setDescription(`\`${username}\` has been successfully linked to \`${(await interaction.guild.members.fetch(id)).user.username}#${(await interaction.guild.members.fetch(id)).user.discriminator}\``)
         .setFooter({
           text: `by DuckySoLucky#5181 | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
-      interaction.followUp({ embeds: [errorEmbed] });
+
+      await interaction.followUp({ embeds: [successfullyLinked] });
+
+    } catch (error) {
+      console.log(error)
+
+      const errorEmbed = new EmbedBuilder()
+        .setColor(15548997)
+        .setAuthor({ name: 'An Error has occurred'})
+        .setDescription(`\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``)
+        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+
+      await interaction.editReply({ embeds: [errorEmbed] });
     }
   },
 };

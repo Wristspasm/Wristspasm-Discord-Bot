@@ -128,20 +128,18 @@ function timeSince(timeStamp) {
   }
 }
 
-function writeAt(filePath, jsonPath, value) {
+async function writeAt(filePath, jsonPath, value) {
   mkdirp.sync(getDirName(filePath));
 
-  return fs
-    .readJson(filePath)
-    .then(function (json) {
-      set(json, jsonPath, value);
-      return fs.writeJson(filePath, json);
-    })
-    .catch(function (error) {
-      const json = {};
-      set(json, jsonPath, value);
-      return fs.writeJson(filePath, json);
-    });
+  try {
+    const json = await fs.readJson(filePath);
+    set(json, jsonPath, value);
+    return await fs.writeJson(filePath, json);
+  } catch (error) {
+    const json_1 = {};
+    set(json_1, jsonPath, value);
+    return await fs.writeJson(filePath, json_1);
+  }
 }
 
 function capitalize(str) {
@@ -245,7 +243,9 @@ async function getStats(player, uuid, mode, time) {
         response.data.player.karma - response24H.data.General.karma
       } karma and gained ${(
         getLevel(response.data.player) - response24H.data.General.levelRaw
-      ).toFixed(3)} levels in the last ${time === 'daily' ? 'day' : time.replace('ly', '')}.`;
+      ).toFixed(3)} levels in the last ${
+        time === "daily" ? "day" : time.replace("ly", "")
+      }.`;
     } else if (
       ["bw", "bedwars", "bedwar", "bws"].includes(mode.toLowerCase())
     ) {
@@ -433,8 +433,8 @@ const parseTimestamp = function (text) {
 
 function formatUsername(username, gamemode) {
   if (gamemode === "ironman") return `♲ ${username}`;
-  if (gamemode === "bingo") return `Ⓑ ${username}`
-  if (gamemode === "island") return `	☀ ${username}`
+  if (gamemode === "bingo") return `Ⓑ ${username}`;
+  if (gamemode === "island") return `	☀ ${username}`;
 
   return username;
 }

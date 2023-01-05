@@ -311,14 +311,16 @@ class StateHandler extends eventHandler {
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[0];
+
       try {
         await delay(500);
-        bot.chat("/gc RIP Bozo L");
-        const linked = require("../../../data/minecraftLinked.json");
+        const linked = fs.readFileSync("data/minecraftLinked.json")
         const uuid = await getUUID(user);
-        if (linked?.[uuid]?.data[0]) {
-          const member = await guild.members.fetch(linked?.[uuid]?.data[0]);
-          member.roles.remove(config.discord.guildMemberRole);
+        if (linked[uuid] !== undefined) {
+          const ID = linked[uuid];
+          if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.guildMemberRole))) {
+            (await interaction.guild.members.fetch(ID)).roles.remove(interaction.guild.roles.cache.get(config.discord.guildMemberRole))
+          }
         }
       } catch (error) {}
 
@@ -345,14 +347,19 @@ class StateHandler extends eventHandler {
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[0];
+
       try {
-        const linked = require("../../../data/minecraftLinked.json");
+        await delay(500);
+        const linked = fs.readFileSync("data/minecraftLinked.json")
         const uuid = await getUUID(user);
-        if (linked?.[uuid]?.data[0]) {
-          const member = await guild.members.fetch(linked?.[uuid]?.data[0]);
-          member.roles.remove(config.discord.guildMemberRole);
+        if (linked[uuid] !== undefined) {
+          const ID = linked[uuid];
+          if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.guildMemberRole))) {
+            (await interaction.guild.members.fetch(ID)).roles.remove(interaction.guild.roles.cache.get(config.discord.guildMemberRole))
+          }
         }
       } catch (error) {}
+      
       return [
         this.minecraft.broadcastHeadedEmbed({
           message: `${user} ${messages.kickMessage}`,

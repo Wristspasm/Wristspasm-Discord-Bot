@@ -7,7 +7,7 @@
     "messageRepeatBypassLength": 24
   },
   "discord": {
-    "token": "",
+    "token": "NzM3MDk1MjM1MjQyMjk1MzM3.Xx4Xbg.mxiQ7Ay9ME8RDHvhBQkr4fWcBRU",
     "clientID": "737095235242295337",
     "serverID": "600311056627269642",
     "guildChatChannel": "600317865429565490",
@@ -36,19 +36,17 @@
   },
   "api": {
     "hypixelAPI": "https://api.hypixel.net",
-    "hypixelAPIkey": "",
-
-    "skyHelperAPI": "http://176.31.203.28:1195/v1",
-    "skyHelperKey": "DuckySoLucky",
+    "hypixelAPIkey": "f0cc904f-34b8-4a8f-b77c-67530162eaa1",
 
     "antiSniperAPI": "https://api.antisniper.net",
-    "antiSniperKey": "",
-
-    "skyShiiyuAPI": "https://sky.shiiyu.moe/api/v2",
+    "antiSniperKey": "3a55ea8f-9e85-4003-9912-6198122cd27f",
 
     "playerDBAPI": "https://playerdb.co/api/player/minecraft",
 
-    "imgurAPIkey": ""
+    "pixelicAPI": "https://api.pixelic.de",
+    "pixelicAPIkey": "ddb59cc3-6459-4ad6-b3ef-c398b1752354",
+
+    "imgurAPIkey": "f045fd88c67c1f3"
   },
   "event": {
     "enabled": true,
