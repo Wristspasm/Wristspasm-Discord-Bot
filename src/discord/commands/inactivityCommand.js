@@ -32,7 +32,7 @@ module.exports = {
       if (uuid === undefined) throw new Error("You are no verified. Please verify using /verify.");
       const username = await getUsername(linked[interaction.user.id]);
 
-      const guild = await hypixelRebornAPI.getGuild("id", config.minecraft.guildID);
+      const guild = await hypixelRebornAPI.getGuild("name", "WristSpasm");
       if (guild === undefined) throw new Error("Guild data not found. Please contact an administrator.");
 
       const member = guild.members.find((member) => member.uuid === uuid);
@@ -62,7 +62,7 @@ module.exports = {
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-      const channel = interaction.client.channels.cache.get(config.channels.inactivity);
+      const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
       if (channel === undefined) throw new Error("Inactivity channel not found. Please contact an administrator.");
       await channel.send({ embeds: [inactivityEmbed] });
 

@@ -40,7 +40,7 @@ module.exports = {
 
   execute: async (interaction) => {
     try {
-      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.commandRole) === false) throw new Error("You do not have permission to use this command.");
+      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole) === false) throw new Error("You do not have permission to use this command.");
 
       const discord = interaction.options._hoistedOptions[0];
 
@@ -55,7 +55,7 @@ module.exports = {
 
       if (uuid === undefined) throw new Error("Player data not found. Please contact an administrator.");
 
-      const guild = await hypixelRebornAPI.getGuild("id", config.minecraft.guildID);
+      const guild = await hypixelRebornAPI.getGuild("name", "WristSpasm");
       if (guild === undefined) throw new Error("Guild data not found. Please contact an administrator.");
 
       const member = guild.members.find((member) => member.uuid === uuid);
@@ -83,9 +83,16 @@ module.exports = {
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-        const channel = interaction.client.channels.cache.get(config.channels.inactivity);
+        const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
         if (channel === undefined) throw new Error("Inactivity channel not found. Please contact an administrator.");
         await channel.send({ embeds: [inactivityEmbed] });
+  
+        const inactivityResponse = new EmbedBuilder()
+          .setColor(5763719)
+          .setAuthor({ name: "Inactivity request." })
+          .setDescription(`Inactivity request for ${username} has been successfully created.`)
+          .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: "https://imgur.com/tgwQJTX.png" });
+        await interaction.followUp({ embeds: [inactivityResponse] });
   
         writeAt("data/inactivity.json", uuid, {
           username: username,
@@ -98,15 +105,6 @@ module.exports = {
           expiration_formatted: new Date(expiration * 1000).toLocaleString(),
           reason: reason,
         });
-  
-        const inactivityResponse = new EmbedBuilder()
-          .setColor(5763719)
-          .setAuthor({ name: "Inactivity request." })
-          .setDescription(`Inactivity request for ${username} has been successfully created.`)
-          .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: "https://imgur.com/tgwQJTX.png" });
-  
-        await interaction.followUp({ embeds: [inactivityResponse] });
-
     } catch (error) {
       console.log(error)
 

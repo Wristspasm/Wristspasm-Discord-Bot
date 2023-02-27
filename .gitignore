@@ -1,6 +1,6 @@
 node_modules/
 package-lock.json
+config.json
 .env
 package-lock.json
 .prettierrc.json
-config.json

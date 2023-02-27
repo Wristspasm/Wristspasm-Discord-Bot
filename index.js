@@ -1,16 +1,13 @@
-process.on('uncaughtException', function (err) {console.log(err.stack)})
-const webServer = require('./src/web/server.js'); 
-const app = require('./src/Application')
+process.on("uncaughtException", (error) => console.log(error));
+const app = require("./src/Application.js");
 
-'use strict'
-process.title = 'Hypixel Discord Chat Bridge'
-
+("use strict");
 
 app
-  .register()   
+  .register()
   .then(() => {
-    app.connect()
-  }).catch(err => {
-    console.error(err) 
+    app.connect();
   })
-      
+  .catch((error) => {
+    console.error(error);
+  });

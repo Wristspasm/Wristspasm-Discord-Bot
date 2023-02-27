@@ -1,4 +1,3 @@
-const hypixel = require("../../contracts/API/HypixelRebornAPI");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
 const { writeAt } = require("../../contracts/helperFunctions");
@@ -24,7 +23,7 @@ module.exports = {
 
   execute: async (interaction, client) => {
     try {
-      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.commandRole) === false) throw new Error("You do not have permission to use this command.");
+      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole) === false) throw "You do not have permission to use this command.";
 
       let uuid = interaction.options.getString("name");
       const id = interaction.options._hoistedOptions[1].user.id;
@@ -37,8 +36,7 @@ module.exports = {
         username = await getUsername(uuid);
       }
       
-
-      (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.linkedRole));
+      (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.linkedRole));
 
       writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`).then(
         writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)

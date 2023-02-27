@@ -131,18 +131,21 @@ function timeSince(timeStamp) {
 async function writeAt(filePath, jsonPath, value) {
   mkdirp.sync(getDirName(filePath));
 
-  try {
-    const json = await fs.readJson(filePath);
-    set(json, jsonPath, value);
-    return await fs.writeJson(filePath, json);
-  } catch (error) {
-    const json_1 = {};
-    set(json_1, jsonPath, value);
-    return await fs.writeJson(filePath, json_1);
-  }
+  return fs
+    .readJson(filePath)
+    .then(function (json) {
+      set(json, jsonPath, value);
+      return fs.writeJson(filePath, json);
+    })
+    .catch(function (error) {
+      const json = {};
+      set(json, jsonPath, value);
+      return fs.writeJson(filePath, json);
+    });
 }
 
 function capitalize(str) {
+  if (!str) return str;
   const words = str.replace(/_/g, " ").toLowerCase().split(" ");
 
   const upperCased = words.map((word) => {
@@ -231,10 +234,10 @@ async function getStats(player, uuid, mode, time) {
   try {
     const [response, response24H] = await Promise.all([
       axios.get(
-        `https://api.hypixel.net/player?uuid=${uuid}&key=${config.api.hypixelAPIkey}`
+        `https://api.hypixel.net/player?uuid=${uuid}&key=${config.minecraft.API.hypixelAPIkey}`
       ),
       axios.get(
-        `${config.api.pixelicAPI}/v1/player/${time}/${uuid}?key=${config.api.pixelicAPIkey}`
+        `${config.minecraft.API.pixelicAPI}/v1/player/${time}/${uuid}?key=${config.minecraft.API.pixelicAPIkey}`
       ),
     ]);
 

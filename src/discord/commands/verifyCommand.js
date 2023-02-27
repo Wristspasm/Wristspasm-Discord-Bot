@@ -24,7 +24,7 @@ module.exports = {
 
             if (socialMedia.find(media => media.id === 'DISCORD').link !== interaction.user.tag) throw new Error('This player does not have a Discord Linked to this account')
 
-            const linkedRole = interaction.guild.roles.cache.get(config.discord.linkedRole)
+            const linkedRole = interaction.guild.roles.cache.get(config.discord.roles.linkedRole)
 
             if (linkedRole === undefined) throw new Error('The verified role does not exist. Please contact an administrator.')
 
@@ -65,7 +65,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
-            await interaction.followUp({ content: 'Your Minecraft\'s linked account does not match with the Discord.', embeds: [verificationTutorialEmbed] });
+            await interaction.followUp({ embeds: [verificationTutorialEmbed] });
         }
     },
   };

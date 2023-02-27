@@ -39,8 +39,8 @@ class MinecraftManager extends CommunicationBridge {
       host: "mc.hypixel.net",
       port: 25565,
       auth: "microsoft",
-      version: '1.8.9',
-      viewDistance: 'tiny',
+      version: "1.8.9",
+      viewDistance: "tiny",
       chatLengthLimit: 256,
     });
   }
@@ -48,18 +48,52 @@ class MinecraftManager extends CommunicationBridge {
   async onBroadcast({ channel, username, message, replyingTo }) {
     Logger.broadcastMessage(`${username}: ${message}`, "Minecraft");
     bridgeChat = channel;
-    if (!this.bot.player) return; 
+    if (!this.bot.player) return;
 
-    if (channel === config.console.debugChannel) {
+    if (channel === config.discord.channels.debugChannel && config.discord.channels.debugMode === true) {
       return this.bot.chat(message);
     }
 
-    if (channel === config.discord.guildChatChannel) {
-      return config.discord.filterMessages ? this.bot.chat(filter.clean(`/gc ${replyingTo? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)) : this.bot.chat(`/gc ${replyingTo? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)
+    const symbol = config.minecraft.bot.messageFormat;
+
+    if (channel === config.discord.channels.guildChatChannel) {
+      return config.discord.other.filterMessages
+        ? this.bot.chat(
+            filter.clean(
+              `/gc ${
+                replyingTo
+                  ? `${username} replying to ${replyingTo}${symbol}`
+                  : `${username}${symbol}`
+              } ${message}`
+            )
+          )
+        : this.bot.chat(
+            `/gc ${
+              replyingTo
+                ? `${username} replying to ${replyingTo}${symbol}`
+                : `${username}${symbol}`
+            } ${message}`
+          );
     }
 
-    if (channel === config.discord.officerChannel) {
-      return config.discord.filterMessages ? this.bot.chat(filter.clean(`/oc ${replyingTo? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)) : this.bot.chat(`/oc ${replyingTo? `${username} replying to ${replyingTo} »` : `${username} »`} ${message}`)
+    if (channel === config.discord.channels.officerChannel) {
+      return config.discord.other.filterMessages
+        ? this.bot.chat(
+            filter.clean(
+              `/oc ${
+                replyingTo
+                  ? `${username} replying to ${replyingTo}${symbol}`
+                  : `${username}${symbol}`
+              } ${message}`
+            )
+          )
+        : this.bot.chat(
+            `/oc ${
+              replyingTo
+                ? `${username} replying to ${replyingTo}${symbol}`
+                : `${username}${symbol}`
+            } ${message}`
+          );
     }
   }
 }

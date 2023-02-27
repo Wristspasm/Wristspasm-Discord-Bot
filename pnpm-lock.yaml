@@ -8,6 +8,7 @@ specifiers:
   chalk: ^4.1.0
   cors: ^2.8.5
   discord-api-types: ^0.37.14
+  discord-emoji-converter: ^1.2.8
   discord.js: ^14.3.0
   express: ^4.18.1
   express-rate-limit: ^6.5.1
@@ -20,10 +21,11 @@ specifiers:
   lodash: ^4.17.21
   mineflayer: ^4.3.0
   mkdirp: ^1.0.4
+  moment: ^2.29.4
   path: ^0.12.7
   prismarine-nbt: ^1.6.0
   rss-parser: ^3.12.0
-  skyhelper-networth: ^1.3.0
+  skyhelper-networth: ^1.11.5
   util: ^0.12.4
 
 dependencies:
@@ -34,6 +36,7 @@ dependencies:
   chalk: 4.1.2
   cors: 2.8.5
   discord-api-types: 0.37.14
+  discord-emoji-converter: 1.2.8
   discord.js: 14.6.0
   express: 4.18.2
   express-rate-limit: 6.6.0_express@4.18.2
@@ -46,10 +49,11 @@ dependencies:
   lodash: 4.17.21
   mineflayer: 4.5.0
   mkdirp: 1.0.4
+  moment: 2.29.4
   path: 0.12.7
   prismarine-nbt: 1.6.0
   rss-parser: 3.12.0
-  skyhelper-networth: 1.8.6
+  skyhelper-networth: 1.11.5
   util: 0.12.4
 
 packages:
@@ -279,7 +283,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2_debug@4.3.4
+      follow-redirects: 1.15.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -533,6 +537,10 @@ packages:
     resolution: {integrity: sha512-byBH7SfDCMJwxdqeS8k5sihltH88/YPhuwx+vF2cftSxFLdxyHyU/ZxDL3bq+LB2c4ls/TymE76/ISlLfniUXg==}
     dev: false
 
+  /discord-emoji-converter/1.2.8:
+    resolution: {integrity: sha512-95UIHZugZ5nvfZb/hX4+UK9a0run8ZleU1u3xOMFxZjusfigpmrQlxbSHJemzeB5ebCJ7gJVt9Pmmhi8+zKMHw==}
+    dev: false
+
   /discord.js/14.6.0:
     resolution: {integrity: sha512-On1K7xpJZRe0KsziIaDih2ksYPhgxym/ZqV45i1f3yig4vUotikqs7qp5oXiTzQ/UTiNRCixUWFTh7vA1YBCqw==}
     engines: {node: '>=16.9.0'}
@@ -730,6 +738,16 @@ packages:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /follow-redirects/1.15.2:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
     dev: false
 
   /follow-redirects/1.15.2_debug@4.3.4:
@@ -1357,6 +1375,10 @@ packages:
       nearley: 2.20.1
     dev: false
 
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
   /moo/0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
     dev: false
@@ -1860,8 +1882,8 @@ packages:
       simple-concat: 1.0.1
     dev: false
 
-  /skyhelper-networth/1.8.6:
-    resolution: {integrity: sha512-jXrXAifW0NuMpw7QRnErRusCGfYAymfy8UctcXbVQ2/pZ8KoFwE5vi96mpefG77vordi+pqHp/JTbjHJ0O2z2A==}
+  /skyhelper-networth/1.11.5:
+    resolution: {integrity: sha512-BOP54ysxJNDa0FI3MEtvZYb2kgGYMfKU4oH2tIpo/xoVYWUpTrS7/Ka44vv2d4mIiBskq3weM7yZU161MwdOnw==}
     dependencies:
       axios: 0.27.2
       prismarine-nbt: 2.2.1

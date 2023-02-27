@@ -16,17 +16,19 @@ module.exports = {
                 time: 60 * 1000, // 60 seconds
             });
 
-            if (!(await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.commandRole)) throw new Error("You do not have permission to use this command.");
+            if (!(await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole)) throw new Error("You do not have permission to use this command.");
 
             const inactivity = JSON.parse(fs.readFileSync('data/inactivity.json', 'utf8'));
 
             if (inactivity === undefined) throw new Error('No inactivity data found. Please contact an administrator.')
 
-            const members = (await hypixelRebornAPI.getGuild("id", config.minecraft.guildID)).members
+            const members = (await hypixelRebornAPI.getGuild("name", "WristSpasm")).members
 
             let string = "";
             for (const member of members) {
                 if (inactivity[member.uuid]?.expiration >= Math.floor(Date.now() / 1000)) continue;
+
+                if (member.weeklyExperience > config.minecraft.guild.guildExp) continue; 
 
                 const username = await getUsername(member.uuid)
                 string += `${username} » ${member.weeklyExperience}\n`
@@ -64,8 +66,8 @@ module.exports = {
                         value: 'command.guildexpcheck.selectMenu_4',
                     },
                     {
-                        label: `${addCommas(config.minecraft.guildExp)}`,
-                        description: `Show everyone below ${addCommas(config.minecraft.guildExp)} Guild Experience`,
+                        label: `${addCommas(config.minecraft.guild.guildExp)}`,
+                        description: `Show everyone below ${addCommas(config.minecraft.guild.guildExp)} Guild Experience`,
                         value: `command.guildexpcheck.selectMenu_5`,
                     }
                 )

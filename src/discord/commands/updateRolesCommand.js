@@ -20,7 +20,7 @@ module.exports = {
             if (uuid === undefined) throw new Error("You are no verified. Please verify using /verify.")
 
             const [guild, player, profile] = await Promise.all([
-                hypixelRebornAPI.getGuild("id", config.minecraft.guildID),
+                hypixelRebornAPI.getGuild("name", "WristSpasm"),
                 hypixelRebornAPI.getPlayer(uuid),
                 getLatestProfile(uuid),
             ])
@@ -30,14 +30,14 @@ module.exports = {
             const playerIsInGuild = guild.members.find(member => member.uuid == uuid)
 
             if (playerIsInGuild) {
-                ((await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.guildMemberRole)))
+                ((await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole)))
             } else {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.guildMemberRole))) {
-                    (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(config.discord.guildMemberRole))
+                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
+                    (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
                 }
             }
 
-            const weight = (await getWeight(profile.profile)).senither.total;
+            const weight = getWeight(profile.profile, profile.uuid)?.weight?.senither?.total || 0;
 
             const bwLevel = player.stats.bedwars.level;
             const bwFKDR = player.stats.bedwars.finalKDRatio;
@@ -50,12 +50,12 @@ module.exports = {
 
             // ? Elite
             if (bwLevel >= 400 || bwLevel >= 300 && bwFKDR >= 5 || swLevel >= 25 || swLevel >= 20 && swKDR >= 4 || duelsWins >= 10000 || duelsWins >= 5000 && dWLR >= 4 || weight >= 69000) {
-                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.eliteRole));
+                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.eliteRole));
             } 
 
             // ! Novice
             else if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 2 || swLevel >= 15 || swLevel >= 10 && swKDR >= 2 || duelsWins >= 2500 || duelsWins >= 1500 && dWLR >= 2 || weight >= 2500) {
-                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.noviceRole));
+                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.noviceRole));
             }
 
             const bwLvLRoles = ["600314048617119757", "600313179452735498", "600313143398236191", "600311393316765697", "600311885971062784", "601086287285583872", "610930173675831336", "610930335135432879", "610929429635661846", "610929550674886686", "614848336649912342", "829979638495182868", "829980233365061653", "829980892897214484", "829981099248975873", "829981255609221131", "829981553563009034", "829981705548464128", "829981912847482900", "829982128296558623", "829982315831754823", "829982617369575495", "829982840472207440", "829983089539022890", "829983408628432896", "829983680126124053", "829984999948025899", "829985291678253086", "829985446943653898", "829985605144018965", "829983877300486184"];
