@@ -36,7 +36,7 @@ module.exports = {
           }\`\nAuto Accept: \`${
             config.minecraft.guildRequirement.autoAccept ? "enabled" : "disabled"
           }\`\nGuild Experience Requirement: \`${config.minecraft.guild.guildExp.toLocaleString()}\`\nUptime: Online since <t:${Math.floor(
-            (Date.now() - client.uptime) / 1000
+            (Date.now() - interaction.client.uptime) / 1000
           )}:R>\nVersion: \`${require("../../../package.json").version}\`\n`,
           inline: true,
         },
