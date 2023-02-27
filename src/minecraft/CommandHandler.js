@@ -31,7 +31,6 @@ class CommandHandler {
 
     Logger.minecraftMessage(`${player} - [${command.name}] ${message}`);
 
-    console.log(player, message)
     command.onCommand(player, message);
 
     return true;
