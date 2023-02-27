@@ -1,0 +1,24 @@
+{
+  "4855c53ee4fb4100997600a92fc50984": {
+    "username": "DuckySoSkilled",
+    "uuid": "4855c53ee4fb4100997600a92fc50984",
+    "discord": "DuckySoLucky#5181",
+    "discord_id": "486155512568741900",
+    "requested": "1677523413",
+    "requested_formatted": "2/27/2023, 7:43:33 PM",
+    "expiration": "1677955412",
+    "expiration_formatted": "3/4/2023, 7:43:32 PM",
+    "reason": "None"
+  },
+  "2700c8b565c74d8e9be5eb7a6ae19295": {
+    "username": "FemboyDark",
+    "uuid": "2700c8b565c74d8e9be5eb7a6ae19295",
+    "discord": "Dark#6469",
+    "discord_id": "622326625530544128",
+    "requested": "1672933984",
+    "requested_formatted": "1/5/2023, 4:53:04 PM",
+    "expiration": "1674143584",
+    "expiration_formatted": "1/19/2023, 4:53:04 PM",
+    "reason": "Test"
+  }
+}
