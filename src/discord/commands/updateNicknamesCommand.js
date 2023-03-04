@@ -76,20 +76,19 @@ module.exports = {
       });
 
     await interaction.editReply({ embeds: [successEmbed] });
-
+      
     console.log(failedLinks);
     const failedEmbed = new EmbedBuilder()
       .setColor(15548997)
-      .setAuthor({ name: "Failed to update nicknames." })
+      .setAuthor({ name: `Failed to update  ${failedLinks.length} nicknames.` }) 
       .setDescription(`\`\`\`${JSON.stringify(failedLinks)}\`\`\``)
       .setFooter({
         text: `by DuckySoLucky#5181 | /help [command] for more information`,
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 
-    if (failedLinks.length > 0) {
-      await interaction.channel.send({ embeds: [failedEmbed] });
-    }
+    await interaction.followUp({ embeds: [failedEmbed] });
+
   },
 };
 
