@@ -42,6 +42,8 @@ module.exports = {
         writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
       )
 
+      (await interaction.guild.members.fetch(id)).setNickname(username);
+
       const successfullyLinked = new EmbedBuilder()
         .setColor(5763719)
         .setAuthor({ name: "Successfully linked!" })

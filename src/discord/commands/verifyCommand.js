@@ -30,6 +30,8 @@ module.exports = {
 
             await interaction.guild.members.fetch(interaction.user).then(member => member.roles.add(linkedRole))
 
+            await interaction.guild.members.fetch(interaction.user).then(member => member.setNickname(username))
+
             getUUID(username).then(uuid => {
                 writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`).then(
                     writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
