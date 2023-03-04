@@ -9,7 +9,7 @@ module.exports = {
     name: 'roles',
     description: 'Update your current gamemode roles',
   
-    execute: async (interaction) => {
+    execute: async (interaction, type) => {
         try {
             const linked = JSON.parse(fs.readFileSync('data/discordLinked.json', 'utf8'));
 
@@ -109,8 +109,12 @@ module.exports = {
                 .setDescription(`Roles have been successfully updated!`)
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
-            await interaction.editReply({ embeds: [ updateRole ] });
-
+            if (type === "verify") {
+                updateRole.setDescription(`Your roles have been successfully updated as well!`);
+                await interaction.followUp({ embeds: [ updateRole ], ephemeral: true });
+            } else {
+                await interaction.editReply({ embeds: [ updateRole ] });
+            }
         } catch(error) {
             console.log(error)
 

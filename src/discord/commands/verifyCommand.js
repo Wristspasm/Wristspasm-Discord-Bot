@@ -46,6 +46,9 @@ module.exports = {
 
             await interaction.editReply({ embeds: [successfullyLinked] });
 
+            const updateRolesCommand = require('./updateRolesCommand')
+            await updateRolesCommand.execute(interaction, "verify")
+
         } catch(error) {
             console.log(error)
 
