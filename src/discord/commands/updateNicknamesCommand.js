@@ -60,7 +60,6 @@ module.exports = {
       } catch (error) {
         failedLinks.push({
           id: id,
-          username: interaction.client.users.cache.get(id).username,
           uuid: uuid,
           cause: error.toString(),
         });
