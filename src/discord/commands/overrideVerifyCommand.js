@@ -38,9 +38,10 @@ module.exports = {
       
       (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.linkedRole));
 
-      writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`).then(
-        writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
-      )
+      await Promise.all([
+          writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`),
+          writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
+      ]);
 
       (await interaction.guild.members.fetch(id)).setNickname(username);
 
@@ -54,6 +55,9 @@ module.exports = {
         });
 
       await interaction.followUp({ embeds: [successfullyLinked] });
+
+      const updateRolesCommand = require('./updateRolesCommand')
+      await updateRolesCommand.execute(interaction, "verify")
 
     } catch (error) {
       console.log(error)

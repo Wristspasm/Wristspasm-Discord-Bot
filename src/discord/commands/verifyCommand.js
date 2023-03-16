@@ -22,7 +22,7 @@ module.exports = {
 
             if (socialMedia.find(media => media.id === 'DISCORD')?.link === undefined) throw new Error('This player does not have a Discord Linked')
 
-            if (socialMedia.find(media => media.id === 'DISCORD').link !== interaction.user.tag) throw new Error('This player does not have a Discord Linked to this account')
+            if (socialMedia.find(media => media.id === 'DISCORD').link !== interaction.user.tag) throw new Error(`${username}'s linked Discord account does not match with yours.`)
 
             const linkedRole = interaction.guild.roles.cache.get(config.discord.roles.linkedRole)
 
@@ -32,11 +32,12 @@ module.exports = {
 
             await interaction.guild.members.fetch(interaction.user).then(member => member.setNickname(username))
 
-            getUUID(username).then(uuid => {
-                writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`).then(
-                    writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
-                )
-            })
+            const uuid = await getUUID(username);
+
+            await Promise.all([
+                writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`),
+                writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
+            ]);
 
             const successfullyLinked = new EmbedBuilder()
                 .setColor("4BB543")
@@ -60,7 +61,7 @@ module.exports = {
 
             await interaction.editReply({ embeds: [errorEmbed] });
 
-            if (error.toString().includes("Linked") === false || error.toString().includes("[hypixel-api-reborn]")) return;
+            if (error.toString().includes("linked") === false || error.toString().includes("[hypixel-api-reborn]")) return;
 
             const verificationTutorialEmbed = new EmbedBuilder()
                 .setColor(0x0099FF)

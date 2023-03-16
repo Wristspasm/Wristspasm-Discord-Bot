@@ -27,6 +27,7 @@ class DiscordManager extends CommunicationBridge {
     this.stateHandler = new StateHandler(this);
     this.messageHandler = new MessageHandler(this);
     this.commandHandler = new CommandHandler(this);
+    require("./other/statsChannel.js");
   }
 
   async connect() {
@@ -137,7 +138,10 @@ class DiscordManager extends CommunicationBridge {
     }
 
     if (username !== undefined) {
-      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
+      Logger.broadcastMessage(
+        `${username} [${guildRank}]: ${message}`,
+        `Discord`
+      );
     }
 
     channel = await this.getChannel(chat || "Guild");

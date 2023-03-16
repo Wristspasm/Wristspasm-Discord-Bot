@@ -97,7 +97,10 @@
     "SkyBlock Profiles API | Investigating - We are investigating issues with the SkyBlock Profiles endpoints on the Hypixel Public API. During this time the endpoint may be disabled while we attempt to investigate and work on a solution. | Feb  4, 14:32 EST",
     "SkyBlock Update 0.18 | Completed - The scheduled maintenance has been completed. | Feb 14, 12:18 EST",
     "SkyBlock Update 0.18 | In progress - SkyBlock is currently undergoing maintenance for the release of 0.18. | Feb 14, 09:56 EST",
-    "SkyBlock Update 0.18 | Scheduled - SkyBlock will be undergoing maintenance for the release of 0.18. | Feb 14, 09:51 EST"
+    "SkyBlock Update 0.18 | Scheduled - SkyBlock will be undergoing maintenance for the release of 0.18. | Feb 14, 09:51 EST",
+    "Hypixel Store Maintenance | Completed - The scheduled maintenance has been completed. | Mar 14, 04:31 EDT",
+    "Hypixel Store Maintenance | In progress - Scheduled maintenance is currently in progress. We will provide updates as necessary. | Mar 14, 03:31 EDT",
+    "Hypixel Store Maintenance | Scheduled - The Hypixel Store (store.hypixel.net) will be undergoing routine maintenance at the specified time for about 1 hour. The in-game store is unaffected. | Mar 13, 12:40 EDT"
   ],
   "skyblockUpdates": [
     "[February 22] SkyBlock Patch Notes | https://hypixel.net/threads/february-22-skyblock-patch-notes.5276871/",
@@ -142,6 +145,9 @@
     "Translation Update - Swedish and Romanian! | https://hypixel.net/threads/translation-update-swedish-and-romanian.5143286/",
     "[February 28] SkyBlock Patch Notes | https://hypixel.net/threads/february-28-skyblock-patch-notes.5290534/",
     "Player Account Status - Know Where You Stand | https://hypixel.net/threads/player-account-status-know-where-you-stand.4376642/",
-    "Bug Fixes - March 2023 | https://hypixel.net/threads/bug-fixes-march-2023.5285394/"
+    "Bug Fixes - March 2023 | https://hypixel.net/threads/bug-fixes-march-2023.5285394/",
+    "Upcoming Blitz Survival Games kit changes | https://hypixel.net/threads/upcoming-blitz-survival-games-kit-changes.104241/",
+    "Easter Event on Hypixel | https://hypixel.net/threads/easter-event-on-hypixel.4903080/",
+    "SkyBlock Patch 0.18.1 - Achievements & Bug Fixes | https://hypixel.net/threads/skyblock-patch-0-18-1-achievements-bug-fixes.5298274/"
   ]
 }
