@@ -138,10 +138,7 @@ class DiscordManager extends CommunicationBridge {
     }
 
     if (username !== undefined) {
-      Logger.broadcastMessage(
-        `${username} [${guildRank}]: ${message}`,
-        `Discord`
-      );
+      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
     }
 
     channel = await this.getChannel(chat || "Guild");
@@ -235,7 +232,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async onPlayerToggle({ fullMessage, username, message, color, channel }) {
-    Logger.broadcastMessage(username + " " + message, "Event");
+    Logger.broadcastMessage(message, "Event");
     channel = await this.getChannel(channel);
     switch (config.discord.other.messageMode.toLowerCase()) {
       case "bot":
@@ -245,7 +242,7 @@ class DiscordManager extends CommunicationBridge {
               color: color,
               timestamp: new Date(),
               author: {
-                name: `${username} ${message}`,
+                name: `${message}`,
                 icon_url: `https://www.mc-heads.net/avatar/${username}`,
               },
             },

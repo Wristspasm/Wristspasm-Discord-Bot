@@ -20,7 +20,7 @@ module.exports = {
         try {
             const { socialMedia } = await hypixelRebornAPI.getPlayer(username)
 
-            if (socialMedia.find(media => media.id === 'DISCORD')?.link === undefined) throw new Error('This player does not have a Discord Linked')
+            if (socialMedia.find(media => media.id === 'DISCORD')?.link === undefined) throw new Error('This player does not have a Discord linked.')
 
             if (socialMedia.find(media => media.id === 'DISCORD').link !== interaction.user.tag) throw new Error(`${username}'s linked Discord account does not match with yours.`)
 
@@ -66,7 +66,7 @@ module.exports = {
             const verificationTutorialEmbed = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setAuthor({ name: 'Link with Hypixel Social Media' })
-                .setDescription(`**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" inmyour hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${interaction.user.tag}\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`)
+                .setDescription(`**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${interaction.user.tag}\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`)
                 .setThumbnail('https://thumbs.gfycat.com/DentalTemptingLeonberger-size_restricted.gif') 
                 .setTimestamp()
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });

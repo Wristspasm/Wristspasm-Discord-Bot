@@ -28,7 +28,15 @@ class StateHandler extends eventHandler {
 
   async onMessage(event) {
     const message = event.toString();
-    let colouredMessage = event.toMotd();
+    const colouredMessage = event.toMotd();
+
+    // NOTE: fixes "100/100❤     100/100✎ Mana" spam in the debug channel
+    if (
+      message.includes("✎ Mana") &&
+      message.includes("❤") &&
+      message.includes("/")
+    )
+      return;
 
     if (config.discord.channels.debugMode === true) {
       this.minecraft.broadcastMessage({
@@ -205,11 +213,15 @@ class StateHandler extends eventHandler {
 
     if (this.isLoginMessage(message)) {
       if (config.discord.other.joinMessage === true) {
-        const user = message.split(">")[1].trim().split("joined.")[0].trim();
+        const username = message
+          .split(">")[1]
+          .trim()
+          .split("joined.")[0]
+          .trim();
         return this.minecraft.broadcastPlayerToggle({
           fullMessage: colouredMessage,
-          username: user,
-          message: messages.loginMessage,
+          username: username,
+          message: this.replaceVariables(messages.loginMessage, { username }),
           color: 2067276,
           channel: "Guild",
         });
@@ -218,11 +230,11 @@ class StateHandler extends eventHandler {
 
     if (this.isLogoutMessage(message)) {
       if (config.discord.other.joinMessage === true) {
-        const user = message.split(">")[1].trim().split("left.")[0].trim();
+        const username = message.split(">")[1].trim().split("left.")[0].trim();
         return this.minecraft.broadcastPlayerToggle({
           fullMessage: colouredMessage,
-          username: user,
-          message: messages.logoutMessage,
+          username: username,
+          message: this.replaceVariables(messages.logoutMessage, { username }),
           color: 15548997,
           channel: "Guild",
         });
@@ -230,7 +242,7 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isJoinMessage(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[0];
@@ -238,16 +250,16 @@ class StateHandler extends eventHandler {
       bot.chat(`/gc ${messages.guildJoinMessage} | By DuckySoLucky#5181`);
       return [
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.joinMessage}`,
+          message: this.replaceVariables(messages.joinMessage, { username }),
           title: `Member Joined`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 2067276,
           channel: "Logger",
         }),
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.joinMessage}`,
+          message: this.replaceVariables(messages.joinMessage, { username }),
           title: `Member Joined`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 2067276,
           channel: "Guild",
         }),
@@ -255,32 +267,31 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isLeaveMessage(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[0];
 
-      const uuid = await getUsername(user);
-      const minecraftLinked = JSON.parse(fs.readFileSync("../../../data/minecraftLinked.json"));
+      const uuid = await getUsername(username);
+      const minecraftLinked = JSON.parse(fs.readFileSync("data/minecraftLinked.json"));
       if (uuid in minecraftLinked === true) {
         const ID = minecraftLinked[uuid];
         if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
           (await interaction.guild.members.fetch(ID)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
         }
       } 
-
       return [
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.leaveMessage}`,
+          message: this.replaceVariables(messages.leaveMessage, { username }),
           title: `Member Left`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 15548997,
           channel: "Logger",
         }),
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.leaveMessage}`,
+          message: this.replaceVariables(messages.leaveMessage, { username }),
           title: `Member Left`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 15548997,
           channel: "Guild",
         }),
@@ -288,13 +299,13 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isKickMessage(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[0];
 
-      const uuid = await getUsername(user);
-      const minecraftLinked = JSON.parse(fs.readFileSync("../../../data/minecraftLinked.json"));
+      const uuid = await getUsername(username);
+      const minecraftLinked = JSON.parse(fs.readFileSync("data/minecraftLinked.json"));
       if (uuid in minecraftLinked === true) {
         const ID = minecraftLinked[uuid];
         if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
@@ -304,16 +315,16 @@ class StateHandler extends eventHandler {
 
       return [
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.kickMessage}`,
+          message: this.replaceVariables(messages.kickMessage, { username }),
           title: `Member Kicked`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 15548997,
           channel: "Logger",
         }),
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user} ${messages.kickMessage}`,
+          message: this.replaceVariables(messages.kickMessage, { username }),
           title: `Member Kicked`,
-          icon: `https://mc-heads.net/avatar/${user}`,
+          icon: `https://mc-heads.net/avatar/${username}`,
           color: 15548997,
           channel: "Guild",
         }),
@@ -333,12 +344,18 @@ class StateHandler extends eventHandler {
         .trim();
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${username} ${messages.promotionMessage} ${newRank}`,
+          message: this.replaceVariables(messages.promotionMessage, {
+            username,
+            newRank,
+          }),
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${username} ${messages.promotionMessage} ${newRank}`,
+          message: this.replaceVariables(messages.promotionMessage, {
+            username,
+            newRank,
+          }),
           color: 2067276,
           channel: "Logger",
         }),
@@ -358,12 +375,18 @@ class StateHandler extends eventHandler {
         .trim();
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${username} ${messages.demotionMessage} ${newRank}`,
+          message: this.replaceVariables(messages.demotionMessage, {
+            username,
+            newRank,
+          }),
           color: 15548997,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${username} ${messages.demotionMessage} ${newRank}`,
+          message: this.replaceVariables(messages.demotionMessage, {
+            username,
+            newRank,
+          }),
           color: 15548997,
           channel: "Logger",
         }),
@@ -372,7 +395,7 @@ class StateHandler extends eventHandler {
 
     if (this.isCannotMuteMoreThanOneMonth(message)) {
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.cannotMuteMoreThanOneMonthMessage}`,
+        message: messages.cannotMuteMoreThanOneMonthMessage,
         color: 15548997,
         channel: "Guild",
       });
@@ -381,7 +404,9 @@ class StateHandler extends eventHandler {
     if (this.isBlockedMessage(message)) {
       const blockedMsg = message.match(/".+"/g)[0].slice(1, -1);
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.blockedMessageFirst} ${blockedMsg} ${messages.blockedMessageSecond}`,
+        message: this.replaceVariables(messages.messageBlockedByHypixel, {
+          message: blockedMsg,
+        }),
         color: 15548997,
         channel: "Guild",
       });
@@ -392,7 +417,7 @@ class StateHandler extends eventHandler {
         embeds: [
           {
             color: 15548997,
-            description: `${messages.repeatMessage}`,
+            description: messages.repeatMessage,
           },
         ],
       });
@@ -400,7 +425,7 @@ class StateHandler extends eventHandler {
 
     if (this.isNoPermission(message)) {
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.noPermissionMessage}`,
+        message: messages.noPermissionMessage,
         color: 15548997,
         channel: "Guild",
       });
@@ -416,7 +441,7 @@ class StateHandler extends eventHandler {
 
     if (this.isAlreadyBlacklistedMessage(message)) {
       return this.minecraft.broadcastHeadedEmbed({
-        message: `${messages.alreadyBlacklistedMessage}`,
+        message: messages.alreadyBlacklistedMessage,
         title: `Blacklist`,
         color: 2067276,
         channel: "Guild",
@@ -424,16 +449,21 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isBlacklistMessage(message)) {
-      const user = message.split(" ")[1];
+      const username = message.split(" ")[1];
+
       return [
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user}${messages.blacklistMessage}`,
+          message: this.replaceVariables(messages.blacklistMessage, {
+            username,
+          }),
           title: `Blacklist`,
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user}${messages.blacklistMessage}`,
+          message: this.replaceVariables(messages.blacklistMessage, {
+            username,
+          }),
           title: `Blacklist`,
           color: 2067276,
           channel: "Logger",
@@ -442,16 +472,20 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isBlacklistRemovedMessage(message)) {
-      const user = message.split(" ")[1];
+      const username = message.split(" ")[1];
       return [
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user}${messages.blacklistRemoveMessage}`,
+          message: this.replaceVariables(messages.blacklistRemoveMessage, {
+            username,
+          }),
           title: `Blacklist`,
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastHeadedEmbed({
-          message: `${user}${messages.blacklistRemoveMessage}`,
+          message: this.replaceVariables(messages.blacklistRemoveMessage, {
+            username,
+          }),
           title: `Blacklist`,
           color: 2067276,
           channel: "Logger",
@@ -460,18 +494,18 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isOnlineInvite(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[2];
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.onlineInvite}`,
+          message: this.replaceVariables(messages.onlineInvite, { username }),
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.onlineInvite}`,
+          message: this.replaceVariables(messages.onlineInvite, { username }),
           color: 2067276,
           channel: "Logger",
         }),
@@ -479,19 +513,19 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isOfflineInvite(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[6]
         .match(/\w+/g)[0];
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.offlineInvite}`,
+          message: this.replaceVariables(messages.offlineInvite, { username }),
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.offlineInvite}`,
+          message: this.replaceVariables(messages.offlineInvite, { username }),
           color: 2067276,
           channel: "Logger",
         }),
@@ -520,12 +554,12 @@ class StateHandler extends eventHandler {
         .split(/ +/g)[7];
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${messages.guildMuteMessage} ${time}`,
+          message: this.replaceVariables(messages.guildMuteMessage, { time }),
           color: 15548997,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${messages.guildMuteMessage} ${time}`,
+          message: this.replaceVariables(messages.guildMuteMessage, { time }),
           color: 15548997,
           channel: "Logger",
         }),
@@ -535,12 +569,12 @@ class StateHandler extends eventHandler {
     if (this.isGuildUnmuteMessage(message)) {
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${messages.guildUnmuteMessage}`,
+          message: messages.guildUnmuteMessage,
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${messages.guildUnmuteMessage}`,
+          message: messages.guildUnmuteMessage,
           color: 2067276,
           channel: "Logger",
         }),
@@ -548,7 +582,7 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isUserMuteMessage(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[3]
@@ -559,12 +593,18 @@ class StateHandler extends eventHandler {
         .split(/ +/g)[5];
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.userMuteMessage} ${time}`,
+          message: this.replaceVariables(messages.userMuteMessage, {
+            username,
+            time,
+          }),
           color: 15548997,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.userMuteMessage} ${time}`,
+          message: this.replaceVariables(messages.userMuteMessage, {
+            username,
+            time,
+          }),
           color: 15548997,
           channel: "Logger",
         }),
@@ -572,18 +612,22 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isUserUnmuteMessage(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(/ +/g)[3];
       return [
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.userUnmuteMessage}`,
+          message: this.replaceVariables(messages.userUnmuteMessage, {
+            username,
+          }),
           color: 2067276,
           channel: "Guild",
         }),
         this.minecraft.broadcastCleanEmbed({
-          message: `${user} ${messages.userUnmuteMessage}`,
+          message: this.replaceVariables(messages.userUnmuteMessage, {
+            username,
+          }),
           color: 2067276,
           channel: "Logger",
         }),
@@ -592,7 +636,7 @@ class StateHandler extends eventHandler {
 
     if (this.isSetrankFail(message)) {
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.setrankFailMessage}`,
+        message: messages.setrankFailMessage,
         color: 15548997,
         channel: "Guild",
       });
@@ -601,7 +645,7 @@ class StateHandler extends eventHandler {
     if (this.isGuildQuestCompletion(message)) {
       this.minecraft.broadcastHeadedEmbed({
         title: "Guild Quest Completion",
-        message: `${message}`,
+        message: message,
         color: 15844367,
         channel: "Guild",
       });
@@ -609,31 +653,35 @@ class StateHandler extends eventHandler {
 
     if (this.isAlreadyMuted(message)) {
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.alreadyMutedMessage}`,
+        message: messages.alreadyMutedMessage,
         color: 15548997,
         channel: "Guild",
       });
     }
 
     if (this.isNotInGuild(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(" ")[0];
       return this.minecraft.broadcastCleanEmbed({
-        message: `${user} ${messages.notInGuildMessage}`,
+        message: this.replaceVariables(messages.notInGuildMessage, {
+          username,
+        }),
         color: 15548997,
         channel: "Guild",
       });
     }
 
     if (this.isLowestRank(message)) {
-      const user = message
+      const username = message
         .replace(/\[(.*?)\]/g, "")
         .trim()
         .split(" ")[0];
       return this.minecraft.broadcastCleanEmbed({
-        message: `${user} ${messages.lowestRankMessage}`,
+        message: this.replaceVariables(messages.lowestRankMessage, {
+          username,
+        }),
         color: 15548997,
         channel: "Guild",
       });
@@ -641,7 +689,7 @@ class StateHandler extends eventHandler {
 
     if (this.isAlreadyHasRank(message)) {
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.alreadyHasRankMessage}`,
+        message: messages.alreadyHasRankMessage,
         color: 15548997,
         channel: "Guild",
       });
@@ -652,9 +700,11 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isPlayerNotFound(message)) {
-      const user = message.split(" ")[8].slice(1, -1);
+      const username = message.split(" ")[8].slice(1, -1);
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.playerNotFoundMessageFirst} ${user} ${messages.playerNotFoundMessageSecond}`,
+        message: this.replaceVariables(messages.playerNotFoundMessage, {
+          username,
+        }),
         color: 15548997,
         channel: "Guild",
       });
@@ -666,7 +716,7 @@ class StateHandler extends eventHandler {
         .trim()
         .split(/ +/g)[5];
       return this.minecraft.broadcastCleanEmbed({
-        message: `${messages.guildLevelUpMessage} ${level}`,
+        message: this.replaceVariables(messages.guildLevelUpMessage, { level }),
         color: 16766720,
         channel: "Guild",
       });
@@ -703,27 +753,6 @@ class StateHandler extends eventHandler {
       playerMessage.length == 0
     )
       return;
-
-    if (this.isMessageFromBot(username)) {
-      if (
-        config.minecraft.bot.messageRepeatBypass === true &&
-        message.includes("[HYPIXEL ") === false
-      ) {
-        const lastString = playerMessage.slice(
-          -config.minecraft.bot.messageRepeatBypassLength
-        );
-        if (lastString.includes(" ") === false) {
-          playerMessage = playerMessage.slice(
-            0,
-            -config.minecraft.bot.messageRepeatBypassLength - 2
-          );
-          colouredMessage = colouredMessage.slice(
-            0,
-            -config.minecraft.bot.messageRepeatBypassLength - 2
-          );
-        }
-      }
-    }
 
     if (
       playerMessage.includes(config.minecraft.bot.prefix) &&
@@ -1034,6 +1063,10 @@ class StateHandler extends eventHandler {
       default:
         return "#FFFFFF";
     }
+  }
+
+  replaceVariables(template, variables) {
+    return template.replace(/\{(\w+)\}/g, (match, name) => variables[name]);
   }
 }
 

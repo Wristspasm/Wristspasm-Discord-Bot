@@ -2,8 +2,8 @@ const EndpointHandler = require("./handlers/EndpointHandler.js");
 const { webMessage } = require("../Logger.js");
 const config = require("../../config.json");
 const express = require("express");
-var http = require("http");
-var fs = require("fs");
+const http = require("http");
+const fs = require("fs");
 
 class WebServer {
   constructor(app) {

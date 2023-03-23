@@ -13,7 +13,7 @@ module.exports = {
   
     execute: async (interaction) => {
         try {
-            if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.commandRole) === false) throw new Error("You do not have permission to use this command.");
+            if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole) === false) throw new Error("You do not have permission to use this command.");
             
             if (DISABLED) throw new Error("This command is disabled.");
 

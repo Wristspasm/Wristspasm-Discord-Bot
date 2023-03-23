@@ -38,6 +38,7 @@ module.exports = {
             }
 
             const weight = getWeight(profile.profile, profile.uuid)?.weight?.senither?.total || 0;
+            const skyblockLevel = (profile.profile?.leveling?.experience / 100) ?? 0
 
             const bwLevel = player.stats.bedwars.level;
             const bwFKDR = player.stats.bedwars.finalKDRatio;
@@ -62,8 +63,8 @@ module.exports = {
             const swLvLRoles = ["732768990723702915", "732769728006717572", "732769252570038283", "732769874530533407", "732769930562502696", "732770029099024425", "732770104642764910", "732770168366956577", "732770222691319870", "732770273564033026", "732770336407552070"];
             const duelsRoles =  ["732773026273427476","732773083479408680","732773121425408063","732773215608504373","732773275070890004","732773326262632529","732773376841482260","732773463139418194"];
             const duelsWinsReqs = [100, 200, 500, 1000, 2000, 4000, 10000, 20000];
-
-            // ? Bedwars
+            const skyblockRoles = ["1088226876541116426", "1088211267405230091", "1088211502210748578", "1088211658104651927", "1088212789681733772", "1088211782163767418", "1088211901529465006", "1088212049726816337", "1088212180605861928", "1088212296326709319"]
+            const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
 
             for (const roleId of bwLvLRoles) {
                 if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
@@ -74,6 +75,10 @@ module.exports = {
             }
             
             for (const roleId of duelsRoles) {
+                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
+            }
+
+            for (const roleId of skyblockRoles) {
                 if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
             }
 
@@ -99,6 +104,16 @@ module.exports = {
                     if (duelsWins < duelsWinsReqs[i - 1]) continue;
 
                     (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(duelsRoles[i - 1]));
+                    break;
+                }
+            }
+
+            // ? Skyblock
+            if (skyblockLevel >= 1) {
+                for (let i = skyblockRoles.length - 1; i > 0; i--) {
+                    if (skyblockLevel <= skyblockLvLReqs[i]) continue;
+
+                    (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(skyblockRoles[i]));
                     break;
                 }
             }

@@ -25,7 +25,7 @@ specifiers:
   path: ^0.12.7
   prismarine-nbt: ^1.6.0
   rss-parser: ^3.12.0
-  skyhelper-networth: ^1.11.5
+  skyhelper-networth: ^1.11.8
   util: ^0.12.4
 
 dependencies:
@@ -53,7 +53,7 @@ dependencies:
   path: 0.12.7
   prismarine-nbt: 1.6.0
   rss-parser: 3.12.0
-  skyhelper-networth: 1.11.5
+  skyhelper-networth: 1.11.8
   util: 0.12.4
 
 packages:
@@ -1882,8 +1882,8 @@ packages:
       simple-concat: 1.0.1
     dev: false
 
-  /skyhelper-networth/1.11.5:
-    resolution: {integrity: sha512-BOP54ysxJNDa0FI3MEtvZYb2kgGYMfKU4oH2tIpo/xoVYWUpTrS7/Ka44vv2d4mIiBskq3weM7yZU161MwdOnw==}
+  /skyhelper-networth/1.11.8:
+    resolution: {integrity: sha512-XFjAVcWpgIAqidbENJtrDj3Pd/3kgGiz3kyOHucYOEQh4Srvn5yjTaWPvB6DG+//eSIgFLvWp0yoiuFVKqsmaw==}
     dependencies:
       axios: 0.27.2
       prismarine-nbt: 2.2.1
