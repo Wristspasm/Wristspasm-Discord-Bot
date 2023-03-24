@@ -9,13 +9,14 @@ module.exports = {
     name: 'roles',
     description: 'Update your current gamemode roles',
   
-    execute: async (interaction, type) => {
+    execute: async (interaction, user, type) => {
         try {
+            user = user ?? interaction.user;    
             const linked = JSON.parse(fs.readFileSync('data/discordLinked.json', 'utf8'));
 
             if (linked === undefined) throw new Error('No verification data found. Please contact an administrator.')
 
-            const uuid = linked[interaction.user.id];
+            const uuid = linked[user.id];
   
             if (uuid === undefined) throw new Error("You are no verified. Please verify using /verify.")
 
@@ -30,10 +31,10 @@ module.exports = {
             const playerIsInGuild = guild.members.find(member => member.uuid == uuid)
 
             if (playerIsInGuild) {
-                ((await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole)))
+                ((await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole)))
             } else {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
-                    (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
+                if ((await interaction.guild.members.fetch(user)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
+                    (await interaction.guild.members.fetch(user)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
                 }
             }
 
@@ -51,12 +52,12 @@ module.exports = {
 
             // ? Elite
             if (bwLevel >= 400 || bwLevel >= 300 && bwFKDR >= 5 || swLevel >= 25 || swLevel >= 20 && swKDR >= 4 || duelsWins >= 10000 || duelsWins >= 5000 && dWLR >= 4 || weight >= 69000) {
-                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.eliteRole));
+                (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.eliteRole));
             } 
 
             // ! Novice
             else if (bwLevel >= 200 || bwLevel >= 100 & bwFKDR >= 2 || swLevel >= 15 || swLevel >= 10 && swKDR >= 2 || duelsWins >= 2500 || duelsWins >= 1500 && dWLR >= 2 || weight >= 2500) {
-                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.noviceRole));
+                (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.noviceRole));
             }
 
             const bwLvLRoles = ["600314048617119757", "600313179452735498", "600313143398236191", "600311393316765697", "600311885971062784", "601086287285583872", "610930173675831336", "610930335135432879", "610929429635661846", "610929550674886686", "614848336649912342", "829979638495182868", "829980233365061653", "829980892897214484", "829981099248975873", "829981255609221131", "829981553563009034", "829981705548464128", "829981912847482900", "829982128296558623", "829982315831754823", "829982617369575495", "829982840472207440", "829983089539022890", "829983408628432896", "829983680126124053", "829984999948025899", "829985291678253086", "829985446943653898", "829985605144018965", "829983877300486184"];
@@ -67,26 +68,26 @@ module.exports = {
             const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
 
             for (const roleId of bwLvLRoles) {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
+                if ((await interaction.guild.members.fetch(user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(user)).roles.remove(interaction.guild.roles.cache.get(roleId));
             }
 
             for (const roleId of swLvLRoles) {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
+                if ((await interaction.guild.members.fetch(user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(user)).roles.remove(interaction.guild.roles.cache.get(roleId));
             }
             
             for (const roleId of duelsRoles) {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
+                if ((await interaction.guild.members.fetch(user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(user)).roles.remove(interaction.guild.roles.cache.get(roleId));
             }
 
             for (const roleId of skyblockRoles) {
-                if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(interaction.user)).roles.remove(interaction.guild.roles.cache.get(roleId));
+                if ((await interaction.guild.members.fetch(user)).roles.cache.has(roleId)) (await interaction.guild.members.fetch(user)).roles.remove(interaction.guild.roles.cache.get(roleId));
             }
 
             // ? Bedwars
             for (let i = bwLvLRoles.length - 1; i > 0; i--) {
                 if (bwLevel < (i - 1) * 100) continue;
 
-                await (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i - 1]));
+                await (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(bwLvLRoles[i - 1]));
                 break;
             }
 
@@ -94,7 +95,7 @@ module.exports = {
             for (let i = swLvLRoles.length; i > 0; i--) {
                 if (swLevel < (i - 1) * 10) continue;
 
-                (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i - 1]));
+                (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(swLvLRoles[i - 1]));
                 break;
             }
 
@@ -103,7 +104,7 @@ module.exports = {
                 for (let i = duelsRoles.length; i > 0; i--) {
                     if (duelsWins < duelsWinsReqs[i - 1]) continue;
 
-                    (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(duelsRoles[i - 1]));
+                    (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(duelsRoles[i - 1]));
                     break;
                 }
             }
@@ -113,7 +114,7 @@ module.exports = {
                 for (let i = skyblockRoles.length - 1; i > 0; i--) {
                     if (skyblockLevel <= skyblockLvLReqs[i]) continue;
 
-                    (await interaction.guild.members.fetch(interaction.user)).roles.add(interaction.guild.roles.cache.get(skyblockRoles[i]));
+                    (await interaction.guild.members.fetch(user)).roles.add(interaction.guild.roles.cache.get(skyblockRoles[i]));
                     break;
                 }
             }
@@ -125,7 +126,7 @@ module.exports = {
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
             if (type === "verify") {
-                updateRole.setDescription(`Your roles have been successfully updated as well!`);
+                updateRole.setDescription(`Your roles have been successfully updated!`);
                 await interaction.followUp({ embeds: [ updateRole ], ephemeral: true });
             } else {
                 await interaction.editReply({ embeds: [ updateRole ] });

@@ -36,6 +36,7 @@ class DiscordManager extends CommunicationBridge {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers,
       ],
     });
 

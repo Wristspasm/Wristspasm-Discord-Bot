@@ -5,6 +5,8 @@ module.exports = {
   async execute(oldMessage, newMessage) {
     if (oldMessage.author.bot) return;
 
+    if (oldMessage.content === newMessage.content) return;
+
     const embed = new EmbedBuilder()
       .setColor("#FF0000")
       .setDescription(

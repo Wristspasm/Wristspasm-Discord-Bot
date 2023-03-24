@@ -39,11 +39,14 @@ module.exports = {
       (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.linkedRole));
 
       await Promise.all([
-          writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`),
-          writeAt('data/minecraftLinked.json', `${uuid}`, `${interaction.user.id}`)
+          writeAt('data/discordLinked.json', `${id}`, `${uuid}`),
+          writeAt('data/minecraftLinked.json', `${uuid}`, `${id}`)
       ]);
 
-      (await interaction.guild.members.fetch(id)).setNickname(username);
+      if ((await interaction.guild.members.fetch(id)).roles.highest.rawPosition > (await interaction.guild.members.fetch(interaction.client.user.id)).roles.highest.rawPosition === false) {
+        await (await interaction.guild.members.fetch(id)).setNickname(username);
+      } 
+
 
       const successfullyLinked = new EmbedBuilder()
         .setColor(5763719)
@@ -57,7 +60,7 @@ module.exports = {
       await interaction.followUp({ embeds: [successfullyLinked] });
 
       const updateRolesCommand = require('./updateRolesCommand')
-      await updateRolesCommand.execute(interaction, "verify")
+      await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify")
 
     } catch (error) {
       console.log(error)
