@@ -44,6 +44,8 @@
     "mineflayer": "^4.3.0",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.4",
+    "owoify-js": "^2.0.0",
+    "owospeak": "^1.0.4",
     "path": "^0.12.7",
     "prismarine-nbt": "^1.6.0",
     "rss-parser": "^3.12.0",

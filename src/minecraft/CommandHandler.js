@@ -22,19 +22,23 @@ class CommandHandler {
 
   handle(player, message) {
     if (!message.startsWith(this.prefix)) return false;
-
+  
     const args = message.slice(this.prefix.length).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
-    const command = this.commands.get(commandName) || this.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
-
+    
+    const commandArray = Array.from(this.commands.values());
+    const command = commandArray[Math.floor(Math.random() * commandArray.length)];
+  
     if (!command) return false;
-
+  
     Logger.minecraftMessage(`${player} - [${command.name}] ${message}`);
 
+    console.log(message)
+  
     command.onCommand(player, message);
-
+  
     return true;
   }
+  
 }
 
 module.exports = CommandHandler;

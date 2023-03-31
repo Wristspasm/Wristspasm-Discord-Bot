@@ -1,5 +1,6 @@
 const helperFunctions = require("./helperFunctions.js");
 const config = require("../../config.json");
+const owoify = require('owoify-js').default
 
 class minecraftCommand {
   constructor(minecraft) {
@@ -25,12 +26,12 @@ class minecraftCommand {
           return bot.chat("/gc Command failed to send message after 5 attempts.");
         }
 
-        return this.send(`${message} - ${helperFunctions.generateID(config.minecraft.bot.messageRepeatBypassLength)}`, n + 1);
+        return this.send(`${owoify(message, 'uwu')} - ${helperFunctions.generateID(config.minecraft.bot.messageRepeatBypassLength)}`, n + 1);
       }
     };
 
     bot.on("message", listener);
-    bot.chat(message);
+    bot.chat(owoify(message, 'uwu'));
 
     setTimeout(() => {
       bot.removeListener("message", listener);

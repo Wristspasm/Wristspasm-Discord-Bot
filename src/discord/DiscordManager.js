@@ -17,6 +17,7 @@ const path = require("node:path");
 const fs = require("fs");
 const { kill } = require("node:process");
 let channel;
+const owoify = require('owoify-js').default
 
 class DiscordManager extends CommunicationBridge {
   constructor(app) {
@@ -181,7 +182,7 @@ class DiscordManager extends CommunicationBridge {
       case "minecraft":
         await channel.send({
           files: [
-            new AttachmentBuilder(messageToImage(fullMessage), {
+            new AttachmentBuilder(messageToImage(owoify(fullMessage, 'uwu')), {
               name: `${username}.png`,
             }),
           ],
@@ -270,7 +271,7 @@ class DiscordManager extends CommunicationBridge {
       case "minecraft":
         await channel.send({
           files: [
-            new AttachmentBuilder(messageToImage(fullMessage), {
+            new AttachmentBuilder(messageToImage(owoify(fullMessage, 'uwu')), {
               name: `${username}.png`,
             }),
           ],

@@ -10,6 +10,7 @@ const Filter = require("bad-words");
 const Logger = require("../Logger");
 /*eslint-enable */
 const filter = new Filter();
+const owoify = require('owoify-js').default
 
 class MinecraftManager extends CommunicationBridge {
   constructor(app) {
@@ -46,6 +47,8 @@ class MinecraftManager extends CommunicationBridge {
   }
 
   async onBroadcast({ channel, username, message, replyingTo }) {
+    message = owoify(message, 'uwu');
+
     Logger.broadcastMessage(`${username}: ${message}`, "Minecraft");
     bridgeChat = channel;
     if (!this.bot.player) return;
