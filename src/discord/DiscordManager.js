@@ -16,8 +16,7 @@ const Logger = require(".././Logger.js");
 const path = require("node:path");
 const fs = require("fs");
 const { kill } = require("node:process");
-let channel;
-
+const owoify = require("owoify-js").default;
 class DiscordManager extends CommunicationBridge {
   constructor(app) {
     super();
@@ -84,29 +83,8 @@ class DiscordManager extends CommunicationBridge {
     });
   }
 
-  async getChannel(type) {
-    switch (type) {
-      case "Officer":
-        return this.app.discord.client.channels.cache.get(
-          config.discord.channels.officerChannel
-        );
-      case "Logger":
-        return this.app.discord.client.channels.cache.get(
-          config.discord.channels.loggingChannel
-        );
-      case "debugChannel":
-        return this.app.discord.client.channels.cache.get(
-          config.discord.channels.debugChannel
-        );
-      default:
-        return this.app.discord.client.channels.cache.get(
-          config.discord.channels.guildChatChannel
-        );
-    }
-  }
-
   async getWebhook(discord, type) {
-    channel = await this.getChannel(type);
+    const channel = await this.stateHandler.getChannel(type);
     const webhooks = await channel.fetchWebhooks();
 
     if (webhooks.size === 0) {
@@ -138,11 +116,15 @@ class DiscordManager extends CommunicationBridge {
       mode = "minecraft";
     }
 
-    if (username !== undefined) {
+    if (message !== undefined) {
       Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
     }
 
-    channel = await this.getChannel(chat || "Guild");
+    if (config.other.owoify.enabled === true) {
+      fullMessage = owoify(fullMessage, config.other.owoify.type);
+    }
+
+    const channel = await this.stateHandler.getChannel(chat || "Guild");
     if (channel === undefined) return;
 
     switch (mode) {
@@ -179,7 +161,7 @@ class DiscordManager extends CommunicationBridge {
         break;
 
       case "minecraft":
-        await channel.send({
+        channel.send({
           files: [
             new AttachmentBuilder(messageToImage(fullMessage), {
               name: `${username}.png`,
@@ -189,8 +171,12 @@ class DiscordManager extends CommunicationBridge {
 
         if (fullMessage.includes("https://")) {
           const link = fullMessage.match(/https?:\/\/[^\s]+/g)[0];
-          channel = await this.getChannel(chat);
-          await channel.send(link);
+
+          if (link.endsWIth("§r")) {
+            link = link.substring(0, link.length - 2);
+          }
+
+          channel.send(link);
         }
 
         break;
@@ -204,7 +190,12 @@ class DiscordManager extends CommunicationBridge {
 
   async onBroadcastCleanEmbed({ message, color, channel }) {
     Logger.broadcastMessage(message, "Event");
-    channel = await this.getChannel(channel);
+
+    if (config.other.owoify.enabled === true) {
+      fullMessage = owoify(fullMessage, config.other.owoify.type);
+    }
+
+    channel = await this.stateHandler.getChannel(channel);
     channel.send({
       embeds: [
         {
@@ -217,7 +208,12 @@ class DiscordManager extends CommunicationBridge {
 
   async onBroadcastHeadedEmbed({ message, title, icon, color, channel }) {
     Logger.broadcastMessage(message, "Event");
-    channel = await this.getChannel(channel);
+
+    if (config.other.owoify.enabled === true) {
+      fullMessage = owoify(fullMessage, config.other.owoify.type);
+    }
+
+    channel = await this.stateHandler.getChannel(channel);
     channel.send({
       embeds: [
         {
@@ -234,7 +230,12 @@ class DiscordManager extends CommunicationBridge {
 
   async onPlayerToggle({ fullMessage, username, message, color, channel }) {
     Logger.broadcastMessage(message, "Event");
-    channel = await this.getChannel(channel);
+
+    if (config.other.owoify.enabled === true) {
+      fullMessage = owoify(fullMessage, config.other.owoify.type);
+    }
+
+    channel = await this.stateHandler.getChannel(channel);
     switch (config.discord.other.messageMode.toLowerCase()) {
       case "bot":
         channel.send({
