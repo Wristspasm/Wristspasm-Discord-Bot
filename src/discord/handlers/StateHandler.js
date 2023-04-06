@@ -10,9 +10,7 @@ class StateHandler {
   }
 
   async onReady() {
-    Logger.discordMessage(
-      "Client ready, logged in as " + this.discord.client.user.tag
-    );
+    Logger.discordMessage("Client ready, logged in as " + this.discord.client.user.tag);
     this.discord.client.user.setPresence({
       activities: [
         { name: `/help | by DuckySoLucky#5181`, type: ActivityType.Playing },

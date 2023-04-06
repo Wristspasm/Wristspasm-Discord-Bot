@@ -1,4 +1,3 @@
-/*eslint-disable */
 const {
   Client,
   Collection,
@@ -12,11 +11,11 @@ const StateHandler = require("./handlers/StateHandler.js");
 const CommandHandler = require("./CommandHandler.js");
 const config = require("../../config.json");
 const Logger = require(".././Logger.js");
-/*eslint-enable */
+const { kill } = require("node:process");
 const path = require("node:path");
 const fs = require("fs");
-const { kill } = require("node:process");
 const owoify = require("owoify-js").default;
+
 class DiscordManager extends CommunicationBridge {
   constructor(app) {
     super();
@@ -35,7 +34,6 @@ class DiscordManager extends CommunicationBridge {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
       ],
     });
 
@@ -117,7 +115,10 @@ class DiscordManager extends CommunicationBridge {
     }
 
     if (message !== undefined) {
-      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
+      Logger.broadcastMessage(
+        `${username} [${guildRank}]: ${message}`,
+        `Discord`
+      );
     }
 
     if (config.other.owoify.enabled === true) {
@@ -170,9 +171,9 @@ class DiscordManager extends CommunicationBridge {
         });
 
         if (fullMessage.includes("https://")) {
-          const link = fullMessage.match(/https?:\/\/[^\s]+/g)[0];
+          let link = fullMessage.match(/https?:\/\/[^\s]+/g)[0];
 
-          if (link.endsWIth("§r")) {
+          if (link.endsWith("§r")) {
             link = link.substring(0, link.length - 2);
           }
 

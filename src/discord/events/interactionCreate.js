@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+// eslint-disable-next-line
 const Logger = require("../.././Logger");
 
 module.exports = {
@@ -8,8 +8,7 @@ module.exports = {
       await interaction.deferReply({ ephemeral: false });
 
       const command = interaction.client.commands.get(interaction.commandName);
-
-      if (command === undefined) return;
+      if (!command) return;
 
       try {
         Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
@@ -17,9 +16,9 @@ module.exports = {
         bridgeChat = interaction.channelId;
 
         await command.execute(interaction);
-
       } catch (error) {
         console.log(error);
+        
         await interaction.reply({
           content: "There was an error while executing this command!",
           ephemeral: true,
