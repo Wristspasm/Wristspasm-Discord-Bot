@@ -55,7 +55,7 @@ class MinecraftManager extends CommunicationBridge {
       return this.bot.chat(message);
     }
 
-    if (config.other.owoify.enabled === true) {
+    if (config.other.owoify.enabled === true && message.startsWith("!") === false) {
       message = owoify(message, config.other.owoify.type);
     }
 
