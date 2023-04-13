@@ -5,7 +5,7 @@ module.exports = {
   name: "interactionCreate",
   async execute(interaction) {
     if (interaction.isChatInputCommand()) {
-      await interaction.deferReply({ ephemeral: false });
+      await interaction.deferReply({ ephemeral: false }).catch(() => {});
 
       const command = interaction.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -15,7 +15,7 @@ module.exports = {
 
         bridgeChat = interaction.channelId;
 
-        await command.execute(interaction);
+        await command.execute(interaction, interaction.client);
       } catch (error) {
         console.log(error);
         

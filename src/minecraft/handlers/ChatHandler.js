@@ -49,12 +49,42 @@ class StateHandler extends eventHandler {
       return bot.chat("\u00a7");
     }
 
-    if (this.isPartyMessage(message)) {
-      const username = replaceAllRanks(message.substr(54));
-      await delay(69);
-      this.send(`/party accept ${username}`);
-      await delay(5000);
-      this.send(`/party leave`);
+    if (
+      this.isPartyMessage(message) &&
+      config.minecraft.fragBot.enabled === true
+    ) {
+      const username = message.substr(54).startsWith("[")
+        ? message.substr(54).split(" ")[1].trim()
+        : message.substr(54).split(" ")[0].trim();
+
+      const { blacklist, blacklisted, whitelist, whitelisted } =
+        config.minecraft.fragBot;
+      if (blacklist || whitelist) {
+        const uuid = await getUUID(username);
+
+        if (config.minecraft.fragBot.blacklist === true) {
+          if (blacklisted.includes(username) || blacklisted.includes(uuid)) {
+            return;
+          }
+        }
+
+        const members = await hypixel
+          .getGuild("player", bot.username)
+          .then(async (guild) => guild.members.map((member) => member.uuid));
+        if (
+          (config.minecraft.fragBot.whitelist &&
+            whitelisted.includes(username)) ||
+          members.includes(uuid)
+        ) {
+          this.send(`/party accept ${username}`);
+          await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
+          this.send(`/party leave`);
+        }
+      } else {
+        this.send(`/party accept ${username}`);
+        await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
+        this.send(`/party leave`);
+      }
     }
 
     if (this.isRequestMessage(message)) {
@@ -67,7 +97,7 @@ class StateHandler extends eventHandler {
           )
       );
       const uuid = await getUUID(username);
-      if (config.minecraft.guildRequirement.enabled) {
+      if (config.minecraft.guildRequirements.enabled) {
         const [player, profile] = await Promise.all([
           hypixel.getPlayer(uuid),
           getLatestProfile(uuid),
@@ -90,49 +120,51 @@ class StateHandler extends eventHandler {
         const dWLR = player.stats.duels.WLRatio;
 
         if (
-          weight > config.minecraft.guildRequirement.requirements.senitherWeight
+          weight >
+          config.minecraft.guildRequirements.requirements.senitherWeight
         )
           meetRequirements = true;
 
         if (
           skyblockLevel >
-          config.minecraft.guildRequirement.requirements.skyblockLevel
+          config.minecraft.guildRequirements.requirements.skyblockLevel
         )
           meetRequirements = true;
 
         if (
-          bwLevel > config.minecraft.guildRequirement.requirements.bedwarsStars
+          bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars
         )
           meetRequirements = true;
         if (
           bwLevel >
-            config.minecraft.guildRequirement.requirements
+            config.minecraft.guildRequirements.requirements
               .bedwarsStarsWithFKDR &&
-          bwFKDR > config.minecraft.guildRequirement.requirements.bedwarsFKDR
+          bwFKDR > config.minecraft.guildRequirements.requirements.bedwarsFKDR
         )
           meetRequirements = true;
 
         if (
-          swLevel > config.minecraft.guildRequirement.requirements.skywarsStars
+          swLevel > config.minecraft.guildRequirements.requirements.skywarsStars
         )
           meetRequirements = true;
         if (
           swLevel >
-            config.minecraft.guildRequirement.requirements
+            config.minecraft.guildRequirements.requirements
               .skywarsStarsWithKDR &&
           swKDR >
-            config.minecraft.guildRequirement.requirements.skywarsStarsWithKDR
+            config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR
         )
           meetRequirements = true;
 
         if (
-          duelsWins > config.minecraft.guildRequirement.requirements.duelsWins
+          duelsWins > config.minecraft.guildRequirements.requirements.duelsWins
         )
           meetRequirements = true;
         if (
           duelsWins >
-            config.minecraft.guildRequirement.requirements.duelsWinsWithWLR &&
-          dWLR > config.minecraft.guildRequirement.requirements.duelsWinsWithWLR
+            config.minecraft.guildRequirements.requirements.duelsWinsWithWLR &&
+          dWLR >
+            config.minecraft.guildRequirements.requirements.duelsWinsWithWLR
         )
           meetRequirements = true;
 
@@ -148,7 +180,7 @@ class StateHandler extends eventHandler {
         await delay(1000);
 
         if (meetRequirements === true) {
-          if (config.minecraft.guildRequirement.autoAccept === true) {
+          if (config.minecraft.guildRequirements.autoAccept === true) {
             bot.chat(`/guild accept ${username}`);
           }
 

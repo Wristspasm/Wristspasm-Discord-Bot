@@ -193,7 +193,7 @@ class DiscordManager extends CommunicationBridge {
     Logger.broadcastMessage(message, "Event");
 
     if (config.other.owoify.enabled === true) {
-      fullMessage = owoify(fullMessage, config.other.owoify.type);
+      message = owoify(message, config.other.owoify.type);
     }
 
     channel = await this.stateHandler.getChannel(channel);
@@ -211,7 +211,7 @@ class DiscordManager extends CommunicationBridge {
     Logger.broadcastMessage(message, "Event");
 
     if (config.other.owoify.enabled === true) {
-      fullMessage = owoify(fullMessage, config.other.owoify.type);
+      message = owoify(message, config.other.owoify.type);
     }
 
     channel = await this.stateHandler.getChannel(channel);
