@@ -12,7 +12,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const time = interaction.options.getString("time");
 
     const cachedMessages = [];

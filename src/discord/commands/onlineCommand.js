@@ -4,7 +4,7 @@ module.exports = {
   name: "online",
   description: "List of online members.",
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const cachedMessages = [];
     const promise = new Promise((resolve, reject) => {
       const listener = (message) => {

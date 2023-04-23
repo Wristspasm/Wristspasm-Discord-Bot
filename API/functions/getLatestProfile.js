@@ -30,10 +30,7 @@ async function getLatestProfile(uuid) {
       ),
     ]).catch((error) => {
       // eslint-disable-next-line no-throw-literal
-      throw (
-        error?.response?.data?.cause ??
-        "Request to Hypixel API failed. Please try again!"
-      );
+      throw (error?.response?.data?.cause ? `Hypixel API Error: ${error.response.data.cause}` : "Request to Hypixel API failed. Please try again!");
     });
 
     playerRes = playerRes?.data ?? {};

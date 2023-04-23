@@ -15,7 +15,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const commandName = interaction.options.getString("command") || undefined;
     const commands = interaction.client.commands;
 

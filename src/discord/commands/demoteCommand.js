@@ -12,7 +12,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const name = interaction.options.getString("name");
     if (
       (await interaction.guild.members.fetch(interaction.user)).roles.cache.has(

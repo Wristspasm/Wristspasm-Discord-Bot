@@ -8,7 +8,7 @@ module.exports = {
   description: "Updates the roles of members (adds or removes Guild Member role)",
   options: [],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     if (interaction.member.permissions.has("ADMINISTRATOR") === false) {
         throw new Error("You don't have permission to use this command.");
     }

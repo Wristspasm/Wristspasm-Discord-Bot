@@ -7,7 +7,7 @@ module.exports = {
   name: "info",
   description: "Shows information about the bot.",
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const commands = interaction.client.commands;
 
     const { discordCommands, minecraftCommands } = getCommands(commands);
@@ -40,7 +40,7 @@ module.exports = {
               ? "enabled"
               : "disabled"
           }\`\nGuild Experience Requirement: \`${config.minecraft.guild.guildExp.toLocaleString()}\`\nUptime: Online since <t:${Math.floor(
-            (Date.now() - client.uptime) / 1000
+            (Date.now() - interaction.client.uptime) / 1000
           )}:R>\nVersion: \`${require("../../../package.json").version}\`\n`,
           inline: true,
         },

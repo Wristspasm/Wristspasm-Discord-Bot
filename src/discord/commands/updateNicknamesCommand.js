@@ -8,7 +8,7 @@ module.exports = {
     "Updates nicknames of everyone linked to their Minecraft username.",
   options: [],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     if (!interaction.member.permissions.has("ADMINISTRATOR"))
       return errorEmbed("You don't have permission to do that.", interaction);
 

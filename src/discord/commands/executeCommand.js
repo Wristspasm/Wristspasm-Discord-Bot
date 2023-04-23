@@ -14,7 +14,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     if (
       (await interaction.guild.members.fetch(interaction.user)).roles.cache.has(
         config.discord.roles.commandRole

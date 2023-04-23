@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 const Logger = require("../.././Logger");
+const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
   name: "interactionCreate",
@@ -13,9 +14,7 @@ module.exports = {
       try {
         Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
 
-        bridgeChat = interaction.channelId;
-
-        await command.execute(interaction, interaction.client);
+        await command.execute(interaction);
       } catch (error) {
         console.log(error);
         

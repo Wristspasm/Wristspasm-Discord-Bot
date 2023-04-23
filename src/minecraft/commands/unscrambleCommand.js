@@ -1,6 +1,7 @@
 const { getRandomWord, scrambleWord } = require("../constants/words.js");
 const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const getWord = (message) => message.split(" ").pop();
+const getUsername = (message) => message.split(" ")[1].startsWith("[") ? message.split(" ")[2] : message.split(" ")[1];
 
 const cooldowns = new Map();
 
@@ -44,7 +45,7 @@ class unscrambleCommand extends minecraftCommand {
       cooldowns.set(this.name, Date.now());
       const listener = (username, message) => {
         if (getWord(message) === answer) {
-          this.send(`/gc ${userUsername} guessed it right! Time elapsed: ${Date.now() - startTime}ms!`);
+          this.send(`/gc ${getUsername(message)} guessed it right! Time elapsed: ${Date.now() - startTime}ms!`);
 
           bot.removeListener("chat", listener);
           answered = true;

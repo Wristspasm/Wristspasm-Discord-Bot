@@ -18,7 +18,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole)) {
       const name = interaction.options.getString("name");
       const arg = interaction.options.getString("arg");

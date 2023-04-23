@@ -6,7 +6,7 @@ module.exports = {
   name: "uptime",
   description: "Shows the uptime of the bot.",
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const uptimeEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle("🕐 Uptime!")

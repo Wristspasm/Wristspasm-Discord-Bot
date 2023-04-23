@@ -304,12 +304,16 @@ class StateHandler extends eventHandler {
         .trim()
         .split(/ +/g)[0];
 
-      const uuid = await getUsername(username);
+      const uuid = await getUUID(username);
       const minecraftLinked = JSON.parse(fs.readFileSync("data/minecraftLinked.json"));
       if (uuid in minecraftLinked === true) {
         const ID = minecraftLinked[uuid];
-        if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
-          (await interaction.guild.members.fetch(ID)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
+
+        const member = await guild.members.fetch(ID);
+        const roles = member.roles.cache.map(role => role.id);
+
+        if (roles.includes(config.discord.roles.guildMemberRole)) {
+          await member.roles.remove(config.discord.roles.guildMemberRole);
         }
       } 
       return [
@@ -336,14 +340,18 @@ class StateHandler extends eventHandler {
         .trim()
         .split(/ +/g)[0];
 
-      const uuid = await getUsername(username);
+      const uuid = await getUUID(username);
       const minecraftLinked = JSON.parse(fs.readFileSync("data/minecraftLinked.json"));
       if (uuid in minecraftLinked === true) {
         const ID = minecraftLinked[uuid];
-        if ((await interaction.guild.members.fetch(ID)).roles.cache.has(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))) {
-          (await interaction.guild.members.fetch(ID)).roles.remove(interaction.guild.roles.cache.get(config.discord.roles.guildMemberRole))
+
+        const member = await guild.members.fetch(ID);
+        const roles = member.roles.cache.map(role => role.id);
+
+        if (roles.includes(config.discord.roles.guildMemberRole)) {
+          await member.roles.remove(config.discord.roles.guildMemberRole);
         }
-      }
+      } 
 
       return [
         this.minecraft.broadcastHeadedEmbed({

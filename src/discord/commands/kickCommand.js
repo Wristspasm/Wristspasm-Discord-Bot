@@ -18,7 +18,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const name = interaction.options.getString("name");
     const reason = interaction.options.getString("reason");
     if (

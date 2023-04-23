@@ -1,5 +1,5 @@
 const { getLatestProfile } = require('../../../API/functions/getLatestProfile')
-const { toFixed, addCommas } = require('../../contracts/helperFunctions')
+const { toFixed, addCommas, formatNumber } = require('../../contracts/helperFunctions')
 const hypixelRebornAPI = require('../../contracts/API/HypixelRebornAPI')
 const getWeight = require('../../../API/stats/weight')
 const config = require ('../../../config.json')
@@ -20,71 +20,76 @@ module.exports = {
 
             if (uuid === undefined) throw new Error("You are no verified. Please verify using /verify.")
 
-            const [player, profile] = await Promise.all([
-                hypixelRebornAPI.getPlayer(uuid),
+            const [player, { profile }] = await Promise.all([
+                hypixelRebornAPI.getPlayer(uuid, { guild: true }),
                 getLatestProfile(uuid)
             ])
 
-            const weight = getWeight(profile.profile, profile.uuid)?.weight?.senither?.total || 0;
-            const skyblockLevel = ((profile.profile?.leveling?.experience || 0) / 100) ?? 0;
-
             const bwLevel = player.stats.bedwars.level;
+            const skyblockLevel = ((profile?.leveling?.experience || 0) / 100) ?? 0;
+
+            let meetRequirements = false;
+            if (skyblockLevel > config.minecraft.guildRequirements.requirements.skyblockLevel || bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars) {
+                meetRequirements = true;
+            }
+
+            /*
+            const weight = getWeight(profile.profile, profile.uuid)?.weight?.senither?.total || 0;
             const bwFKDR = player.stats.bedwars.finalKDRatio;
 
             const swLevel = player.stats.skywars.level/5;
             const swKDR = player.stats.skywars.KDRatio;
-            
+        
             const duelsWins = player.stats.duels.wins;
             const dWLR = player.stats.duels.WLRatio;
 
-            let meetRequirements = false;
+            if (weight > config.minecraft.guildRequirements.requirements.senitherWeight) meetRequirements = true;
 
-            if (weight > config.minecraft.guildRequirement.requirements.senitherWeight) meetRequirements = true;
+            if (bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStarsWithFKDR && bwFKDR > config.minecraft.guildRequirements.requirements.bedwarsFKDR) meetRequirements = true;
+    
+            if (swLevel > config.minecraft.guildRequirements.requirements.skywarsStars) meetRequirements = true;
+            if (swLevel > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR && swKDR > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR) meetRequirements = true;
+    
+            if (duelsWins > config.minecraft.guildRequirements.requirements.duelsWins) meetRequirements = true;
+            if (duelsWins > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR && dWLR > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR) meetRequirements = true;
+            */
 
-            if (skyblockLevel > config.minecraft.guildRequirement.requirements.skyblockLevel) meetRequirements = true;
-    
-            if (bwLevel > config.minecraft.guildRequirement.requirements.bedwarsStars) meetRequirements = true;
-            if (bwLevel > config.minecraft.guildRequirement.requirements.bedwarsStarsWithFKDR && bwFKDR > config.minecraft.guildRequirement.requirements.bedwarsFKDR) meetRequirements = true;
-    
-            if (swLevel > config.minecraft.guildRequirement.requirements.skywarsStars) meetRequirements = true;
-            if (swLevel > config.minecraft.guildRequirement.requirements.skywarsStarsWithKDR && swKDR > config.minecraft.guildRequirement.requirements.skywarsStarsWithKDR) meetRequirements = true;
-    
-            if (duelsWins > config.minecraft.guildRequirement.requirements.duelsWins) meetRequirements = true;
-            if (duelsWins > config.minecraft.guildRequirement.requirements.duelsWinsWithWLR && dWLR > config.minecraft.guildRequirement.requirements.duelsWinsWithWLR) meetRequirements = true;
-    
             if (meetRequirements === false) {
-                const errorEmbed = new EmbedBuilder()
-                    .setColor(15548997)
-                    .setAuthor({ name: 'An Error has occurred!'})
-                    .setDescription(`You do not meet requirements.`)
-                    .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
-
-                return interaction.followUp({ embeds: [errorEmbed] });
+                throw new Error(`You do not meet the requirements to join the guild. Please try again once you meet the requirements.`);
             } 
 
             const applicationEmbed = new EmbedBuilder()
-            .setColor(2067276)
-            .setAuthor({ name: 'Guild Application.'})
-            .setDescription(`Guild Application has been successfully sent to guild staff.`)
-            .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+                .setColor(2067276)
+                .setAuthor({ name: 'Guild Application.'})
+                .setDescription(`Guild Application has been successfully sent to the guild staff.`)
+                .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
+            await interaction.followUp({ embeds: [applicationEmbed] })
 
-            interaction.followUp({ embeds: [applicationEmbed] })
+
+            let description = "";
+            for (const socialMedia of player.socialMedia) {
+                description += `**${socialMedia.name}**: \`${socialMedia.link}\`\n`
+            }
+
+            const fields = [];
+            fields.push({ name: 'Rank', value: `\`${player.rank ?? "None"}\``, inline: true })
+            fields.push({ name: 'Guild', value: `[${player.guild?.name ?? "None"}](https://plancke.io/hypixel/guild/name/${player.guild.name.replaceAll(" ", "%20")})`, inline: true })
+            fields.push({ name: 'Level', value: `\`${player.level}\``, inline: true })
+            fields.push({ name: 'First Login', value: `<t:${Math.floor(player.firstLogin / 1000)}:R>`, inline: true })
+            fields.push({ name: 'Last Seen', value: `<t:${Math.floor(player.lastLogin / 1000)}:R>`, inline: true })
+            fields.push({ name: 'Karma', value: `\`${player.karma.toLocaleString()}\``, inline: true })
+            fields.push({ name: 'Skyblock LvL', value: `\`${skyblockLevel}\``, inline: true })
+            fields.push({ name: 'Bedwars Lvl', value: `\`${bwLevel}\``, inline: true })
+            fields.push({ name: 'SkyCrypt', value: `[Click](https://sky.shiiyu.moe/stats/${player.nickname})`, inline: true })
+            
 
             const statsEmbed = new EmbedBuilder()
                 .setColor(2067276)
-                .setTitle(`${player.nickname} has requested to join the Guild!`)
-                .setDescription(`**Hypixel Network Level**\n${player.level}\n`)
-                .addFields(
-                    { name: 'Bedwars Level', value: `${player.stats.bedwars.level}`, inline: true },
-                    { name: 'Skywars Level', value: `${player.stats.skywars.level}`, inline: true },
-                    { name: 'Duels Wins', value: `${player.stats.duels.wins}`, inline: true },
-                    { name: 'Bedwars FKDR', value: `${player.stats.bedwars.finalKDRatio}`, inline: true },
-                    { name: 'Skywars KDR', value: `${player.stats.skywars.KDRatio}`, inline: true },
-                    { name: 'Duels WLR', value: `${player.stats.duels.KDRatio}`, inline: true },
-                    { name: 'Senither Weight', value: `${addCommas(toFixed((weight), 2))}`, inline: true },
-                    { name: 'Skyblock Level', value: `${skyblockLevel}`, inline: true },
-                )
-                .setThumbnail(`https://www.mc-heads.net/avatar/${player.nickname}`) 
+                .setTitle(`${player.nickname}`)
+                .setURL(`https://plancke.io/hypixel/player/stats/${player.uuid}`)
+                .setThumbnail(`https://visage.surgeplay.com/full/512/${player.uuid}.png`) 
+                .setFields(fields)    
+                .setDescription(`${description}`)
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
             interaction.client.channels.cache.get(config.discord.channels.joinRequests).send({ embeds: [statsEmbed] })
@@ -95,7 +100,7 @@ module.exports = {
             const errorEmbed = new EmbedBuilder()
               .setColor(15548997)
               .setAuthor({ name: 'An Error has occurred'})
-              .setDescription(`\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``)
+              .setDescription(`\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "")}\`\`\``)
               .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
               
             interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
