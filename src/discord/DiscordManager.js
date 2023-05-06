@@ -34,7 +34,7 @@ class DiscordManager extends CommunicationBridge {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
       ],
     });
 
@@ -73,7 +73,6 @@ class DiscordManager extends CommunicationBridge {
     }
 
     global.guild = await client.guilds.fetch(config.discord.bot.serverID);
-    console.log("FETCHED GUILD")
 
     process.on("SIGINT", () => {
       this.stateHandler.onClose().then(() => {
@@ -148,6 +147,17 @@ class DiscordManager extends CommunicationBridge {
             },
           ],
         });
+
+        if (message.includes("https://")) {
+          let link = message.match(/https?:\/\/[^\s]+/g)[0];
+
+          if (link.endsWith("§r")) {
+            link = link.substring(0, link.length - 2);
+          }
+
+          channel.send(link);
+        }
+
         break;
 
       case "webhook":
@@ -265,7 +275,7 @@ class DiscordManager extends CommunicationBridge {
           embeds: [
             {
               color: color,
-              description: `${username} ${message}`,
+              description: `${message}`,
             },
           ],
         });

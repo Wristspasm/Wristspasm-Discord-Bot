@@ -45,14 +45,14 @@ module.exports = {
         .map((message) => message.trim())
         .filter((message) => message.includes("Guild Experience"));
 
-      const description = trimmedMessages.map(
-        (message) => {
+      const description = trimmedMessages
+        .map((message) => {
           if (trimmedMessages.indexOf(message) === 0) return;
 
           const [position, , name, guildExperience] = message.split(" ");
-          return `\`${position}\` **${name}** - \`${guildExperience}\` Guild Experience\n`
-        }
-      ).join("");
+          return `\`${position}\` **${name}** - \`${guildExperience}\` Guild Experience\n`;
+        })
+        .join("");
 
       const embed = new EmbedBuilder()
         .setColor("#2ECC71")

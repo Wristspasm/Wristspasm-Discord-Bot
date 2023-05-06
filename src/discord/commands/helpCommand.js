@@ -80,9 +80,21 @@ module.exports = {
 
       await interaction.followUp({ embeds: [helpMenu] });
     } else {
-      const minecraftCommand = fs.readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js")).map((file) => new (require(`../../minecraft/commands/${file}`))()).find((command) => command.name === commandName || command.aliases.includes(commandName))
-      const command = commands.find((command) => command.name === commandName) || minecraftCommand
-      const type = commands.find((command) => command.name === commandName) ? "discord" : "minecraft"
+      const minecraftCommand = fs
+        .readdirSync("./src/minecraft/commands")
+        .filter((file) => file.endsWith(".js"))
+        .map((file) => new (require(`../../minecraft/commands/${file}`))())
+        .find(
+          (command) =>
+            command.name === commandName ||
+            command.aliases.includes(commandName)
+        );
+      const command =
+        commands.find((command) => command.name === commandName) ||
+        minecraftCommand;
+      const type = commands.find((command) => command.name === commandName)
+        ? "discord"
+        : "minecraft";
 
       if (command === undefined) {
         const errorEmbed = new EmbedBuilder()
@@ -112,7 +124,11 @@ module.exports = {
 
       const embed = new EmbedBuilder()
         .setColor(0x0099ff)
-        .setTitle(`**${type === "discord" ? "/" : config.minecraft.prefix}${command.name}**`)
+        .setTitle(
+          `**${type === "discord" ? "/" : config.minecraft.prefix}${
+            command.name
+          }**`
+        )
         .setDescription(description + "\n")
         .setFooter({
           text: "by DuckySoLucky#5181 | () = required, [] = optional",

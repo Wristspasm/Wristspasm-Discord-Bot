@@ -54,7 +54,9 @@ class SkyblockCommand extends minecraftCommand {
           getTalismans(data.profile),
         ]);
 
-      const senitherWeight = Math.floor(weight?.senither?.total || 0).toLocaleString();
+      const senitherWeight = Math.floor(
+        weight?.senither?.total || 0
+      ).toLocaleString();
       const lilyWeight = Math.floor(weight?.lily?.total || 0).toLocaleString();
       const skillAverage = (
         Object.keys(skills)
@@ -73,9 +75,7 @@ class SkyblockCommand extends minecraftCommand {
         Object.keys(dungeons.classes)
           .map((className) => dungeons.classes[className].level)
           .reduce((a, b) => a + b, 0) / Object.keys(dungeons.classes).length;
-      const networthValue = formatNumber(
-        networth.networth
-      );
+      const networthValue = formatNumber(networth.networth);
       const talismanCount = Object.keys(talismans.talismans)
         .map((rarity) => talismans.talismans[rarity].length || 0)
         .reduce((a, b) => a + b, 0);
@@ -98,7 +98,9 @@ class SkyblockCommand extends minecraftCommand {
 
       this.send(
         `/gc ${username}'s Level: ${
-          data.profile.leveling.experience / 100
+          data.profile.leveling?.experience
+            ? data.profile.leveling.experience / 100
+            : 0
         } | Senither Weight: ${senitherWeight} | Lily Weight: ${lilyWeight} | Skill Average: ${skillAverage} | Slayer: ${slayerXp} | Catacombs: ${catacombsLevel} | Class Average: ${classAverage} | Networth: ${networthValue} | Accessories: ${talismanCount} | Recombobulated: ${recombobulatedCount} | Enriched: ${enrichmentCount}`
       );
     } catch (error) {
