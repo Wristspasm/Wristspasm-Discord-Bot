@@ -16,6 +16,8 @@ class StateHandler {
         { name: `/help | by DuckySoLucky#5181`, type: ActivityType.Playing },
       ],
     });
+    global.guild = await client.guilds.fetch(config.discord.bot.serverID);
+    
     const channel = await this.getChannel("Guild");
     global.bridgeChat = config.discord.channels.guildChatChannel;
 

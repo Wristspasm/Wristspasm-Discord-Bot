@@ -4,103 +4,95 @@ const fs = require("fs");
 
 module.exports = {
   name: "update-nicknames",
-  description:
-    "Updates nicknames of everyone linked to their Minecraft username.",
+  description: "Updates usernames of linked users.",
   options: [],
 
   execute: async (interaction) => {
-    if (!interaction.member.permissions.has("ADMINISTRATOR"))
-      return errorEmbed("You don't have permission to do that.", interaction);
+    try {
+      if (interaction.member.permissions.has("ADMINISTRATOR") === false) {
+        throw new Error("You don't have permission to use this command.");
+      }
 
-    const failedLinks = [];
+      const linkedData = fs.readFileSync("data/minecraftLinked.json");
+      if (linkedData === undefined) {
+        throw new Error("No linked users found!");
+      }
 
-    const linked = fs.readFileSync("data/discordLinked.json");
-    if (linked === undefined)
-      return errorEmbed("Couldn't find linked data.", interaction);
+      const linked = JSON.parse(linkedData);
+      if (linked === undefined) {
+        throw new Error("Failed to parse Linked data!");
+      }
 
-    const linkedData = JSON.parse(linked);
-    if (linkedData === undefined)
-      return errorEmbed("Failed parsing linked data.", interaction);
+      let linkedUsers = 0,
+        updatedUsers = [];
+      for (const [uuid, id] of Object.entries(linked)) {
+        const [username, user] = await Promise.all([
+          getUsername(uuid),
+          interaction.guild.members.fetch(id).catch(() => {}),
+        ]);
 
-    for (const [id, uuid] of Object.entries(linkedData)) {
-      try {
-        const member = await interaction.guild.members.fetch(id);
+        const index = Object.keys(linked).indexOf(uuid);
 
-        if (member === undefined) {
-          failedLinks.push({
-            id: id,
-            uuid: uuid,
-            cause: "Couldn't find member.",
-          });
-          continue;
-        }
-
-        const username = await getUsername(uuid);
-
-        if (username === undefined) {
-          failedLinks.push({
-            id: id,
-            uuid: uuid,
-            cause: "Couldn't find username.",
-          });
-          continue;
-        }
-
-        member.setNickname(username);
-
-        const progress = Object.keys(linkedData).indexOf(id) + 1;
         const progressEmbed = new EmbedBuilder()
           .setColor(3066993)
           .setAuthor({ name: "Updating nicknames..." })
           .setDescription(
-            `\`\`\`${progress}/${Object.keys(linkedData).length}\`\`\``
-          );
+            `Progress: \`${index}/${Object.keys(linked).length}\` (\`${(
+              (index / Object.keys(linked).length) *
+              100
+            ).toFixed(2)}%\`)`
+          )
+          .setFooter({
+            text: `by DuckySoLucky#5181 | /help [command] for more information`,
+            iconURL: "https://imgur.com/tgwQJTX.png",
+          });
 
         await interaction.editReply({ embeds: [progressEmbed] });
-      } catch (error) {
-        failedLinks.push({
+
+        if (user === undefined) continue;
+        if (user.nickname === username) continue;
+        if (user.user.username === username) continue;
+
+        user.setNickname(username).catch(() => {});
+        linkedUsers++;
+
+        updatedUsers.push({
+          username: username,
           id: id,
-          uuid: uuid,
-          cause: error.toString(),
         });
+
+        console.log(`Updated username for ${username} (${id})`);
       }
+
+      const successEmbed = new EmbedBuilder()
+        .setColor(3066993)
+        .setAuthor({ name: "Successfully updated nicknames." })
+        .setDescription(`Updated usernames for \`${linkedUsers}\` users.`)
+        .setFooter({
+          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          iconURL: "https://imgur.com/tgwQJTX.png",
+        });
+
+      await interaction.editReply({ embeds: [successEmbed] });
+
+      await interaction.followUp({
+        content: `Updated usernames: \n\`\`\`${JSON.stringify(
+          updatedUsers
+        )}\`\`\``,
+      });
+    } catch (error) {
+      console.error(error);
+
+      const errorEmbed = new EmbedBuilder()
+        .setColor(15548997)
+        .setAuthor({ name: "An Error has occurred" })
+        .setDescription(`\`\`\`${error.toString()}\`\`\``)
+        .setFooter({
+          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          iconURL: "https://imgur.com/tgwQJTX.png",
+        });
+
+      await interaction.editReply({ embeds: [errorEmbed] });
     }
-
-    const successEmbed = new EmbedBuilder()
-      .setColor(3066993)
-      .setAuthor({ name: "Successfully updated nicknames." })
-      .setDescription(`\`\`\`${failedLinks.length} failed links.\`\`\``)
-      .setFooter({
-        text: `by DuckySoLucky#5181 | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
-      });
-
-    await interaction.editReply({ embeds: [successEmbed] });
-      
-    console.log(failedLinks);
-    const failedEmbed = new EmbedBuilder()
-      .setColor(15548997)
-      .setAuthor({ name: `Failed to update  ${failedLinks.length} nicknames.` }) 
-      .setDescription(`\`\`\`${JSON.stringify(failedLinks)}\`\`\``)
-      .setFooter({
-        text: `by DuckySoLucky#5181 | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
-      });
-
-    await interaction.followUp({ embeds: [failedEmbed] });
-
   },
 };
-
-function errorEmbed(error, interaction) {
-  const errorEmbed = new EmbedBuilder()
-    .setColor(15548997)
-    .setAuthor({ name: "An Error has occurred" })
-    .setDescription(`\`\`\`${error.toString()}\`\`\``)
-    .setFooter({
-      text: `by DuckySoLucky#5181 | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
-    });
-
-  return interaction.editReply({ embeds: [errorEmbed] });
-}

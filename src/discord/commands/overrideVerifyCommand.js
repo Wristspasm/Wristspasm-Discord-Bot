@@ -59,7 +59,7 @@ module.exports = {
 
       await interaction.followUp({ embeds: [successfullyLinked] });
 
-      const updateRolesCommand = require('./updateRolesCommand')
+      const updateRolesCommand = require('./rolesCommand')
       await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify")
 
     } catch (error) {
