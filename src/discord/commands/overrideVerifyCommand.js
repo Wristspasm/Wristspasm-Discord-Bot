@@ -35,17 +35,23 @@ module.exports = {
       } else {
         username = await getUsername(uuid);
       }
-      
-      (await interaction.guild.members.fetch(id)).roles.add(interaction.guild.roles.cache.get(config.discord.roles.linkedRole));
+
+      const minecraftLinked = require('../../../data/minecraftLinked.json');
+      Object.keys(minecraftLinked).map(uuid => {
+          if (minecraftLinked[uuid] === id) delete minecraftLinked[uuid]
+      })
+      fs.writeFileSync('data/minecraftLinked.json', JSON.stringify(minecraftLinked, null, 2))
 
       await Promise.all([
           writeAt('data/discordLinked.json', `${id}`, `${uuid}`),
           writeAt('data/minecraftLinked.json', `${uuid}`, `${id}`)
       ]);
+      
+      await interaction.guild.members.fetch(id).then(member => member.roles.add(linkedRole))
+      await interaction.guild.members.fetch(id).then(member => member.setNickname(username))
 
-      if ((await interaction.guild.members.fetch(id)).roles.highest.rawPosition > (await interaction.guild.members.fetch(interaction.client.user.id)).roles.highest.rawPosition === false) {
-        await (await interaction.guild.members.fetch(id)).setNickname(username);
-      } 
+
+      //if ((await interaction.guild.members.fetch(id)).roles.highest.rawPosition > (await interaction.guild.members.fetch(interaction.client.user.id)).roles.highest.rawPosition === false) {
 
 
       const successfullyLinked = new EmbedBuilder()

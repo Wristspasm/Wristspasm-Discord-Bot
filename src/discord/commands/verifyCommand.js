@@ -3,6 +3,7 @@ const config = require ('../../../config.json')
 const { EmbedBuilder } = require("discord.js")
 const { writeAt } = require('../../contracts/helperFunctions')
 const { getUUID } = require('../../contracts/API/PlayerDBAPI')
+const fs = require('fs')
 
 module.exports = {
     name: 'verify',
@@ -18,7 +19,7 @@ module.exports = {
         const username = interaction.options.getString("name");
 
         try {
-            const { socialMedia } = await hypixelRebornAPI.getPlayer(username)
+            const { socialMedia, nickname } = await hypixelRebornAPI.getPlayer(username)
 
             if (socialMedia.find(media => media.id === 'DISCORD')?.link === undefined) throw new Error('This player does not have a Discord linked.')
 
@@ -28,11 +29,17 @@ module.exports = {
 
             if (linkedRole === undefined) throw new Error('The verified role does not exist. Please contact an administrator.')
 
+            const uuid = await getUUID(username);
+
             await interaction.guild.members.fetch(interaction.user).then(member => member.roles.add(linkedRole))
 
-            await interaction.guild.members.fetch(interaction.user).then(member => member.setNickname(username))
+            await interaction.guild.members.fetch(interaction.user).then(member => member.setNickname(nickname))
 
-            const uuid = await getUUID(username);
+            const minecraftLinked = require('../../../data/minecraftLinked.json');
+            Object.keys(minecraftLinked).map(uuid => {
+                if (minecraftLinked[uuid] === interaction.user.id) delete minecraftLinked[uuid]
+            })
+            fs.writeFileSync('data/minecraftLinked.json', JSON.stringify(minecraftLinked, null, 2))
 
             await Promise.all([
                 writeAt('data/discordLinked.json', `${interaction.user.id}`, `${uuid}`),
@@ -42,7 +49,7 @@ module.exports = {
             const successfullyLinked = new EmbedBuilder()
                 .setColor("4BB543")
                 .setAuthor({ name: 'Successfully linked!'})
-                .setDescription(`Your account has been successfully linked to \`${username}\``)
+                .setDescription(`Your account has been successfully linked to \`${nickname}\``)
                 .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
 
             await interaction.editReply({ embeds: [successfullyLinked] });

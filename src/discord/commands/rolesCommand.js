@@ -136,7 +136,6 @@ module.exports = {
         skyblockRoles
       )) {
         if (user.roles.cache.has(roleId)) {
-          console.log(roleId);
           await user.roles.remove(roleId).catch((_) => {});
         }
       }
