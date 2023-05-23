@@ -73,7 +73,7 @@ module.exports = {
 
             const fields = [];
             fields.push({ name: 'Rank', value: `\`${player.rank ?? "None"}\``, inline: true })
-            fields.push({ name: 'Guild', value: `[${player.guild?.name ?? "None"}](https://plancke.io/hypixel/guild/name/${player.guild.name.replaceAll(" ", "%20")})`, inline: true })
+            fields.push({ name: 'Guild', value: `${player.guild?.name !== undefined ? `[${player.guild.name}](https://plancke.io/hypixel/guild/name/${player.guild.name.replaceAll(" ", "%20")})` : "None"}`, inline: true })
             fields.push({ name: 'Level', value: `\`${player.level}\``, inline: true })
             fields.push({ name: 'First Login', value: `<t:${Math.floor(player.firstLogin / 1000)}:R>`, inline: true })
             fields.push({ name: 'Last Seen', value: `<t:${Math.floor(player.lastLogin / 1000)}:R>`, inline: true })
