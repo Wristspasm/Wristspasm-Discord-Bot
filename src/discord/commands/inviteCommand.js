@@ -20,13 +20,32 @@ module.exports = {
       )
     ) {
       bot.chat(`/g invite ${name}`);
+
+      const embed = new EmbedBuilder()
+      .setColor("#2ECC71")
+      .setTitle("Guild Invite")
+      .setDescription(`\`\`\`Successfully invited ${name} to the guild!\`\`\``)
+      .setFooter({
+        text: "by DuckySoLucky#5181 | /help [command] for more information",
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
       await interaction.followUp({
-        content: "Command has been executed successfully.",
+        embeds: [embed],
         ephemeral: true,
       });
     } else {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#E74C3C")
+        .setTitle("Error")
+        .setDescription(`\`\`\`You do not have permission to run this command.\`\`\``)
+        .setFooter({
+          text: "by DuckySoLucky#5181 | /help [command] for more information",
+          iconURL: "https://imgur.com/tgwQJTX.png",
+        });
+
       await interaction.followUp({
-        content: "You do not have permission to run this command.",
+        embeds: [errorEmbed],
         ephemeral: true,
       });
     }
