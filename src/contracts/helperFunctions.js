@@ -341,7 +341,7 @@ async function getStats(player, uuid, mode, time) {
 
       const profile = response.profile;
       const oldProfile =
-        response24H.data.Profiles[response.profileData.profile_id];
+        response24H.data.Profiles[response.profileData.profile_id.replaceAll("-", "")];
 
       const networth = await getNetworth(profile, response.profileData?.banking?.balance || 0, { cache: true, onlyNetworth: true });
       const experience = profile.leveling.experience;
