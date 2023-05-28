@@ -31,7 +31,7 @@ module.exports = {
       const [guild, player, profile] = await Promise.all([
         hypixelRebornAPI.getGuild("name", "WristSpasm"),
         hypixelRebornAPI.getPlayer(uuid),
-        getLatestProfile(uuid),
+        getLatestProfile(uuid).catch((_) => undefined),
       ]);
 
       if (guild === undefined) {
@@ -49,7 +49,7 @@ module.exports = {
           .catch((_) => {});
       }
 
-      const skyblockLevel = profile.profile?.leveling?.experience / 100 ?? 0;
+      const skyblockLevel = (profile?.profile?.leveling?.experience / 100) ?? 0;
       const bwLevel = player.stats.bedwars.level;
       const swLevel = player.stats.skywars.level / 5;
       const duelsWins = player.stats.duels.wins;

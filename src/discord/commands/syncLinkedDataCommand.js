@@ -16,7 +16,7 @@ module.exports = {
         throw new Error("No guild members found!");
       }
 
-      const linkedData = fs.readFileSync("data/minecraftLinked.json", "utf8");
+      const linkedData = fs.readFileSync("data/discordLinked.json", "utf8");
       if (linkedData === undefined) {
         throw new Error("No linked users found!");
       }
@@ -27,11 +27,13 @@ module.exports = {
       }
 
       const output = {};
-      for (const [uuid, id] of Object.entries(linked)) {
-        output[id] = uuid;
+      for (const [id, uuid] of Object.entries(linked)) {
+        output[uuid] = id;
       }
 
-      fs.writeFileSync("data/discordLinked.json", JSON.stringify(output));
+      fs.writeFileSync("data/minecraftLinked.json", JSON.stringify(output));
+
+      console.log(output);
 
       const successEmbed = new EmbedBuilder()
         .setColor(3066993)

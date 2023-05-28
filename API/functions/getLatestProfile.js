@@ -59,6 +59,11 @@ async function getLatestProfile(uuid) {
     const player = parseHypixel(playerRes, uuid);
 
     const profileData = profileRes.profiles.find((a) => a.selected) || null;
+    if (profileData == null) {
+      // eslint-disable-next-line no-throw-literal
+      throw "Uh oh, this player is not in selected Skyblock profile.";
+    }
+
     const profile = profileData.members[uuid];
 
     if (profile === null) {
