@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 const Logger = require("../.././Logger");
-const { EmbedBuilder } = require('discord.js')
+const { EmbedBuilder } = require("discord.js");
 
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI");
 const { toFixed, writeAt } = require("../../contracts/helperFunctions");
@@ -14,7 +14,9 @@ module.exports = {
     if (interaction.isChatInputCommand()) {
       const command = interaction.client.commands.get(interaction.commandName);
 
-      if (!command == "inactivity") {await interaction.deferReply({ ephemeral: false }).catch(() => {});}
+      if (!command == "inactivity") {
+        await interaction.deferReply({ ephemeral: false }).catch(() => {});
+      }
 
       if (!command) return;
 
@@ -24,7 +26,7 @@ module.exports = {
         await command.execute(interaction);
       } catch (error) {
         console.log(error);
-        
+
         await interaction.reply({
           content: "There was an error while executing this command!",
           ephemeral: true,
@@ -34,7 +36,7 @@ module.exports = {
 
     if (interaction.isButton()) {
       try {
-        await interaction.deferReply({ ephemeral: true })
+        await interaction.deferReply({ ephemeral: true });
 
         // ? Apply Button
         if (interaction.customId.includes("guild.apply_button")) {
@@ -46,24 +48,28 @@ module.exports = {
 
           await applyCommand.execute(interaction);
         }
-
       } catch (error) {
         const errorEmbed = new EmbedBuilder()
           .setColor(15548997)
-          .setAuthor({ name: 'An Error has occurred'})
-          .setDescription(`\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``)
-          .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
-          
+          .setAuthor({ name: "An Error has occurred" })
+          .setDescription(
+            `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
+          )
+          .setFooter({
+            text: `by DuckySoLucky#5181 | /help [command] for more information`,
+            iconURL: "https://imgur.com/tgwQJTX.png",
+          });
+
         interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
       }
     }
 
-    if (interaction.customId === 'inactivityform') {
-      const time = interaction.fields.getTextInputValue('inactivitytime');
-	    const reason = interaction.fields.getTextInputValue('inactivityreason') || "None";
+    if (interaction.customId === "inactivityform") {
+      const time = interaction.fields.getTextInputValue("inactivitytime");
+      const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
 
       try {
-        const linked = JSON.parse(fs.readFileSync('data/discordLinked.json', 'utf8'));
+        const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
         if (linked === undefined) throw new Error("No verification data found. Please contact an administrator.");
 
         const uuid = linked[interaction.user.id];
@@ -77,7 +83,10 @@ module.exports = {
         if (member === undefined) throw new Error("You are not in the guild.");
 
         const timeerror = time * 86400;
-        if (timeerror >= 14 * 86400) throw new Error("You can only request inactivity for 14 days or less. Please contact an administrator if you need to be inactive for longer.");
+        if (timeerror >= 14 * 86400)
+          throw new Error(
+            "You can only request inactivity for 14 days or less. Please contact an administrator if you need to be inactive for longer."
+          );
 
         const expiration = toFixed(new Date().getTime() / 1000 + timeerror, 0);
 
@@ -113,13 +122,15 @@ module.exports = {
         });
 
         const inactivityResponse = new EmbedBuilder()
-        .setColor(5763719)
-        .setAuthor({ name: "Inactivity request." })
-        .setDescription(`Inactivity request has been successfully sent to the guild staff.`)
-        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: "https://imgur.com/tgwQJTX.png" });
+          .setColor(5763719)
+          .setAuthor({ name: "Inactivity request." })
+          .setDescription(`Inactivity request has been successfully sent to the guild staff.`)
+          .setFooter({
+            text: `by DuckySoLucky#5181 | /help [command] for more information`,
+            iconURL: "https://imgur.com/tgwQJTX.png",
+          });
 
-      await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
-
+        await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
       } catch (error) {
         console.log(error);
 

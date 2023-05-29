@@ -2,7 +2,14 @@ const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI");
 const { toFixed, writeAt } = require("../../contracts/helperFunctions");
 const { getUsername } = require("../../contracts/API/PlayerDBAPI");
 const config = require("../../../config.json");
-const { Events, ModalBuilder, EmbedBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js");
+const {
+  Events,
+  ModalBuilder,
+  EmbedBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -11,7 +18,7 @@ module.exports = {
 
   execute: async (interaction) => {
     try {
-      const linked = JSON.parse(fs.readFileSync('data/discordLinked.json', 'utf8'));
+      const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
       if (linked === undefined) throw new Error("No verification data found. Please contact an administrator.");
 
       const uuid = linked[interaction.user.id];
@@ -24,21 +31,19 @@ module.exports = {
       const member = guild.members.find((member) => member.uuid === uuid);
       if (member === undefined) throw new Error("You are not in the guild.");
 
-      const modal = new ModalBuilder()
-      .setCustomId("inactivityform")
-      .setTitle("Inactivity Form");
+      const modal = new ModalBuilder().setCustomId("inactivityform").setTitle("Inactivity Form");
 
       const time = new TextInputBuilder()
         .setCustomId("inactivitytime")
         .setLabel("How long will you be inactive for (in Days)?")
         .setStyle(TextInputStyle.Short)
-	      .setPlaceholder('Number of days')
+        .setPlaceholder("Number of days");
 
       const reason = new TextInputBuilder()
         .setCustomId("inactivityreason")
         .setLabel("Why are you going to be offline (optional)?")
         .setStyle(TextInputStyle.Paragraph)
-        .setRequired(false)
+        .setRequired(false);
 
       const inactivitytime = new ActionRowBuilder().addComponents(time);
       const inactivityreason = new ActionRowBuilder().addComponents(reason);
