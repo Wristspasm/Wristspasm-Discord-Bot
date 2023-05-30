@@ -46,7 +46,7 @@ module.exports = {
       for (const member of members) {
         const joinedInLast7Days = new Date(member.joinedAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
         const inactivityExpired = inactivity[member.uuid]?.expiration > Math.floor(Date.now() / 1000);
-        const username = "name"; // await getUsername(member.uuid);
+        const username = await getUsername(member.uuid);
 
         if (joinedInLast7Days === true || inactivityExpired === true) {
           if (joinedInLast7Days === true) {
