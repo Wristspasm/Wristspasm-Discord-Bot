@@ -33,14 +33,7 @@ function addNotation(type, value) {
   let returnVal = value;
   let notList = [];
   if (type === "shortScale") {
-    notList = [
-      " Thousand",
-      " Million",
-      " Billion",
-      " Trillion",
-      " Quadrillion",
-      " Quintillion",
-    ];
+    notList = [" Thousand", " Million", " Billion", " Trillion", " Quadrillion", " Quintillion"];
   }
 
   if (type === "oneLetters") {
@@ -115,10 +108,10 @@ function timeSince(timeStamp) {
     return parseInt(secondsPast) + "s";
   }
   if (secondsPast < 3600) {
-    return parseInt(secondsPast / 60) + "m";
+    return parseInt(secondsPast / 60) + "m " + parseInt(secondsPast % 60) + "s";
   }
   if (secondsPast <= 86400) {
-    return parseInt(secondsPast / 3600) + "h";
+    return parseInt(secondsPast / 3600) + "h " + parseInt(secondsPast / 60) + "m " + parseInt(secondsPast % 60) + "s";
   }
   if (secondsPast > 86400) {
     const d = toFixed(parseInt(secondsPast / 86400), 0);
@@ -238,61 +231,42 @@ async function getStats(player, uuid, mode, time) {
   try {
     if (["skyblock", "sb"].includes(mode) === false) {
       const [response, response24H] = await Promise.all([
-        axios.get(
-          `https://api.hypixel.net/player?uuid=${uuid}&key=${config.minecraft.API.hypixelAPIkey}`
-        ),
+        axios.get(`https://api.hypixel.net/player?uuid=${uuid}&key=${config.minecraft.API.hypixelAPIkey}`),
         axios.get(
           `${config.minecraft.API.pixelicAPI}/player/${time}/${uuid}?key=${config.minecraft.API.pixelicAPIkey}`
         ),
       ]);
 
       if (!mode || mode.includes("/")) {
-        const karma =
-          response.data.player.karma - response24H.data.General.karma;
-        const experience =
-          response.data.player.networkExp - response24H.data.General.EXP;
-        const level =
-          getLevel(response.data.player.networkExp) -
-          getLevel(parseInt(response24H.data.General.EXP));
+        const karma = response.data.player.karma - response24H.data.General.karma;
+        const experience = response.data.player.networkExp - response24H.data.General.EXP;
+        const level = getLevel(response.data.player.networkExp) - getLevel(parseInt(response24H.data.General.EXP));
 
         return `/gc ${player} has earned ${karma.toLocaleString()} karma and ${level.toFixed(
           5
         )} levels (${experience.toLocaleString()} EXP) in the last ${
           time === "daily" ? "day" : time.replace("ly", "")
         }!`;
-      } else if (
-        ["bw", "bedwars", "bedwar", "bws"].includes(mode.toLowerCase())
-      ) {
+      } else if (["bw", "bedwars", "bedwar", "bws"].includes(mode.toLowerCase())) {
         const bedwarsData = response.data.player.stats.Bedwars;
         const oldBedwarsData = response24H.data.Bedwars;
 
         const experience = bedwarsData.Experience - oldBedwarsData.EXP;
         const level = getBedwarsLevel(experience);
 
-        const FK =
-          bedwarsData.final_kills_bedwars - oldBedwarsData.overall.finalKills;
-        const FD =
-          bedwarsData.final_deaths_bedwars -
-          oldBedwarsData.overall.finalDeaths +
-          1;
+        const FK = bedwarsData.final_kills_bedwars - oldBedwarsData.overall.finalKills;
+        const FD = bedwarsData.final_deaths_bedwars - oldBedwarsData.overall.finalDeaths + 1;
 
         const wins = bedwarsData.wins_bedwars - oldBedwarsData.overall.wins;
-        const losses =
-          bedwarsData.losses_bedwars - oldBedwarsData.overall.losses + 1;
+        const losses = bedwarsData.losses_bedwars - oldBedwarsData.overall.losses + 1;
 
-        const BB =
-          bedwarsData.beds_broken_bedwars - oldBedwarsData.overall.bedsBroken;
-        const BL =
-          bedwarsData.beds_lost_bedwars - oldBedwarsData.overall.bedsLost + 1;
+        const BB = bedwarsData.beds_broken_bedwars - oldBedwarsData.overall.bedsBroken;
+        const BL = bedwarsData.beds_lost_bedwars - oldBedwarsData.overall.bedsLost + 1;
 
-        return `/gc [${level.toFixed(5)}✫] ${player} FK: ${addCommas(
-          FK
-        )} FKDR: ${(FK / FD || 0).toFixed(2)} Wins: ${wins} WLR: ${(
-          wins / losses || 0
-        ).toFixed(2)} BB: ${BB} BLR: ${(BB / BL || 0).toFixed(2)}`;
-      } else if (
-        ["sw", "skywars", "skywar", "sws"].includes(mode.toLowerCase())
-      ) {
+        return `/gc [${level.toFixed(5)}✫] ${player} FK: ${addCommas(FK)} FKDR: ${(FK / FD || 0).toFixed(
+          2
+        )} Wins: ${wins} WLR: ${(wins / losses || 0).toFixed(2)} BB: ${BB} BLR: ${(BB / BL || 0).toFixed(2)}`;
+      } else if (["sw", "skywars", "skywar", "sws"].includes(mode.toLowerCase())) {
         const skywarsData = response.data.player.stats.SkyWars;
         const oldSkywarsData = response24H.data.Skywars;
 
@@ -307,17 +281,14 @@ async function getStats(player, uuid, mode, time) {
 
         const coins = skywarsData.coins - oldSkywarsData.coins;
 
-        return `/gc [${level.toFixed(5)}✫] ${player} Kills: ${addCommas(
-          kills
-        )} KDR: ${(kills / deaths || 0).toFixed(2)} Wins: ${wins} WLR: ${(
-          wins / losses || 0
-        ).toFixed(2)} Coins: ${addCommas(coins || 0)}`;
+        return `/gc [${level.toFixed(5)}✫] ${player} Kills: ${addCommas(kills)} KDR: ${(kills / deaths || 0).toFixed(
+          2
+        )} Wins: ${wins} WLR: ${(wins / losses || 0).toFixed(2)} Coins: ${addCommas(coins || 0)}`;
       } else if (["duels", "duel", "d"].includes(mode.toLowerCase())) {
         const oldDuelsData = response24H.data.Duels.overall;
         const duelsData = response.data.player.stats.Duels;
 
-        const gamesPlayed =
-          duelsData.games_played_duels - oldDuelsData.gamesPlayed;
+        const gamesPlayed = duelsData.games_played_duels - oldDuelsData.gamesPlayed;
 
         const wins = duelsData.wins - oldDuelsData.wins;
         const losses = duelsData.losses - oldDuelsData.losses;
@@ -325,11 +296,9 @@ async function getStats(player, uuid, mode, time) {
         const kills = duelsData.kills - oldDuelsData.kills;
         const deaths = duelsData.deaths - oldDuelsData.deaths;
 
-        return `/gc ${player} Games: ${gamesPlayed.toLocaleString()} Wins: ${wins} WLR: ${(
-          wins / losses || 0
-        ).toFixed(2)} Kills: ${kills.toLocaleString()} KDR: ${(
-          kills / deaths || 0
-        ).toFixed(2)}`;
+        return `/gc ${player} Games: ${gamesPlayed.toLocaleString()} Wins: ${wins} WLR: ${(wins / losses || 0).toFixed(
+          2
+        )} Kills: ${kills.toLocaleString()} KDR: ${(kills / deaths || 0).toFixed(2)}`;
       }
     } else {
       const [response, response24H] = await Promise.all([
@@ -340,36 +309,30 @@ async function getStats(player, uuid, mode, time) {
       ]);
 
       const profile = response.profile;
-      const oldProfile =
-        response24H.data.Profiles[response.profileData.profile_id.replaceAll("-", "")];
+      const oldProfile = response24H.data.Profiles[response.profileData.profile_id.replaceAll("-", "")];
 
-      const networth = await getNetworth(profile, response.profileData?.banking?.balance || 0, { cache: true, onlyNetworth: true });
+      const networth = await getNetworth(profile, response.profileData?.banking?.balance || 0, {
+        cache: true,
+        onlyNetworth: true,
+      });
       const experience = profile.leveling.experience;
       const skills = getSkills(profile);
       const slayer = getSlayer(profile);
 
       const output = [];
       Object.keys(skills).map((skill) => {
-        output.push(
-          `${capitalize(skill)}: ${
-            (skills[skill].totalXp - oldProfile.skills[skill]?.EXP) ?? 0
-          }`
-        );
+        output.push(`${capitalize(skill)}: ${skills[skill].totalXp - oldProfile.skills[skill]?.EXP ?? 0}`);
       });
       Object.keys(slayer).map((type) => {
-        output.push(
-          `${capitalize(type)}: ${
-            (slayer[type].xp - oldProfile.slayer[type]?.EXP) ?? 0
-          }`
-        );
+        output.push(`${capitalize(type)}: ${slayer[type].xp - oldProfile.slayer[type]?.EXP ?? 0}`);
       });
       output.push(`SB Experience: ${experience - oldProfile.EXP}`);
       output.push(
         `Catacombs: ${
-          (profile?.dungeons?.dungeon_types?.catacombs?.experience - oldProfile.dungeons.catacombs?.EXP) ?? 0
+          profile?.dungeons?.dungeon_types?.catacombs?.experience - oldProfile.dungeons.catacombs?.EXP ?? 0
         }`
       );
-      output.push(`Networth: ${(networth.networth - oldProfile.networth?.networth) ?? 0}`)
+      output.push(`Networth: ${networth.networth - oldProfile.networth?.networth ?? 0}`);
 
       let description = "";
       output.sort((a, b) => {
@@ -521,11 +484,9 @@ function formatNumber(number, decimals = 2) {
   const unformattedNumber = Math.abs(number);
 
   const abbrevIndex = Math.floor(Math.log10(unformattedNumber) / 3);
-  const shortNumber = (
-    unformattedNumber / Math.pow(10, abbrevIndex * 3)
-  ).toFixed(decimals);
+  const shortNumber = (unformattedNumber / Math.pow(10, abbrevIndex * 3)).toFixed(decimals);
 
-  return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
+  return `${isNegative ? "-" : ""}${shortNumber}${abbrev[abbrevIndex]}`;
 }
 
 module.exports = {

@@ -21,12 +21,10 @@ if (typeof bot === "undefined") {
           const playerData = JSON.parse(fs.readFileSync("data/playerData.json"));
 
           if (message.includes(":")) {
-            console.log(message);
             const [group] = message.split(":").map((s) => s.trim());
             const hasRank = group.endsWith("]");
             const userParts = group.split(" ");
             const username = userParts[userParts.length - (hasRank ? 2 : 1)];
-            console.log(username);
 
             const uuid = await getUUID(username);
             playerData[uuid] ??= DEFAULT_DATA;

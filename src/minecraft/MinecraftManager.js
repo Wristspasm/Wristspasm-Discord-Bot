@@ -24,7 +24,7 @@ class MinecraftManager extends CommunicationBridge {
 
     require("./other/eventNotifier.js");
     require("./other/skyblockNotifier.js");
-    require("./other/playtimeLogger.js");
+    require("./other/playerDataLogger.js");
   }
 
   connect() {
