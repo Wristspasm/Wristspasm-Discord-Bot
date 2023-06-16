@@ -2,30 +2,23 @@ const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI");
 const { toFixed, writeAt } = require("../../contracts/helperFunctions");
 const { getUsername } = require("../../contracts/API/PlayerDBAPI");
 const config = require("../../../config.json");
-const { EmbedBuilder } = require("discord.js");
-const fs = require('fs')
+const {
+  Events,
+  ModalBuilder,
+  EmbedBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
   name: "inactivity",
   description: "Send an inactivity notice to the guild staff",
-  options: [
-    {
-      name: "time",
-      description: "How long will you be inactive for (in Days)",
-      type: 3,
-      required: true,
-    },
-    {
-      name: "reason",
-      description: "Why are you going to be offline (optional)?",
-      type: 3,
-      required: false,
-    },
-  ],
 
   execute: async (interaction) => {
     try {
-      const linked = JSON.parse(fs.readFileSync('data/discordLinked.json', 'utf8'));
+      const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
       if (linked === undefined) throw new Error("No verification data found. Please contact an administrator.");
 
       const uuid = linked[interaction.user.id];
@@ -38,64 +31,43 @@ module.exports = {
       const member = guild.members.find((member) => member.uuid === uuid);
       if (member === undefined) throw new Error("You are not in the guild.");
 
-      const time = interaction.options.getString("time") * 86400;
-      if (time >= 14 * 86400) throw new Error("You can only request inactivity for 14 days or less. Please contact an administrator if you need to be inactive for longer.");
+      const modal = new ModalBuilder().setCustomId("inactivityform").setTitle("Inactivity Form");
 
-      const reason = interaction.options.getString("reason") || "None";
-      const expiration = toFixed(new Date().getTime() / 1000 + time, 0);
+      const time = new TextInputBuilder()
+        .setCustomId("inactivitytime")
+        .setLabel("How long will you be inactive for (in Days)?")
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder("Number of days");
 
-      const inactivityEmbed = new EmbedBuilder()
-        .setColor(5763719)
-        .setAuthor({ name: "Inactivity request." })
-        .setThumbnail(`https://www.mc-heads.net/avatar/${username}`)
+      const reason = new TextInputBuilder()
+        .setCustomId("inactivityreason")
+        .setLabel("Why are you going to be offline (optional)?")
+        .setStyle(TextInputStyle.Paragraph)
+        .setRequired(false);
+
+      const inactivitytime = new ActionRowBuilder().addComponents(time);
+      const inactivityreason = new ActionRowBuilder().addComponents(reason);
+
+      // Add inputs to the modal
+      modal.addComponents(inactivitytime, inactivityreason);
+
+      // Show the modal to the user
+      await interaction.showModal(modal);
+    } catch (error) {
+      console.log(error);
+
+      const errorEmbed = new EmbedBuilder()
+        .setColor(15548997)
+        .setAuthor({ name: "An Error has occurred" })
         .setDescription(
-          `\`Username:\` ${username}\n\`Requested:\` <t:${toFixed(
-            new Date().getTime() / 1000,
-            0
-          )}>\n\`Expiration:\` <t:${toFixed(
-            expiration,
-            0
-          )}:R>\n\`Reason:\` ${reason}`
+          `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
         )
         .setFooter({
           text: `by DuckySoLucky#5181 | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-      const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
-      if (channel === undefined) throw new Error("Inactivity channel not found. Please contact an administrator.");
-      await channel.send({ embeds: [inactivityEmbed] });
-
-      writeAt("data/inactivity.json", uuid, {
-        username: username,
-        uuid: uuid,
-        discord: interaction.user.tag,
-        discord_id: interaction.user.id,
-        requested: toFixed(new Date().getTime() / 1000, 0),
-        requested_formatted: new Date().toLocaleString(),
-        expiration: expiration,
-        expiration_formatted: new Date(expiration * 1000).toLocaleString(),
-        reason: reason,
-      });
-
-      const inactivityResponse = new EmbedBuilder()
-        .setColor(5763719)
-        .setAuthor({ name: "Inactivity request." })
-        .setDescription(`Inactivity request has been successfully sent to the guild stafff.`)
-        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: "https://imgur.com/tgwQJTX.png" });
-
-      await interaction.followUp({ embeds: [inactivityResponse] });
-
-    } catch (error) {
-      console.log(error)
-
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: 'An Error has occurred'})
-        .setDescription(`\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``)
-        .setFooter({ text: `by DuckySoLucky#5181 | /help [command] for more information`, iconURL: 'https://imgur.com/tgwQJTX.png' });
-
-      await interaction.editReply({ embeds: [errorEmbed] });
+      await interaction.reply({ embeds: [errorEmbed] });
     }
   },
 };
