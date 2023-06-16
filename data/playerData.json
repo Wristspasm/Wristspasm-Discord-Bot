@@ -1,0 +1,81 @@
+{
+  "88d65ced157b4e8d880175b705aff329": {
+    "username": "Tonny_GG",
+    "joined": 7,
+    "lastLogin": 1686907964315,
+    "left": 7,
+    "lastLogout": 1686907953425,
+    "online": true,
+    "playtime": 716649,
+    "messages": 13
+  },
+  "37501e7512b845ab8796e2baf9e9677a": {
+    "username": "TheHungryMeg",
+    "joined": 2,
+    "lastLogin": 1686907419729,
+    "left": 1,
+    "lastLogout": 1686907187843,
+    "online": true,
+    "playtime": 0
+  },
+  "cd652fd2570c4c85b8ff65241debf82b": {
+    "username": "WristSpasmBOT",
+    "joined": 0,
+    "lastLogin": null,
+    "left": 0,
+    "lastLogout": null,
+    "online": false,
+    "playtime": 0,
+    "messages": 13
+  },
+  "6b845fc9792e428288636b3f3006c227": {
+    "username": "ItrustN0one",
+    "joined": 1,
+    "lastLogin": 1686907647908,
+    "left": 1,
+    "lastLogout": 1686907616052,
+    "online": true,
+    "playtime": 0,
+    "messages": 1
+  },
+  "2474ee5d081d44ce90ecd5286971b8d3": {
+    "username": "ScriptKitten_",
+    "joined": 1,
+    "lastLogin": 1686907897034,
+    "left": 1,
+    "lastLogout": 1686907682752,
+    "online": true,
+    "playtime": 0,
+    "messages": 0
+  },
+  "fab0351a109e4bad8d59e160cc9ada0e": {
+    "username": "Rawr0w0x3",
+    "joined": 0,
+    "lastLogin": null,
+    "left": 1,
+    "lastLogout": 1686907682752,
+    "online": false,
+    "playtime": 0,
+    "messages": 1
+  },
+  "2700c8b565c74d8e9be5eb7a6ae19295": {
+    "username": "CatboyDark",
+    "joined": 1,
+    "lastLogin": 1686907927845,
+    "left": 0,
+    "lastLogout": null,
+    "online": true,
+    "playtime": 0,
+    "messages": 0
+  },
+  "16e66283114b40e497514cd7869f427b": {
+    "username": "3Bro357",
+    "joined": 2,
+    "lastLogin": 1686907954494,
+    "left": 0,
+    "lastLogout": null,
+    "online": true,
+    "playtime": 0,
+    "messages": 0
+  }
+}

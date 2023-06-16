@@ -43,7 +43,7 @@ module.exports = {
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-      await interaction.reply({ embeds: [errorEmbed] });
+      await interaction.editReply({ embeds: [errorEmbed] });
     }
   },
 };

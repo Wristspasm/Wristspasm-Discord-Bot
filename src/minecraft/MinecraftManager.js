@@ -24,6 +24,7 @@ class MinecraftManager extends CommunicationBridge {
 
     require("./other/eventNotifier.js");
     require("./other/skyblockNotifier.js");
+    require("./other/playtimeLogger.js");
   }
 
   connect() {
@@ -65,19 +66,11 @@ class MinecraftManager extends CommunicationBridge {
       return config.discord.other.filterMessages
         ? this.bot.chat(
             filter.clean(
-              `/gc ${
-                replyingTo
-                  ? `${username} replying to ${replyingTo}${symbol}`
-                  : `${username}${symbol}`
-              } ${message}`
+              `/gc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
             )
           )
         : this.bot.chat(
-            `/gc ${
-              replyingTo
-                ? `${username} replying to ${replyingTo}${symbol}`
-                : `${username}${symbol}`
-            } ${message}`
+            `/gc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
           );
     }
 
@@ -85,19 +78,11 @@ class MinecraftManager extends CommunicationBridge {
       return config.discord.other.filterMessages
         ? this.bot.chat(
             filter.clean(
-              `/oc ${
-                replyingTo
-                  ? `${username} replying to ${replyingTo}${symbol}`
-                  : `${username}${symbol}`
-              } ${message}`
+              `/oc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
             )
           )
         : this.bot.chat(
-            `/oc ${
-              replyingTo
-                ? `${username} replying to ${replyingTo}${symbol}`
-                : `${username}${symbol}`
-            } ${message}`
+            `/oc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
           );
     }
   }

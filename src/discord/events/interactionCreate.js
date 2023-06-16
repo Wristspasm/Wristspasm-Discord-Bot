@@ -12,6 +12,10 @@ module.exports = {
     if (interaction.isChatInputCommand()) {
       const command = interaction.client.commands.get(interaction.commandName);
 
+      if ((command.name == "inactivity") === false) {
+        await interaction.deferReply({ ephemeral: false }).catch(() => {});
+      }
+
       if (command === undefined) {
         return;
       }

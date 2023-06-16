@@ -1,7 +1,8 @@
+const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI");
+const { writeAt } = require("../../contracts/helperFunctions");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
-const { writeAt } = require("../../contracts/helperFunctions");
-const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI");
+const fs = require("fs");
 
 module.exports = {
   name: "overrideverify",
@@ -9,7 +10,7 @@ module.exports = {
   options: [
     {
       name: "name",
-      description: "Minecraft Username or UUID",
+      description: "Minecraft Username",
       type: 3,
       required: true,
     },
@@ -23,25 +24,22 @@ module.exports = {
 
   execute: async (interaction) => {
     try {
-      if (
-        (await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole) ===
-        false
-      )
-        throw "You do not have permission to use this command.";
-
-      let uuid = interaction.options.getString("name");
-      const id = interaction.options._hoistedOptions[1].user.id;
-      let username;
-
-      if (
-        /^[0-9a-fA-F]{8}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{12}$/.test(uuid) === false ||
-        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(uuid) === false
-      ) {
-        username = uuid;
-        uuid = await getUUID(uuid);
-      } else {
-        username = await getUsername(uuid);
+      const linkedRole = config.discord.roles.commandRole;
+      if (linkedRole === undefined) {
+        throw new Error("The linked role does not exist. Please contact an administrator.");
       }
+
+      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(linkedRole) === false) {
+        throw new Error("You do not have permission to use this command.");
+      }
+
+      const username = interaction.options.getString("name");
+      if (username.length > 16) {
+        throw new Error("Invalid username.");
+      }
+
+      const id = interaction.options._hoistedOptions[1].user.id;
+      const uuid = await getUUID(username);
 
       const minecraftLinked = require("../../../data/minecraftLinked.json");
       Object.keys(minecraftLinked).map((uuid) => {
@@ -57,16 +55,10 @@ module.exports = {
       await interaction.guild.members.fetch(id).then((member) => member.roles.add(linkedRole));
       await interaction.guild.members.fetch(id).then((member) => member.setNickname(username));
 
-      //if ((await interaction.guild.members.fetch(id)).roles.highest.rawPosition > (await interaction.guild.members.fetch(interaction.client.user.id)).roles.highest.rawPosition === false) {
-
       const successfullyLinked = new EmbedBuilder()
         .setColor(5763719)
         .setAuthor({ name: "Successfully linked!" })
-        .setDescription(
-          `\`${username}\` has been successfully linked to \`${
-            (await interaction.guild.members.fetch(id)).user.username
-          }#${(await interaction.guild.members.fetch(id)).user.discriminator}\``
-        )
+        .setDescription(`\`${username}\` has been successfully linked to <@${id}>`)
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",

@@ -23,21 +23,25 @@ module.exports = {
     try {
       const { socialMedia, nickname } = await hypixelRebornAPI.getPlayer(username);
 
-      if (socialMedia.find((media) => media.id === "DISCORD")?.link === undefined)
+      if (socialMedia.find((media) => media.id === "DISCORD")?.link === undefined) {
         throw new Error("This player does not have a Discord linked.");
+      }
 
-      if (socialMedia.find((media) => media.id === "DISCORD").link !== interaction.user.tag)
+      const discordUsername = socialMedia.find((media) => media.id === "DISCORD").link;
+      const linkedAccount = interaction.user.username ?? interaction.user.tag;
+      if (discordUsername !== linkedAccount) {
         throw new Error(`${username}'s linked Discord account does not match with yours.`);
+      }
 
       const linkedRole = interaction.guild.roles.cache.get(config.discord.roles.linkedRole);
 
-      if (linkedRole === undefined)
+      if (linkedRole === undefined) {
         throw new Error("The verified role does not exist. Please contact an administrator.");
+      }
 
       const uuid = await getUUID(username);
 
       await interaction.guild.members.fetch(interaction.user).then((member) => member.roles.add(linkedRole));
-
       await interaction.guild.members.fetch(interaction.user).then((member) => member.setNickname(nickname));
 
       const minecraftLinked = require("../../../data/minecraftLinked.json");
@@ -70,9 +74,7 @@ module.exports = {
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
         .setAuthor({ name: "An Error has occurred" })
-        .setDescription(
-          `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
-        )
+        .setDescription(`\`\`\`${error.toString()}\`\`\``)
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",

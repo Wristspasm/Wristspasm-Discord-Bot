@@ -1,9 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder } = require("discord.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI");
 const { getUsername } = require("../../contracts/API/PlayerDBAPI");
+const { StringSelectMenuBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const fs = require("fs");
-const { StringSelectMenuBuilder } = require("discord.js");
 
 module.exports = {
   name: "gexpcheck",
@@ -78,7 +78,7 @@ module.exports = {
               iconURL: "https://imgur.com/tgwQJTX.png",
             });
 
-          //await interaction.editReply({ embeds: [progressEmbed] });
+          await interaction.editReply({ embeds: [progressEmbed] });
         }
       }
 
@@ -157,18 +157,18 @@ module.exports = {
 
           dropdownMenu.setPlaceholder(guildExp.toLocaleString());
 
-          const button = new ButtonBuilder()
-            .setStyle(ButtonStyle.Danger)
-            .setLabel("Format for /g kick")
-            .setCustomId("kick");
+          if (i.replied === false) {
+            return await i.reply({
+              files: [{ attachment: Buffer.from(string), name: "guildExperience.txt" }],
+              content: `**Weekly Guild Experience** (${guildExp.toLocaleString()})`,
+              ephemeral: true,
+            });
+          }
 
-          await i.update({
+          await i.followUp({
             files: [{ attachment: Buffer.from(string), name: "guildExperience.txt" }],
             content: `**Weekly Guild Experience** (${guildExp.toLocaleString()})`,
-            components: [
-              new ActionRowBuilder().addComponents(dropdownMenu),
-              new ActionRowBuilder().addComponents(button),
-            ],
+            ephemeral: true,
           });
         }
 
