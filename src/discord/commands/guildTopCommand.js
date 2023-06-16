@@ -21,10 +21,7 @@ module.exports = {
         cachedMessages.push(message.toString());
         console.log(message.toString());
 
-        if (
-          message.toString().startsWith("10.") &&
-          message.toString().endsWith("Guild Experience")
-        ) {
+        if (message.toString().startsWith("10.") && message.toString().endsWith("Guild Experience")) {
           bot.removeListener("message", listener);
           resolve(cachedMessages);
         }
@@ -59,7 +56,7 @@ module.exports = {
         .setTitle("Top 10 Guild Members")
         .setDescription(description)
         .setFooter({
-          text: "by DuckySoLucky#5181 | /help [command] for more information",
+          text: "by @duckysolucky | /help [command] for more information",
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -71,7 +68,7 @@ module.exports = {
         .setTitle("Error")
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: "by DuckySoLucky#5181 | /help [command] for more information",
+          text: "by @duckysolucky | /help [command] for more information",
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

@@ -4,8 +4,7 @@ const fs = require("fs");
 
 module.exports = {
   name: "update-linked",
-  description:
-    "Removes role from unlinked users and sends them a DM to verify.",
+  description: "Removes role from unlinked users and sends them a DM to verify.",
 
   execute: async (interaction) => {
     try {
@@ -67,7 +66,7 @@ module.exports = {
                 `You have been unlinked from the WristSpasm Discord server!\nRecently we have had some issues with verification system and data wasn't stored correctly, You're one of the affected users. This was caused by the Hypixel Network API maintenance.\n\nPlease re-link your account by using the command \`/verify\` in the <#1072881326207795360> channel. If you're not part of the community anymore, feel free to ignore this message.\n\nIf you have any questions, please contact a staff member.`
               )
               .setFooter({
-                text: `by DuckySoLucky#5181 | /help [command] for more information`,
+                text: `by @duckysolucky | /help [command] for more information`,
                 iconURL: "https://imgur.com/tgwQJTX.png",
               });
 
@@ -81,9 +80,7 @@ module.exports = {
             const userDM = await user.createDM();
             // check if u can send dm
             if (userDM === undefined) {
-              console.log(
-                `Failed to send DM to ${username} (${id}), skipping...`
-              );
+              console.log(`Failed to send DM to ${username} (${id}), skipping...`);
               continue;
             }
 
@@ -111,7 +108,7 @@ module.exports = {
             .join("\n")}`
         )
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -124,7 +121,7 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error.toString()}\`\`\``)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

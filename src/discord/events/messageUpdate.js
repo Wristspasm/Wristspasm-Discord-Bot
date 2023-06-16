@@ -9,9 +9,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setColor("#FF0000")
-      .setDescription(
-        `**Message edited in ${oldMessage.channel} [Message](${oldMessage.url})**`
-      )
+      .setDescription(`**Message edited in ${oldMessage.channel} [Message](${oldMessage.url})**`)
       .setAuthor({
         name: oldMessage.author.tag,
         iconURL: oldMessage.author.displayAvatarURL(),
@@ -21,7 +19,7 @@ module.exports = {
         { name: "After", value: newMessage.content, inline: false }
       )
       .setFooter({
-        text: `by DuckySoLucky#5181 | /help [command] for more information`,
+        text: `by @duckysolucky | /help [command] for more information`,
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 

@@ -15,11 +15,7 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    if (
-      (await interaction.guild.members.fetch(interaction.user)).roles.cache.has(
-        config.discord.roles.commandRole
-      )
-    ) {
+    if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole)) {
       const command = interaction.options.getString("command");
       bot.chat(`/${command}`);
       const commandMessage = new EmbedBuilder()
@@ -27,7 +23,7 @@ module.exports = {
         .setTitle("Command has been executed successfully")
         .setDescription(`\`/${command}\`\n`)
         .setFooter({
-          text: "by DuckySoLucky#5181",
+          text: "by @duckysolucky",
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
       await interaction.followUp({ embeds: [commandMessage], ephemeral: true });

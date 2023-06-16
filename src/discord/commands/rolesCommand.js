@@ -18,9 +18,7 @@ module.exports = {
 
       const linked = JSON.parse(linkedData);
       if (linked === undefined) {
-        throw new Error(
-          "No verification data found. Please contact an administrator."
-        );
+        throw new Error("No verification data found. Please contact an administrator.");
       }
 
       const uuid = linked[user.id];
@@ -44,12 +42,10 @@ module.exports = {
       if (playerIsInGuild) {
         user.roles.add(config.discord.roles.guildMemberRole);
       } else {
-        user.roles
-          .remove(config.discord.roles.guildMemberRole)
-          .catch((_) => {});
+        user.roles.remove(config.discord.roles.guildMemberRole).catch((_) => {});
       }
 
-      const skyblockLevel = (profile?.profile?.leveling?.experience / 100) ?? 0;
+      const skyblockLevel = profile?.profile?.leveling?.experience / 100 ?? 0;
       const bwLevel = player.stats.bedwars.level;
       const swLevel = player.stats.skywars.level / 5;
       const duelsWins = player.stats.duels.wins;
@@ -130,11 +126,7 @@ module.exports = {
       ];
       const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
 
-      for (const roleId of bwLvLRoles.concat(
-        swLvLRoles,
-        duelsRoles,
-        skyblockRoles
-      )) {
+      for (const roleId of bwLvLRoles.concat(swLvLRoles, duelsRoles, skyblockRoles)) {
         if (user.roles.cache.has(roleId)) {
           await user.roles.remove(roleId).catch((_) => {});
         }
@@ -181,7 +173,7 @@ module.exports = {
         .setAuthor({ name: "Successfully completed" })
         .setDescription(`Roles have been successfully updated!`)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -199,7 +191,7 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

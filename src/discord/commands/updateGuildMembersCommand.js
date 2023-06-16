@@ -43,9 +43,9 @@ module.exports = {
         throw new Error("Failed to obtain `guildMemberRole` ID from config!");
       }
 
-      const guildMembers = (
-        await hypixelRebornAPI.getGuild("player", bot.username)
-      ).members.map((member) => member.uuid);
+      const guildMembers = (await hypixelRebornAPI.getGuild("player", bot.username)).members.map(
+        (member) => member.uuid
+      );
 
       let nRemoved = 0,
         usersRemoved = [];
@@ -59,9 +59,7 @@ module.exports = {
         if (userRoles.includes(guildMemberRole)) {
           const hasRole = linkedUsersArray.includes(id);
           if (hasRole === true && guildMembers.includes(uuid) === false) {
-            console.log(
-              `${username} (<@${id}>) has Guild Member role but is not in the guild`
-            );
+            console.log(`${username} (<@${id}>) has Guild Member role but is not in the guild`);
 
             const removedGuildMemberRoleEmbed = new EmbedBuilder()
               .setAuthor({ name: "Your Guild Member role has been removed" })
@@ -71,7 +69,7 @@ module.exports = {
                 `Your Guild Member role has been removed from the WristSpasm Discord server!\nThis was done because you're not part of the Guild anymore. Thanks for staying with us and we hope you enjoyed.\n\nFeel free to apply again in <#1072874886005014568> channel. If you're not part of the community anymore, feel free to ignore this message.\n\nIf you have any questions, please contact a staff member.`
               )
               .setFooter({
-                text: `by DuckySoLucky#5181 | /help [command] for more information`,
+                text: `by @duckysolucky | /help [command] for more information`,
                 iconURL: "https://imgur.com/tgwQJTX.png",
               });
 
@@ -79,9 +77,7 @@ module.exports = {
 
             const userDM = await user.createDM();
             if (userDM === undefined) {
-              console.log(
-                `Failed to send DM to ${username} (${id}), skipping...`
-              );
+              console.log(`Failed to send DM to ${username} (${id}), skipping...`);
               continue;
             }
 
@@ -107,7 +103,7 @@ module.exports = {
             .join("\n")}`
         )
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -120,7 +116,7 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error.toString()}\`\`\``)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

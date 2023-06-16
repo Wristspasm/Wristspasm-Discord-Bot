@@ -40,7 +40,7 @@ module.exports = {
         .setAuthor({ name: "Success!" })
         .setDescription(`Linked data has been synced!`)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -53,7 +53,7 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

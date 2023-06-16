@@ -35,7 +35,7 @@ module.exports = {
         .setTitle("Weekly Guild Experience Leaderboard")
         .setDescription("This may take a while, please wait...")
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -74,7 +74,7 @@ module.exports = {
               `This may take a while, please wait...\n**Progress:** \`${progress}%\` (\`${position}/${members.length}\`)`
             )
             .setFooter({
-              text: `by DuckySoLucky#5181 | /help [command] for more information`,
+              text: `by @duckysolucky | /help [command] for more information`,
               iconURL: "https://imgur.com/tgwQJTX.png",
             });
 
@@ -195,7 +195,7 @@ module.exports = {
             .setAuthor({ name: "Guild Experience Kick Command" })
             .setDescription(`**Weekly Guild Experience** (${guildExp.toLocaleString()})\n\n${string}`)
             .setFooter({
-              text: `by DuckySoLucky#5181 | /help [command] for more information`,
+              text: `by @duckysolucky | /help [command] for more information`,
               iconURL: "https://imgur.com/tgwQJTX.png",
             });
 
@@ -217,7 +217,7 @@ module.exports = {
           `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
         )
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

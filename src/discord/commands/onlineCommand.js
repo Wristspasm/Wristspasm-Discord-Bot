@@ -29,19 +29,11 @@ module.exports = {
       const messages = await promise;
       const trimmedMessages = messages.map((message) => message.trim());
 
-      const onlineMembersMessage = trimmedMessages.find((message) =>
-        message.startsWith("Online Members: ")
-      );
-      const onlineMembers = `${onlineMembersMessage.split(": ")[0]}: \`${
-        onlineMembersMessage.split(": ")[1]
-      }\``;
+      const onlineMembersMessage = trimmedMessages.find((message) => message.startsWith("Online Members: "));
+      const onlineMembers = `${onlineMembersMessage.split(": ")[0]}: \`${onlineMembersMessage.split(": ")[1]}\``;
 
-      const totalMembersMessage = trimmedMessages.find((message) =>
-        message.startsWith("Total Members: ")
-      );
-      const totalMembers = `${totalMembersMessage.split(": ")[0]}: \`${
-        totalMembersMessage.split(": ")[1]
-      }\``;
+      const totalMembersMessage = trimmedMessages.find((message) => message.startsWith("Total Members: "));
+      const totalMembers = `${totalMembersMessage.split(": ")[0]}: \`${totalMembersMessage.split(": ")[1]}\``;
 
       const onlineMembersList = trimmedMessages;
 
@@ -77,7 +69,7 @@ module.exports = {
         .setTitle("Online Members")
         .setDescription(description)
         .setFooter({
-          text: "by DuckySoLucky#5181 | /help [command] for more information",
+          text: "by @duckysolucky | /help [command] for more information",
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
@@ -89,7 +81,7 @@ module.exports = {
         .setTitle("Error")
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
-          text: "by DuckySoLucky#5181 | /help [command] for more information",
+          text: "by @duckysolucky | /help [command] for more information",
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 

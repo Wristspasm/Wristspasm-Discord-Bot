@@ -12,12 +12,10 @@ class StateHandler {
   async onReady() {
     Logger.discordMessage("Client ready, logged in as " + this.discord.client.user.tag);
     this.discord.client.user.setPresence({
-      activities: [
-        { name: `/help | by DuckySoLucky#5181`, type: ActivityType.Playing },
-      ],
+      activities: [{ name: `/help | by @duckysolucky`, type: ActivityType.Playing }],
     });
     global.guild = await client.guilds.fetch(config.discord.bot.serverID);
-    
+
     const channel = await this.getChannel("Guild");
     global.bridgeChat = config.discord.channels.guildChatChannel;
 

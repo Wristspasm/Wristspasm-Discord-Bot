@@ -43,7 +43,7 @@ module.exports = {
             ).toFixed(2)}%\`)`
           )
           .setFooter({
-            text: `by DuckySoLucky#5181 | /help [command] for more information`,
+            text: `by @duckysolucky | /help [command] for more information`,
             iconURL: "https://imgur.com/tgwQJTX.png",
           });
 
@@ -69,16 +69,14 @@ module.exports = {
         .setAuthor({ name: "Successfully updated nicknames." })
         .setDescription(`Updated usernames for \`${linkedUsers}\` users.`)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
       await interaction.editReply({ embeds: [successEmbed] });
 
       await interaction.followUp({
-        content: `Updated usernames: \n\`\`\`${JSON.stringify(
-          updatedUsers
-        )}\`\`\``,
+        content: `Updated usernames: \n\`\`\`${JSON.stringify(updatedUsers)}\`\`\``,
       });
     } catch (error) {
       console.error(error);
@@ -88,7 +86,7 @@ module.exports = {
         .setAuthor({ name: "An Error has occurred" })
         .setDescription(`\`\`\`${error.toString()}\`\`\``)
         .setFooter({
-          text: `by DuckySoLucky#5181 | /help [command] for more information`,
+          text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
