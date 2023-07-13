@@ -30,7 +30,10 @@ async function getLatestProfile(uuid) {
       ),
     ]).catch((error) => {
       // eslint-disable-next-line no-throw-literal
-      throw (error?.response?.data?.cause ? `Hypixel API Error: ${error.response.data.cause}` : "Request to Hypixel API failed. Please try again!");
+      throw (
+        error?.response?.data?.cause ??
+        "Request to Hypixel API failed. Please try again!"
+      );
     });
 
     playerRes = playerRes?.data ?? {};
@@ -59,11 +62,6 @@ async function getLatestProfile(uuid) {
     const player = parseHypixel(playerRes, uuid);
 
     const profileData = profileRes.profiles.find((a) => a.selected) || null;
-    if (profileData == null) {
-      // eslint-disable-next-line no-throw-literal
-      throw "Uh oh, this player is not in selected Skyblock profile.";
-    }
-
     const profile = profileData.members[uuid];
 
     if (profile === null) {

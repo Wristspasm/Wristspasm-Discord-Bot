@@ -3,7 +3,7 @@ const {
 } = require("../../../API/functions/getLatestProfile.js");
 const {
   formatNumber,
-  addCommas,
+  formatUsername,
 } = require("../../contracts/helperFunctions.js");
 const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const { getNetworth } = require("skyhelper-networth");
@@ -32,8 +32,9 @@ class SkyblockCommand extends minecraftCommand {
   async onCommand(username, message) {
     try {
       username = this.getArgs(message)[0] || username;
+
       const data = await getLatestProfile(username);
-      username = data.profileData?.game_mode ? `♲ ${username}` : username;
+      username = formatUsername(username, data.profileData.game_mode);
 
       if (data.status == 404) {
         return this.send(
@@ -65,11 +66,10 @@ class SkyblockCommand extends minecraftCommand {
           .reduce((a, b) => a + b, 0) /
         (Object.keys(skills).length - 2)
       ).toFixed(1);
-      const slayerXp = addCommas(
-        Object.keys(slayer)
-          .map((type) => slayer[type].xp)
-          .reduce((a, b) => a + b, 0)
-      );
+      const slayerXp = Object.keys(slayer)
+        .map((type) => slayer[type].xp)
+        .reduce((a, b) => a + b, 0)
+        .toLocaleString();
       const catacombsLevel = dungeons.catacombs.skill.level;
       const classAverage =
         Object.keys(dungeons.classes)
@@ -79,22 +79,17 @@ class SkyblockCommand extends minecraftCommand {
       const talismanCount = Object.keys(talismans.talismans)
         .map((rarity) => talismans.talismans[rarity].length || 0)
         .reduce((a, b) => a + b, 0);
-      const recombobulatedCount = Object.keys(talismans.talismans)
-        .map(
-          (rarity) =>
-            talismans.talismans[rarity].filter(
-              (talisman) => talisman.recombobulated
-            ).length
-        )
-        .reduce((a, b) => a + b, 0);
-      const enrichmentCount = Object.keys(talismans.talismans)
-        .map(
-          (rarity) =>
-            talismans.talismans[rarity].filter(
-              (talisman) => talisman.enrichment !== undefined
-            ).length
-        )
-        .reduce((a, b) => a + b, 0);
+
+      let recombobulatedCount = 0;
+      let enrichmentCount = 0;
+      Object.values(talismans.talismans).forEach((talismansByRarity) => {
+        recombobulatedCount += talismansByRarity.filter(
+          (talisman) => talisman.recombobulated !== undefined
+        ).length;
+        enrichmentCount += talismansByRarity.filter(
+          (talisman) => talisman.enrichment !== undefined
+        ).length;
+      });
 
       this.send(
         `/gc ${username}'s Level: ${

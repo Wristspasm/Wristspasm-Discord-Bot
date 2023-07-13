@@ -1,24 +1,14 @@
-const { EmbedBuilder } = require("discord.js");
-
 module.exports = {
-  name: "",
-  description: "",
+  name: '',
+  description: '',
+  options: [{
+    name: '',
+    description: '',
+    type: 3,
+    required: false
+  }],
 
   execute: async (interaction) => {
-    try {
-    } catch (error) {
-      console.log(error);
 
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(`\`\`\`${error}\`\`\``)
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
-
-      await interaction.editReply({ embeds: [errorEmbed] });
-    }
   },
 };

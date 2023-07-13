@@ -2,14 +2,13 @@ const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js
 const { replaceAllRanks } = require("../../contracts/helperFunctions.js");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
 const eventHandler = require("../../contracts/EventHandler.js");
 const getWeight = require("../../../API/stats/weight.js");
 const messages = require("../../../messages.json");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const Logger = require("../../Logger.js");
-const fs = require("fs");
 
 class StateHandler extends eventHandler {
   constructor(minecraft, command, discord) {
@@ -29,7 +28,9 @@ class StateHandler extends eventHandler {
     const colouredMessage = event.toMotd();
 
     // NOTE: fixes "100/100❤     100/100✎ Mana" spam in the debug channel
-    if (message.includes("✎ Mana") && message.includes("❤") && message.includes("/")) return;
+    if (message.includes("✎ Mana") && message.includes("❤") && message.includes("/")) {
+      return;
+    }
 
     if (config.discord.channels.debugMode === true) {
       this.minecraft.broadcastMessage({
@@ -47,7 +48,7 @@ class StateHandler extends eventHandler {
         ? message.substr(54).split(" ")[1].trim()
         : message.substr(54).split(" ")[0].trim();
 
-      const { blacklist, blacklisted, whitelist, whitelisted } = config.minecraft.fragBot;
+      const { blacklist, blacklisted, whitelist, customWhitelist } = config.minecraft.fragBot;
       if (blacklist || whitelist) {
         const uuid = await getUUID(username);
 
@@ -60,7 +61,7 @@ class StateHandler extends eventHandler {
         const members = await hypixel
           .getGuild("player", bot.username)
           .then(async (guild) => guild.members.map((member) => member.uuid));
-        if ((config.minecraft.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
+        if ((config.minecraft.fragBot.whitelist && customWhitelist.includes(username)) || members.includes(uuid)) {
           this.send(`/party accept ${username}`);
           await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
           this.send(`/party leave`);
@@ -93,30 +94,43 @@ class StateHandler extends eventHandler {
         const duelsWins = player.stats.duels.wins;
         const dWLR = player.stats.duels.WLRatio;
 
-        if (weight > config.minecraft.guildRequirements.requirements.senitherWeight) meetRequirements = true;
+        if (weight > config.minecraft.guildRequirements.requirements.senitherWeight) {
+          meetRequirements = true;
+        }
 
-        if (skyblockLevel > config.minecraft.guildRequirements.requirements.skyblockLevel) meetRequirements = true;
+        if (skyblockLevel > config.minecraft.guildRequirements.requirements.skyblockLevel) {
+          meetRequirements = true;
+        }
 
-        if (bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars) meetRequirements = true;
+        if (bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars) {
+          meetRequirements = true;
+        }
         if (
           bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStarsWithFKDR &&
           bwFKDR > config.minecraft.guildRequirements.requirements.bedwarsFKDR
-        )
+        ) {
           meetRequirements = true;
+        }
 
-        if (swLevel > config.minecraft.guildRequirements.requirements.skywarsStars) meetRequirements = true;
+        if (swLevel > config.minecraft.guildRequirements.requirements.skywarsStars) {
+          meetRequirements = true;
+        }
         if (
           swLevel > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR &&
           swKDR > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR
-        )
+        ) {
           meetRequirements = true;
+        }
 
-        if (duelsWins > config.minecraft.guildRequirements.requirements.duelsWins) meetRequirements = true;
+        if (duelsWins > config.minecraft.guildRequirements.requirements.duelsWins) {
+          meetRequirements = true;
+        }
         if (
           duelsWins > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR &&
           dWLR > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR
-        )
+        ) {
           meetRequirements = true;
+        }
 
         bot.chat(
           `/oc ${username} ${meetRequirements ? "meets" : "Doesn't meet"} Requirements. [BW] [${
@@ -221,7 +235,7 @@ class StateHandler extends eventHandler {
         .trim()
         .split(/ +/g)[0];
       await delay(1000);
-      bot.chat(`/gc ${messages.guildJoinMessage} | by @duckysolucky`);
+      bot.chat(`/gc ${messages.guildJoinMessage} | By @duckysolucky`);
       return [
         this.minecraft.broadcastHeadedEmbed({
           message: this.replaceVariables(messages.joinMessage, { username }),
@@ -729,13 +743,15 @@ class StateHandler extends eventHandler {
     const userParts = group.split(" ");
     const username = userParts[userParts.length - (hasRank ? 2 : 1)];
     const guildRank = userParts.pop().replace(/[[\]]/g, "") || "Member";
-    let playerMessage = parts.join(":").trim();
+    const playerMessage = parts.join(":").trim();
 
     const playerRankColor = colouredMessage.split(" ")[2]?.replace(/[[\]]/g, "")?.split("§")[1];
     const playerRankPlusColor = colouredMessage.split(" ")[2]?.replace(/[[\]]/g, "")?.split("§")[2];
     const embedColor = playerRankPlusColor?.[0] || playerRankColor?.[0] || "7";
 
-    if ((!this.isGuildMessage(message) && !this.isOfficerChatMessage(message)) || playerMessage.length == 0) return;
+    if ((!this.isGuildMessage(message) && !this.isOfficerChatMessage(message)) || playerMessage.length == 0) {
+      return;
+    }
 
     if (
       playerMessage.includes(config.minecraft.bot.prefix) &&

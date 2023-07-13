@@ -72,6 +72,8 @@ class DiscordManager extends CommunicationBridge {
         : client.on(event.name, (...args) => event.execute(...args));
     }
 
+    global.guild = await client.guilds.fetch(config.discord.bot.serverID);
+
     process.on("SIGINT", () => {
       this.stateHandler.onClose().then(() => {
         client.destroy();
