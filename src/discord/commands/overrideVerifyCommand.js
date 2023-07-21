@@ -24,7 +24,7 @@ module.exports = {
 
   execute: async (interaction) => {
     try {
-      const linkedRole = config.discord.roles.commandRole;
+      const linkedRole = config.discord.roles.linkedRole;
       if (linkedRole === undefined) {
         throw new Error("The linked role does not exist. Please contact an administrator.");
       }

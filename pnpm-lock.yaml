@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@discordjs/rest':
     specifier: ^1.3.0
@@ -20,8 +24,8 @@ dependencies:
     specifier: ^2.8.5
     version: 2.8.5
   discord-api-types:
-    specifier: ^0.37.14
-    version: 0.37.14
+    specifier: ^0.37.50
+    version: 0.37.50
   discord-emoji-converter:
     specifier: ^1.2.8
     version: 1.2.8
@@ -106,7 +110,7 @@ packages:
       '@discordjs/formatters': 0.3.1
       '@discordjs/util': 0.3.1
       '@sapphire/shapeshift': 3.8.2
-      discord-api-types: 0.37.41
+      discord-api-types: 0.37.50
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.3
       tslib: 2.5.0
@@ -126,7 +130,7 @@ packages:
     resolution: {integrity: sha512-M7X4IGiSeh4znwcRGcs+49B5tBkNDn4k5bmhxJDAUhRxRHTiFAOTVUNQ6yAKySu5jZTnCbSvTYHW3w0rAzV1MA==}
     engines: {node: '>=16.9.0'}
     dependencies:
-      discord-api-types: 0.37.41
+      discord-api-types: 0.37.50
     dev: false
 
   /@discordjs/rest@1.3.0:
@@ -137,7 +141,7 @@ packages:
       '@discordjs/util': 0.1.0
       '@sapphire/async-queue': 1.5.0
       '@sapphire/snowflake': 3.2.2
-      discord-api-types: 0.37.14
+      discord-api-types: 0.37.50
       file-type: 18.0.0
       tslib: 2.4.0
       undici: 5.11.0
@@ -151,7 +155,7 @@ packages:
       '@discordjs/util': 0.3.1
       '@sapphire/async-queue': 1.5.0
       '@sapphire/snowflake': 3.4.2
-      discord-api-types: 0.37.41
+      discord-api-types: 0.37.50
       file-type: 18.3.0
       tslib: 2.5.0
       undici: 5.22.0
@@ -177,7 +181,7 @@ packages:
       '@sapphire/async-queue': 1.5.0
       '@types/ws': 8.5.4
       '@vladfrangu/async_event_emitter': 2.2.1
-      discord-api-types: 0.37.41
+      discord-api-types: 0.37.50
       tslib: 2.5.0
       ws: 8.13.0
     transitivePeerDependencies:
@@ -620,12 +624,8 @@ packages:
     resolution: {integrity: sha512-c68LpLbO+7kP/b1Hr1qs8/BJ09F5khZGTxqxZuhzxpmwJKOgRFHJWIb9/KmqnqHhLdO55aOxFH/EGBvUQbL/RQ==}
     dev: false
 
-  /discord-api-types@0.37.14:
-    resolution: {integrity: sha512-byBH7SfDCMJwxdqeS8k5sihltH88/YPhuwx+vF2cftSxFLdxyHyU/ZxDL3bq+LB2c4ls/TymE76/ISlLfniUXg==}
-    dev: false
-
-  /discord-api-types@0.37.41:
-    resolution: {integrity: sha512-FaPGBK9hx3zqSRX1x3KQWj+OElAJKmcyyfcdCy+U4AKv+gYuIkRySM7zd1So2sE4gc1DikkghkSBgBgKh6pe4Q==}
+  /discord-api-types@0.37.50:
+    resolution: {integrity: sha512-X4CDiMnDbA3s3RaUXWXmgAIbY1uxab3fqe3qwzg5XutR3wjqi7M3IkgQbsIBzpqBN2YWr/Qdv7JrFRqSgb4TFg==}
     dev: false
 
   /discord-emoji-converter@1.2.8:
@@ -644,7 +644,7 @@ packages:
       '@discordjs/ws': 0.8.3
       '@sapphire/snowflake': 3.4.2
       '@types/ws': 8.5.4
-      discord-api-types: 0.37.41
+      discord-api-types: 0.37.50
       fast-deep-equal: 3.1.3
       lodash.snakecase: 4.1.1
       tslib: 2.5.0

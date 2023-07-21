@@ -1,36 +1,30 @@
 const axios = require("axios");
-const config = require("../../../config.json");
 
 async function getUUID(username) {
   try {
-    const { data } = await axios.get(
-      `${config.minecraft.API.playerDBAPI}/${username}`
-    );
+    const { data } = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`);
 
     if (data.success === false || data.error === true) {
-      throw data.message == "Mojang API lookup failed."
-        ? "Invalid username."
-        : data.message;
+      throw data.message == "Mojang API lookup failed." ? "Invalid username." : data.message;
     }
 
-    if (data.data?.player?.raw_id === undefined) {
+    if (data.id === undefined) {
       // eslint-disable-next-line no-throw-literal
       throw "No UUID found for that username.";
     }
 
-    return data.data.player.raw_id;
+    return data.id;
   } catch (error) {
+    console.log(error.response.data);
     throw error?.response?.data?.message == "Mojang API lookup failed."
       ? "Invalid username."
-      : error?.response?.data?.message;
+      : error.response.data.errorMessage;
   }
 }
 
 async function getUsername(uuid) {
   try {
-    const response = await axios.get(
-      `${config.minecraft.API.playerDBAPI}/${uuid}`
-    );
+    const response = await axios.get(`https://playerdb.co/api/player/minecraft/${uuid}`);
     return response.data.data.player.username;
   } catch (error) {
     console.log(error);
@@ -39,14 +33,10 @@ async function getUsername(uuid) {
 
 async function resolveUsernameOrUUID(username) {
   try {
-    const { data } = await axios.get(
-      `${config.minecraft.API.playerDBAPI}/${username}`
-    );
+    const { data } = await axios.get(`https://playerdb.co/api/player/minecraft/${username}`);
 
     if (data.success === false || data.error === true) {
-      throw data.message == "Mojang API lookup failed."
-        ? "Invalid username."
-        : data.message;
+      throw data.message == "Mojang API lookup failed." ? "Invalid username." : data.message;
     }
 
     if (data.data?.player?.raw_id === undefined) {
@@ -54,7 +44,10 @@ async function resolveUsernameOrUUID(username) {
       throw "No UUID found for that username.";
     }
 
-    return { username: data.data.player.username, uuid: data.data.player.raw_id };
+    return {
+      username: data.data.player.username,
+      uuid: data.data.player.raw_id,
+    };
   } catch (error) {
     console.log(error);
   }

@@ -1,5 +1,4 @@
 const config = require("../../../config.json");
-// eslint-disable-next-line
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {

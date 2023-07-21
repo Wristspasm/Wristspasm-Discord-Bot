@@ -29,7 +29,9 @@ module.exports = {
         const [username, user] = await Promise.all([
           getUsername(uuid),
           interaction.guild.members.fetch(id).catch(() => {}),
-        ]);
+        ]).catch(() => {
+          console.log(error);
+        });
 
         const index = Object.keys(linked).indexOf(uuid);
 
@@ -53,11 +55,12 @@ module.exports = {
         if (user.nickname === username) continue;
         if (user.user.username === username) continue;
 
+        const oldUsername = user.nickname || user.user.username;
         user.setNickname(username).catch(() => {});
         linkedUsers++;
 
         updatedUsers.push({
-          username: username,
+          oldUsername: oldUsername,
           id: id,
         });
 
@@ -76,7 +79,7 @@ module.exports = {
       await interaction.editReply({ embeds: [successEmbed] });
 
       await interaction.followUp({
-        content: `Updated usernames: \n\`\`\`${JSON.stringify(updatedUsers)}\`\`\``,
+        content: `**Updated usernames:**\n${updatedUsers.map((user) => `- ${user.oldUsername} => <@${user.id}>\n`)}`,
       });
     } catch (error) {
       console.error(error);

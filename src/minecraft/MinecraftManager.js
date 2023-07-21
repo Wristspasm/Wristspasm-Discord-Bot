@@ -1,4 +1,3 @@
-/*eslint-disable */
 const CommunicationBridge = require("../contracts/CommunicationBridge.js");
 const StateHandler = require("./handlers/StateHandler.js");
 const ErrorHandler = require("./handlers/ErrorHandler.js");
@@ -7,9 +6,8 @@ const CommandHandler = require("./CommandHandler.js");
 const config = require("../../config.json");
 const owoify = require("owoify-js").default;
 const mineflayer = require("mineflayer");
+const Logger = require("../Logger.js");
 const Filter = require("bad-words");
-const Logger = require("../Logger");
-/*eslint-enable */
 const filter = new Filter();
 
 class MinecraftManager extends CommunicationBridge {
