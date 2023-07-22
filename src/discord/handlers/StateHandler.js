@@ -13,6 +13,7 @@ class StateHandler {
       activities: [{ name: `/help | by @duckysolucky`, type: ActivityType.Playing }],
     });
     global.guild = await client.guilds.fetch(config.discord.bot.serverID);
+    Logger.discordMessage("Guild ready, successfully fetched " + guild.name);
 
     const channel = await this.getChannel("Guild");
     global.bridgeChat = config.discord.channels.guildChatChannel;

@@ -33,18 +33,18 @@ module.exports = {
       }
 
       const updatedMembers = [];
-      for (const userValue of users) {
-        const user = userValue[1];
-        const { username, id } = user.user;
+      for (const [id, user] of users.filter((user) => user.roles.cache.has(config.discord.roles.linkedRole))) {
+        const username = user.user.username;
 
-        console.log(`Updated roles for ${username} (${id})`);
+        console.log(`Updating roles for ${username}...`);
 
-        const index = users.indexOf(userValue);
+        const index = updatedMembers.length + 1;
+        const totalMembers = (users.filter((user) => user.roles.cache.has(config.discord.roles.linkedRole))).size
 
         const progressEmbed = new EmbedBuilder()
           .setColor(3066993)
           .setAuthor({ name: "Updating Roles..." })
-          .setDescription(`Progress: \`${index}/${users.length}\` (\`${((index / users.length) * 100).toFixed(2)}%\`)`)
+          .setDescription(`Progress: \`${index}/${totalMembers}\` (\`${((index / totalMembers) * 100).toFixed(2)}%\`)`)
           .setFooter({
             text: `by @duckysolucky | /help [command] for more information`,
             iconURL: "https://imgur.com/tgwQJTX.png",
@@ -52,16 +52,20 @@ module.exports = {
 
         await interaction.editReply({ embeds: [progressEmbed] });
 
-        const updateRolesCommand = require("./rolesCommand");
-        await updateRolesCommand.execute(interaction, user, "verify");
+        if (index > 120) {
+          const updateRolesCommand = require("./rolesCommand");
+          await updateRolesCommand.execute(interaction, user, "verify");
+        }
+        
         updatedMembers.push({ id: id });
+        console.log(`Updated roles for ${username}!`);
       }
 
       const successEmbed = new EmbedBuilder()
         .setColor("4BB543")
         .setAuthor({ name: "Success!" })
         .setDescription(
-          `Successfully updated role to \`${nRemoved}\` users!\n${updatedMembers
+          `Successfully updated role to \`${updatedMembers.length}\` users!\n${updatedMembers
             .map((user) => `• <@${user.id}>`)
             .join("\n")}`
         )
