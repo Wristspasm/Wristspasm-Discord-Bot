@@ -46,7 +46,7 @@ module.exports = {
       }
 
       const skyblockLevel = profile?.profile?.leveling?.experience / 100 ?? 0;
-      const bwLevel = player.stats.bedwars.level;
+      const bwLevel = player.stats.bedwars?.level ?? 0;
       const swLevel = player.stats.skywars.level / 5;
       const duelsWins = player.stats.duels.wins;
 
