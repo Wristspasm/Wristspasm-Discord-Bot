@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 
 module.exports = {
@@ -19,19 +20,25 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const name = interaction.options.getString("name");
-    const reason = interaction.options.getString("reason");
-    if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(config.discord.roles.commandRole)) {
-      bot.chat(`/g kick ${name} ${reason}`);
-      await interaction.followUp({
-        content: "Command has been executed successfully.",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.followUp({
-        content: "You do not have permission to run this command.",
-        ephemeral: true,
-      });
+    const user = interaction.member;
+    if (user.roles.cache.has(config.discord.roles.commandRole) === false) {
+      throw new Error("You do not have permission to use this command.");
     }
+
+    const [name, reason] = [interaction.options.getString("name"), interaction.options.getString("reason")];
+    bot.chat(`/g kick ${name} ${reason}`);
+
+    const embed = new EmbedBuilder()
+      .setColor(5763719)
+      .setAuthor({ name: "Kick" })
+      .setDescription(`Successfully executed \`/g kick ${name} ${reason}\``)
+      .setFooter({
+        text: `by @duckysolucky | /help [command] for more information`,
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
+    await interaction.followUp({
+      embeds: [embed],
+    });
   },
 };

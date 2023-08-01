@@ -9,39 +9,24 @@ const fs = require("fs");
 module.exports = {
   name: "interactionCreate",
   async execute(interaction) {
-    if (interaction.isChatInputCommand()) {
-      const command = interaction.client.commands.get(interaction.commandName);
+    try {
+      if (interaction.isChatInputCommand()) {
+        const command = interaction.client.commands.get(interaction.commandName);
+        if (command === undefined) {
+          return;
+        }
 
-      if ((command.name == "inactivity") === false) {
-        await interaction.deferReply({ ephemeral: false }).catch(() => {});
-      }
+        if ((command.name == "inactivity") === false) {
+          await interaction.deferReply({ ephemeral: false }).catch(() => {});
+        }
 
-      if (command === undefined) {
-        return;
-      }
+        bridgeChat = interaction.channelId;
 
-      try {
         Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
-
         await command.execute(interaction);
-      } catch (error) {
-        console.log(error);
-
-        const errorEmbed = new EmbedBuilder()
-          .setColor(15548997)
-          .setAuthor({ name: "An Error has occurred" })
-          .setDescription(`\`\`\`${error.toString()}\`\`\``)
-          .setFooter({
-            text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
-
-        await interaction.reply({ embeds: [errorEmbed] });
       }
-    }
 
-    if (interaction.isButton()) {
-      try {
+      if (interaction.isButton()) {
         await interaction.deferReply({ ephemeral: true });
 
         // ? Apply Button
@@ -54,27 +39,13 @@ module.exports = {
 
           await applyCommand.execute(interaction);
         }
-      } catch (error) {
-        const errorEmbed = new EmbedBuilder()
-          .setColor(15548997)
-          .setAuthor({ name: "An Error has occurred" })
-          .setDescription(
-            `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
-          )
-          .setFooter({
-            text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
-
-        interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
       }
-    }
 
-    if (interaction.customId === "inactivityform") {
-      const time = interaction.fields.getTextInputValue("inactivitytime");
-      const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
+      // ? Inactivity Form
+      if (interaction.customId === "inactivityform") {
+        const time = interaction.fields.getTextInputValue("inactivitytime");
+        const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
 
-      try {
         const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
         if (linked === undefined) {
           throw new Error("No verification data found. Please contact an administrator.");
@@ -149,20 +120,18 @@ module.exports = {
           });
 
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
-      } catch (error) {
-        console.log(error);
-
-        const errorEmbed = new EmbedBuilder()
-          .setColor(15548997)
-          .setAuthor({ name: "An Error has occurred" })
-          .setDescription(`\`\`\`${error.toString()}\`\`\``)
-          .setFooter({
-            text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
-
-        await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
       }
+    } catch (error) {
+      const errorEmbed = new EmbedBuilder()
+        .setColor(15548997)
+        .setAuthor({ name: "An Error has occurred" })
+        .setDescription(`\`\`\`${error}\`\`\``)
+        .setFooter({
+          text: `by @duckysolucky | /help [command] for more information`,
+          iconURL: "https://imgur.com/tgwQJTX.png",
+        });
+
+      await interaction.editReply({ embeds: [errorEmbed] });
     }
   },
 };
