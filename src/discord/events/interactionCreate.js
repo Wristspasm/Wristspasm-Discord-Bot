@@ -1,9 +1,10 @@
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI");
-const { getUsername } = require("../../contracts/API/PlayerDBAPI");
-const { writeAt } = require("../../contracts/helperFunctions");
+const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
+const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
+const { writeAt } = require("../../contracts/helperFunctions.js");
+const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
-const Logger = require("../.././Logger");
+const Logger = require("../.././Logger.js");
 const fs = require("fs");
 
 module.exports = {
@@ -34,7 +35,7 @@ module.exports = {
           const applyCommand = interaction.client.commands.get("apply");
 
           if (applyCommand === undefined) {
-            throw new Error("Could not find apply command! Please contact an administrator.");
+            throw new WristSpasmError("Could not find apply command! Please contact an administrator.");
           }
 
           await applyCommand.execute(interaction);
@@ -48,12 +49,12 @@ module.exports = {
 
         const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
         if (linked === undefined) {
-          throw new Error("No verification data found. Please contact an administrator.");
+          throw new WristSpasmError("No verification data found. Please contact an administrator.");
         }
 
         const uuid = linked[interaction.user.id];
         if (uuid === undefined) {
-          throw new Error("You are no verified. Please verify using /verify.");
+          throw new WristSpasmError("You are no verified. Please verify using /verify.");
         }
 
         const [guild, username] = await Promise.all([
@@ -62,17 +63,17 @@ module.exports = {
         ]);
 
         if (guild === undefined) {
-          throw new Error("Guild data not found. Please contact an administrator.");
+          throw new WristSpasmError("Guild data not found. Please contact an administrator.");
         }
 
         if (isNaN(time) || time < 1) {
-          throw new Error("Please enter a valid number.");
+          throw new WristSpasmError("Please enter a valid number.");
         }
 
         const formattedTime = time * 86400;
-        if (formattedTime >= 14 * 86400) {
-          throw new Error(
-            "You can only request inactivity for 14 days or less. Please contact an administrator if you need more time."
+        if (formattedTime > 21 * 86400) {
+          throw new WristSpasmError(
+            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
           );
         }
 
@@ -93,7 +94,7 @@ module.exports = {
 
         const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
         if (channel === undefined) {
-          throw new Error("Inactivity channel not found. Please contact an administrator.");
+          throw new WristSpasmError("Inactivity channel not found. Please contact an administrator.");
         }
 
         await channel.send({ embeds: [inactivityEmbed] });
@@ -122,16 +123,48 @@ module.exports = {
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
       }
     } catch (error) {
+      console.log(error);
       const errorEmbed = new EmbedBuilder()
         .setColor(15548997)
         .setAuthor({ name: "An Error has occurred" })
-        .setDescription(`\`\`\`${error}\`\`\``)
+        .setDescription(
+          `${
+            error instanceof WristSpasmError === false
+              ? "Please try again later. The error has been sent to the Developers.\n\n"
+              : ""
+          }\`\`\`${error}\`\`\``
+        )
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-      await interaction.editReply({ embeds: [errorEmbed] });
+      await interaction.reply({ embeds: [errorEmbed] }).catch(async () => {
+        await interaction.editReply({ embeds: [errorEmbed] });
+      });
+
+      if (error instanceof WristSpasmError === false) {
+        const errorLog = new EmbedBuilder()
+          .setColor(15158332)
+          .setTitle("Error")
+          .setDescription(
+            `
+        Command: \`${interaction.commandName}\`
+        Options: \`${JSON.stringify(interaction.options.data)}\`
+        User ID: \`${interaction.user.id}\`
+        User: \`${interaction.user.username ?? interaction.user.tag}\`
+        \`\`\`${error.stack}\`\`\``
+          )
+          .setFooter({
+            text: `by DuckySoLucky#5181`,
+            iconURL: "https://imgur.com/tgwQJTX.png",
+          });
+
+        interaction.client.channels.cache.get(config.discord.channels.botLogsChannel).send({
+          content: `<@&987936050649391194>`,
+          embeds: [errorLog],
+        });
+      }
     }
   },
 };

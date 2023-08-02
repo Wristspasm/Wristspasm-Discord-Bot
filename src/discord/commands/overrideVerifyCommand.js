@@ -1,5 +1,6 @@
-const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI");
-const { writeAt } = require("../../contracts/helperFunctions");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { writeAt } = require("../../contracts/helperFunctions.js");
+const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
@@ -23,66 +24,57 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    try {
-      const linkedRole = config.discord.roles.linkedRole;
-      if (linkedRole === undefined) {
-        throw new Error("The linked role does not exist. Please contact an administrator.");
-      }
-
-      if ((await interaction.guild.members.fetch(interaction.user)).roles.cache.has(linkedRole) === false) {
-        throw new Error("You do not have permission to use this command.");
-      }
-
-      const username = interaction.options.getString("name");
-      if (username.length > 16) {
-        throw new Error("Invalid username.");
-      }
-
-      const id = interaction.options._hoistedOptions[1].user.id;
-      const uuid = await getUUID(username);
-
-      const minecraftLinked = require("../../../data/minecraftLinked.json");
-      Object.keys(minecraftLinked).map((uuid) => {
-        if (minecraftLinked[uuid] === id) delete minecraftLinked[uuid];
-      });
-      fs.writeFileSync("data/minecraftLinked.json", JSON.stringify(minecraftLinked, null, 2));
-
-      await Promise.all([
-        writeAt("data/discordLinked.json", `${id}`, `${uuid}`),
-        writeAt("data/minecraftLinked.json", `${uuid}`, `${id}`),
-      ]);
-
-      await interaction.guild.members.fetch(id).then((member) => member.roles.add(linkedRole));
-      await interaction.guild.members.fetch(id).then((member) => member.setNickname(username));
-
-      const successfullyLinked = new EmbedBuilder()
-        .setColor(5763719)
-        .setAuthor({ name: "Successfully linked!" })
-        .setDescription(`\`${username}\` has been successfully linked to <@${id}>`)
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
-
-      await interaction.followUp({ embeds: [successfullyLinked] });
-
-      const updateRolesCommand = require("./rolesCommand");
-      await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify");
-    } catch (error) {
-      console.log(error);
-
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(
-          `\`\`\`${error.toString().replaceAll("[hypixel-api-reborn] ", "").replaceAll("Error: ", "")}\`\`\``
-        )
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
-
-      await interaction.editReply({ embeds: [errorEmbed] });
+    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+      throw new WristSpasmError("You do not have permission to use this command.");
     }
+
+    const linkedRole = config.discord.roles.linkedRole;
+    if (linkedRole === undefined) {
+      throw new WristSpasmError("The linked role does not exist. Please contact an administrator.");
+    }
+
+    const username = interaction.options.getString("name");
+    if (username.length > 16) {
+      throw new WristSpasmError("Invalid username.");
+    }
+
+    const id = interaction.options._hoistedOptions[1].user.id;
+    const uuid = await getUUID(username);
+
+    const minecraftLinked = require("../../../data/minecraftLinked.json");
+    Object.keys(minecraftLinked)
+      .filter((uuid) => minecraftLinked[uuid] === id)
+      .map((uuid) => {
+        delete minecraftLinked[uuid];
+      });
+    fs.writeFileSync("data/minecraftLinked.json", JSON.stringify(minecraftLinked, null, 2));
+
+    await Promise.all([
+      writeAt("data/discordLinked.json", `${id}`, `${uuid}`),
+      writeAt("data/minecraftLinked.json", `${uuid}`, `${id}`),
+    ]);
+
+    await interaction.guild.members
+      .fetch(id)
+      .then((member) => member.roles.add(linkedRole))
+      .catch(() => {});
+    await interaction.guild.members
+      .fetch(id)
+      .then((member) => member.setNickname(username))
+      .catch(() => {});
+
+    const successfullyLinked = new EmbedBuilder()
+      .setColor(5763719)
+      .setAuthor({ name: "Successfully linked!" })
+      .setDescription(`\`${username}\` has been successfully linked to <@${id}>`)
+      .setFooter({
+        text: `by @duckysolucky | /help [command] for more information`,
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
+    await interaction.followUp({ embeds: [successfullyLinked] });
+
+    const updateRolesCommand = require("./rolesCommand.js");
+    await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify");
   },
 };

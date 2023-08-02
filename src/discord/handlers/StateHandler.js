@@ -17,6 +17,7 @@ class StateHandler {
 
     const channel = await this.getChannel("Guild");
     global.bridgeChat = config.discord.channels.guildChatChannel;
+    require("../other/statsChannel.js");
 
     channel.send({
       embeds: [

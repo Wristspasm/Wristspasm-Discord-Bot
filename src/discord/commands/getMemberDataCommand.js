@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
+const WristSpasmError = require("../../contracts/errorHandler.js");
+const config = require("../../../config.json");
 const fs = require("fs");
 
 function formatUnixTime(milliseconds) {
@@ -25,59 +26,48 @@ module.exports = {
   description: "Get member data",
 
   execute: async (interaction) => {
-    try {
-      const data = JSON.parse(fs.readFileSync("data/playerData.json"));
-      if (data === undefined) {
-        throw new Error("No data found");
-      }
-
-      const output = {};
-      for (const [uuid, value] of Object.entries(data)) {
-        const { username, joined, lastLogin, left, lastLogout, online, playtime, messages } = value;
-
-        output[username] = {
-          username: username,
-          uuid: uuid,
-          joined: joined,
-          left: left,
-          online: `${online ? "Yes" : "No"}`,
-          playtimeUnix: playtime,
-          playtime: `${formatUnixTime(playtime)}`,
-          lastLogin: `${new Date(lastLogin) ?? "Unknown"}`,
-          lastLoginUnix: lastLogin,
-          lastLogout: `${new Date(lastLogout) ?? "Unknown"}`,
-          lastLogoutUnix: lastLogout,
-          messagesSent: `${messages?.toLocaleString() ?? 0}`,
-        };
-      }
-
-      await interaction.editReply({
-        files: [
-          {
-            attachment: Buffer.from(
-              JSON.stringify(
-                Object.values(output).sort((a, b) => b.playtimeUnix - a.playtimeUnix),
-                null,
-                2
-              )
-            ),
-            name: "memberData.json",
-          },
-        ],
-      });
-    } catch (error) {
-      console.log(error);
-
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(`\`\`\`${error}\`\`\``)
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
-
-      await interaction.editReply({ embeds: [errorEmbed] });
+    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+      throw new WristSpasmError("You do not have permission to use this command.");
     }
+
+    const data = JSON.parse(fs.readFileSync("data/playerData.json"));
+    if (data === undefined) {
+      throw new WristSpasmError("No data found");
+    }
+
+    const output = {};
+    for (const [uuid, value] of Object.entries(data)) {
+      const { username, joined, lastLogin, left, lastLogout, online, playtime, messages } = value;
+
+      output[username] = {
+        username: username,
+        uuid: uuid,
+        joined: joined,
+        left: left,
+        online: `${online ? "Yes" : "No"}`,
+        playtimeUnix: playtime,
+        playtime: `${formatUnixTime(playtime)}`,
+        lastLogin: `${new Date(lastLogin) ?? "Unknown"}`,
+        lastLoginUnix: lastLogin,
+        lastLogout: `${new Date(lastLogout) ?? "Unknown"}`,
+        lastLogoutUnix: lastLogout,
+        messagesSent: `${messages?.toLocaleString() ?? 0}`,
+      };
+    }
+
+    await interaction.editReply({
+      files: [
+        {
+          attachment: Buffer.from(
+            JSON.stringify(
+              Object.values(output).sort((a, b) => b.playtimeUnix - a.playtimeUnix),
+              null,
+              2
+            )
+          ),
+          name: "memberData.json",
+        },
+      ],
+    });
   },
 };

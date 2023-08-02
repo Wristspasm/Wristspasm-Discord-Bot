@@ -4,11 +4,11 @@
     "uuid": "4855c53ee4fb4100997600a92fc50984",
     "discord": "duckysolucky#0",
     "discord_id": "486155512568741900",
-    "requested": "1690901154",
-    "requested_formatted": "8/1/2023, 4:45:53 PM",
-    "expiration": "1690987553",
-    "expiration_formatted": "8/2/2023, 4:45:53 PM",
-    "reason": "test"
+    "requested": "1690980766",
+    "requested_formatted": "8/2/2023, 2:52:45 PM",
+    "expiration": "1691412766",
+    "expiration_formatted": "8/7/2023, 2:52:46 PM",
+    "reason": "5"
   },
   "2700c8b565c74d8e9be5eb7a6ae19295": {
     "username": "FemboyDark",
@@ -31,5 +31,16 @@
     "expiration": "1682005026",
     "expiration_formatted": "4/20/2023, 5:37:06 PM",
     "reason": "ducky is eating me"
+  },
+  "70f34847bdb444da9dfd796810c8a97e": {
+    "username": "Ton618_mc",
+    "uuid": "70f34847bdb444da9dfd796810c8a97e",
+    "discord": "ton618_dc#0",
+    "discord_id": "889131748233994314",
+    "requested": "1690978383",
+    "requested_formatted": "8/2/2023, 2:13:03 PM",
+    "expiration": "1692187982",
+    "expiration_formatted": "8/16/2023, 2:13:02 PM",
+    "reason": "Vacation"
   }
 }

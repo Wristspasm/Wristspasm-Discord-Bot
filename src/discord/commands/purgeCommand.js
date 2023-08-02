@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
+const WristSpasmError = require("../../contracts/errorHandler.js");
+const config = require("../../../config.json");
 
 module.exports = {
   name: "purge",
@@ -13,31 +14,15 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    try {
-      const amount = interaction.options.getInteger("amount") ?? 5;
-
-      if (interaction.member.permissions.has("MANAGE_MESSAGES") === false) {
-        throw new Error("You don't have permission to use this command.");
-      }
-
-      if (amount < 1 || amount > 100) {
-        throw new Error("You can only purge between 1 and 100 messages.");
-      }
-
-      await interaction.channel.bulkDelete(amount);
-    } catch (error) {
-      console.log(error);
-
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(`\`\`\`${error}\`\`\``)
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
-
-      await interaction.editReply({ embeds: [errorEmbed] });
+    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+      throw new WristSpasmError("You do not have permission to use this command.");
     }
+
+    const amount = interaction.options.getInteger("amount") ?? 5;
+    if (amount < 1 || amount > 100) {
+      throw new WristSpasmError("You can only purge between 1 and 100 messages.");
+    }
+
+    await interaction.channel.bulkDelete(amount);
   },
 };

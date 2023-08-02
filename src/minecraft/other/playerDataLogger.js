@@ -1,4 +1,4 @@
-const { getUUID } = require("../../contracts/API/PlayerDBAPI");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
 const fs = require("fs");
 
 const DEFAULT_DATA = {

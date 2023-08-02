@@ -1,23 +1,18 @@
-const {
-  EmbedBuilder,
-  ActionRowBuilder,
-  SelectMenuBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require("discord.js");
+const { EmbedBuilder /*, ActionRowBuilder, SelectMenuBuilder, ButtonBuilder, ButtonStyle*/ } = require("discord.js");
+const WristSpasmError = require("../../contracts/errorHandler.js");
 
 module.exports = {
   name: "embed",
   description: "test",
 
   execute: async (interaction) => {
-    try {
-      if (!interaction.member.permissions.has("ADMINISTRATOR")) {
-        throw new Error(
-          "You do not have permission to use this command. You need the `ADMINISTRATOR` permission."
-        );
-      }
+    if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+      throw new WristSpasmError(
+        "You do not have permission to use this command. You need the `ADMINISTRATOR` permission."
+      );
+    }
 
+    /*
       // ? #rules
       const rulesEmbed = new EmbedBuilder()
         .setThumbnail("https://imgur.com/fNByP9j.png")
@@ -26,9 +21,7 @@ module.exports = {
           `**WristSpasm Guild Rules**\n\n**Rule #1: Rudeness/Slurs**\nThis rule includes making rude comments to another user. This can range from calling someone names to being racist. Rudeness in any form is not accepted and you will be punished.\n\n**Rule #2: Spamming**\nSpamming similar messages continuously is not allowed. A message should only be sent once and limit the amount of messages you send during a conversation. You do not need 5 different messages for each word of a sentence. Please use the designated <#907487880061014047> channel provided for those messages.\n\n**Rule #3: Bot Commands**\nThis rule means that you should not post commands that a bot replies to in public chats. Please use the designated <#600325477537939476> channel provided for those commands.\n\n**Rule #4: Inappropriate Behaviour**\nBehaving in an inappropriate manner. This can include drug use references, sexual content or any childish remarks. Violent remarks are also not allowed, especially if it is a threat to another user.\n\n**Rule #5: Media**\nThis rule entails the posting of media in the discord. All media (either images or videos) should be posted in our designated <#725727134190141490> channel. Under no circumstance will posting NSFW content be allowed.\n\n**Rule #6: Threats**\nNo threats will be tolerated in the WristSpasm guild discord or guild chat. We take this very seriously and will not hesitate to punish anyone who proceeds to do this. Threats include: DDos, Dox or violent threats. We will ban for any negative threats though.\n\n**Rule #7: Posting Dangerous Links**\nPosting links that will steal personal information from another user or installs malware onto their device is not permitted. You will receive serious punishment if caught.\n\n**Rule #8: Disruption of the guild**\nAttempting to find loopholes to break the rules for example creating alternative accounts to evade a punishment is not allowed. We will update rules so that any attempted loophole does not happen again.\n\n**Rule #9: Advertising**\nTrying to promote other discords is not allowed. This is to protect everyone's privacy and data. Please stick to advertising your social medias in the <#601572483380019200>\n`
         );
 
-      await interaction.client.channels.cache
-        .get("1003356938546983043")
-        .send({ embeds: [rulesEmbed] });
+      await interaction.client.channels.cache.get("1003356938546983043").send({ embeds: [rulesEmbed] });
 
       // ? #information
       const welcomeEmbed = new EmbedBuilder()
@@ -85,15 +78,31 @@ module.exports = {
         );
 
       const applyButton = new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-          .setCustomId("guild.apply_button")
-          .setLabel("Apply")
-          .setStyle(ButtonStyle.Success)
+        new ButtonBuilder().setCustomId("guild.apply_button").setLabel("Apply").setStyle(ButtonStyle.Success)
       );
+      */
 
-      await interaction.client.channels.cache
-        .get("1072874886005014568")
-        .send({ embeds: [gReqs, applyE], components: [applyButton] });
-    } catch (error) {}
+    const guildBotInformationMain = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle("<:hypixel:1099643612209348718> Wrist Spasm Guild Bot Information")
+      .setDescription(
+        `This powerful bot is built upon the foundation of the [Hypixel Discord Chat Bridge](https://github.com/DuckySoLucky/hypixel-discord-chat-bridge) and is tailored specifically for the WristSpasm Guild. It serves as a two-way chat bridge between Hypixel guild chat and Discord, ensuring seamless communication between the two platforms.`
+      )
+      .setThumbnail("https://imgur.com/fNByP9j.png");
+
+    const guildBotInformationEmbed = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle("Guild Bot Information")
+      .setDescription(
+        `<:minecraft:1136253283145613344> **Minecraft Commands**:\n- \`!bedwars [player]\`: View BedWars stats of a player.\n- \`!skywars [player]\`: View SkyWars stats of a player.\n- \`!slayer [player]\`: View Slayer stats of a player.\n- \`!skills [player]\`: View Skills of a player.\n- \`!level [player]\`: View Skyblock Level of a player.\n- \`!networth [player]\`: View Networth of a player.\n- ... and more! Use \`!help\` to see all available commands.\n\n<:discord:1136253305740341278> **Discord Commands**:\n- \`/online\`: View currently online members.\n- \`/info\`: View information regarding bot.\n- \`/roles\`: Sync your Discord account's roles with in game stats.\n- ... and more! Use \`/help\` to see all available commands.\n\n<:skyblock:1011934351820337173> **Skyblock Features**:\n- Render armor, equipment, pets, and other in-game items.\n- Receive notifications for Skyblock events and updates.\n- Various Quality of Life commands.\n- and more!\n\n:bell: **Event Notifier**:\nThe bot sends remindes before various Skyblock events.\n\n:star2: **Frag Bot**:\nThe bot includes a frag bot that allows you to run dungeons alone! Just party the bot and it will automatically accept your party invite and you can start the dungeon. The bot will leave the party after few seconds.`
+      )
+      .setFooter({
+        text: "by @duckysolucky | /help [command] for more information",
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
+    await interaction.client.channels.cache
+      .get("1136244921716711555")
+      .send({ embeds: [guildBotInformationMain, guildBotInformationEmbed] });
   },
 };

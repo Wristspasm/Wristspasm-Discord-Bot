@@ -9,6 +9,7 @@ const messages = require("../../../messages.json");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const Logger = require("../../Logger.js");
+const fs = require("fs");
 
 class StateHandler extends eventHandler {
   constructor(minecraft, command, discord) {

@@ -20,7 +20,6 @@ class DiscordManager extends CommunicationBridge {
     this.stateHandler = new StateHandler(this);
     this.messageHandler = new MessageHandler(this);
     this.commandHandler = new CommandHandler(this);
-    require("./other/statsChannel.js");
   }
 
   async connect() {
