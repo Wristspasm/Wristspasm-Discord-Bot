@@ -14,7 +14,10 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+    if (
+      config.discord.commands.checkPerms === true &&
+      interaction.member.roles.cache.has(config.discord.commands.commandRole) === false
+    ) {
       throw new WristSpasmError("You do not have permission to use this command.");
     }
 

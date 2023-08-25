@@ -45,6 +45,7 @@
     "mineflayer": "^4.3.0",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.4",
+    "node-cron": "^3.0.2",
     "owoify-js": "^2.0.0",
     "path": "^0.12.7",
     "prismarine-nbt": "^1.6.0",

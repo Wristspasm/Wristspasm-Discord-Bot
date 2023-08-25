@@ -6,7 +6,6 @@ const StateHandler = require("./handlers/StateHandler.js");
 const CommandHandler = require("./CommandHandler.js");
 const config = require("../../config.json");
 const Logger = require(".././Logger.js");
-const { kill } = require("node:process");
 const path = require("node:path");
 const fs = require("fs");
 const owoify = require("owoify-js").default;
@@ -24,12 +23,7 @@ class DiscordManager extends CommunicationBridge {
 
   async connect() {
     global.client = new Client({
-      intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
-      ],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
 
     this.client = client;
@@ -60,11 +54,10 @@ class DiscordManager extends CommunicationBridge {
         : client.on(event.name, (...args) => event.execute(...args));
     }
 
-    process.on("SIGINT", () => {
-      this.stateHandler.onClose().then(() => {
-        client.destroy();
-        kill(process.pid);
-      });
+    process.on("SIGINT", async () => {
+      await this.stateHandler.onClose();
+
+      process.kill(process.pid, "SIGTERM");
     });
   }
 
@@ -75,7 +68,7 @@ class DiscordManager extends CommunicationBridge {
     if (webhooks.size === 0) {
       channel.createWebhook({
         name: "Hypixel Chat Bridge",
-        avatar: "https://i.imgur.com/AfFp7pu.png",
+        avatar: "https://imgur.com/tgwQJTX.png",
       });
 
       await this.getWebhook(discord, type);
@@ -85,17 +78,9 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async onBroadcast({ fullMessage, username, message, guildRank, chat, color = 1752220 }) {
-    let mode = config.discord.other.messageMode.toLowerCase();
-    if (message === undefined) {
-      if (config.discord.channels.debugMode === false) {
-        return;
-      }
-
-      mode = "minecraft";
-    }
-
-    if (message !== undefined) {
-      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
+    const mode = chat === "debugChannel" ? "minecraft" : config.discord.other.messageMode.toLowerCase();
+    if (message !== undefined && chat !== "debugChannel") {
+      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord onBroadcast`);
     }
 
     if (config.other.owoify.enabled === true) {
@@ -103,11 +88,13 @@ class DiscordManager extends CommunicationBridge {
     }
 
     const channel = await this.stateHandler.getChannel(chat || "Guild");
-    if (channel === undefined) return;
+    if (channel === undefined) {
+      return;
+    }
 
     switch (mode) {
       case "bot":
-        channel.send({
+        await channel.send({
           embeds: [
             {
               description: message,
@@ -125,20 +112,20 @@ class DiscordManager extends CommunicationBridge {
         });
 
         if (message.includes("https://")) {
-          let link = message.match(/https?:\/\/[^\s]+/g)[0];
+          const links = message.match(/https?:\/\/[^\s]+/g).join("\n");
 
-          if (link.endsWith("§r")) {
-            link = link.substring(0, link.length - 2);
-          }
-
-          channel.send(link);
+          channel.send(links);
         }
 
         break;
 
       case "webhook":
-        message = message.replace(/@/g, "");
-        this.app.discord.webhook = await this.getWebhook(this.app.discord, chat);
+        message = this.cleanMessage(message);
+        if (message.length === 0) {
+          return;
+        }
+
+        this.app.discord.webhook = await this.getWebhook(this.app.discord, channel);
         this.app.discord.webhook.send({
           content: message,
           username: username,
@@ -147,7 +134,7 @@ class DiscordManager extends CommunicationBridge {
         break;
 
       case "minecraft":
-        channel.send({
+        await channel.send({
           files: [
             new AttachmentBuilder(messageToImage(fullMessage), {
               name: `${username}.png`,
@@ -155,16 +142,11 @@ class DiscordManager extends CommunicationBridge {
           ],
         });
 
-        if (fullMessage.includes("https://")) {
-          let link = fullMessage.match(/https?:\/\/[^\s]+/g)[0];
+        if (message.includes("https://")) {
+          const links = message.match(/https?:\/\/[^\s]+/g).join("\n");
 
-          if (link.endsWith("§r")) {
-            link = link.substring(0, link.length - 2);
-          }
-
-          channel.send(link);
+          channel.send(links);
         }
-
         break;
 
       default:
@@ -236,6 +218,11 @@ class DiscordManager extends CommunicationBridge {
         });
         break;
       case "webhook":
+        message = this.cleanMessage(message);
+        if (message.length === 0) {
+          return;
+        }
+
         this.app.discord.webhook = await this.getWebhook(this.app.discord, channel);
         this.app.discord.webhook.send({
           username: username,
@@ -264,7 +251,25 @@ class DiscordManager extends CommunicationBridge {
   }
 
   hexToDec(hex) {
+    if (hex === undefined) {
+      return 1752220;
+    }
+
     return parseInt(hex.replace("#", ""), 16);
+  }
+
+  cleanMessage(message) {
+    if (message === undefined) {
+      return "";
+    }
+
+    return message
+      .split("\n")
+      .map((part) => {
+        part = part.trim();
+        return part.length === 0 ? "" : part.replace(/@(everyone|here)/gi, "").trim() + " ";
+      })
+      .join("");
   }
 }
 
