@@ -50,11 +50,10 @@ module.exports = {
           iconURL: "https://imgur.com/tgwQJTX.png",
         });
 
-      await interaction.editReply({ embeds: [progressEmbed] });
-
-      if (index >= 69) {
+      if (index >= 98) {
         const updateRolesCommand = require("./rolesCommand.js");
         await updateRolesCommand.execute(interaction, user, "verify");
+        await interaction.editReply({ embeds: [progressEmbed] });
       }
 
       updatedMembers.push({ id: id });
@@ -74,6 +73,6 @@ module.exports = {
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 
-    await interaction.editReply({ embeds: [successEmbed] });
+    await interaction.followUp({ embeds: [successEmbed] });
   },
 };

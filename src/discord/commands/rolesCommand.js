@@ -50,9 +50,9 @@ module.exports = {
     }
 
     const skyblockLevel = profile?.profile?.leveling?.experience / 100 ?? 0;
-    const bwLevel = player.stats.bedwars?.level ?? 0;
-    const swLevel = player.stats.skywars?.level ? Math.floor(player.stats.skywars.level / 5) : 0;
-    const duelsWins = player.stats.duels?.wins ?? 0;
+    const bwLevel = player?.stats?.bedwars?.level ?? 0;
+    const swLevel = player?.stats?.skywars?.level ? Math.floor(player.stats.skywars.level / 5) : 0;
+    const duelsWins = player?.stats.duels?.wins ?? 0;
 
     // ? Elite
     if (bwLevel >= 400 || skyblockLevel >= 200) {
@@ -175,14 +175,16 @@ module.exports = {
     const updateRole = new EmbedBuilder()
       .setColor(5763719)
       .setAuthor({ name: "Successfully completed" })
-      .setDescription(`Your roles have been successfully synced with \`${player.nickname}\`!`)
+      .setDescription(`Your roles have been successfully synced with \`${player?.nickname ?? "Unknown"}\`!`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 
     if (type === "verify") {
-      updateRole.setDescription(`<@${user.user.id}> roles have been successfully synced with \`${player.nickname}\`!`);
+      updateRole.setDescription(
+        `<@${user.user.id}> roles have been successfully synced with \`${player?.nickname ?? "Unknown"}\`!`
+      );
       await interaction.followUp({ embeds: [updateRole], ephemeral: true });
     } else {
       await interaction.editReply({ embeds: [updateRole] });

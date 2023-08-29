@@ -25,7 +25,8 @@ module.exports = {
     }
 
     let linkedUsers = 0;
-    const updatedUsers = [];
+    const updatedUsers = [],
+      failedUsers = [];
     for (const [uuid, id] of Object.entries(linked)) {
       const [username, user] = await Promise.all([
         getUsername(uuid),
@@ -51,9 +52,16 @@ module.exports = {
       if (user.user.username === username) continue;
 
       const oldUsername = user.nickname || user.user.username;
-      user.setNickname(username).catch(() => {
+      await user.setNickname(username).catch(() => {
         console.log(`Failed to update username for ${username} (${id}), skipping...`);
+        failedUsers.push({
+          oldUsername: oldUsername,
+          id: id,
+        });
+
+        return;
       });
+
       linkedUsers++;
 
       updatedUsers.push({
@@ -75,10 +83,32 @@ module.exports = {
 
     await interaction.editReply({ embeds: [successEmbed] });
 
-    await interaction.followUp({
-      content: `**Updated usernames:**\n${updatedUsers
-        .map((user) => `- \`${user.oldUsername}\` => <@${user.id}>`)
-        .join(`\n`)}`,
-    });
+    const updatedNicknamesEmbed = new EmbedBuilder()
+      .setColor(3066993)
+      .setAuthor({ name: "Updated nicknames" })
+      .setDescription(
+        `**Updated usernames:**\n${updatedUsers.map((user) => `- \`${user.oldUsername}\` => <@${user.id}>`).join(`\n`)}`
+      )
+      .setFooter({
+        text: `by @duckysolucky | /help [command] for more information`,
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
+    await interaction.followUp({ embeds: [updatedNicknamesEmbed] });
+
+    const failedNicknamesEmbed = new EmbedBuilder()
+      .setColor(15158332)
+      .setAuthor({ name: "Failed to update nicknames" })
+      .setDescription(
+        `**Failed to update usernames:**\n${failedUsers
+          .map((user) => `- \`${user.oldUsername}\` => <@${user.id}>`)
+          .join(`\n`)}`
+      )
+      .setFooter({
+        text: `by @duckysolucky | /help [command] for more information`,
+        iconURL: "https://imgur.com/tgwQJTX.png",
+      });
+
+    await interaction.followUp({ embeds: [failedNicknamesEmbed] });
   },
 };
