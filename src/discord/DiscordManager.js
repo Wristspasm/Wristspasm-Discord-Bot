@@ -21,7 +21,7 @@ class DiscordManager extends CommunicationBridge {
     this.commandHandler = new CommandHandler(this);
   }
 
-  async connect() {
+  connect() {
     global.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -85,7 +85,7 @@ class DiscordManager extends CommunicationBridge {
   async onBroadcast({ fullMessage, username, message, guildRank, chat, color = 1752220 }) {
     const mode = chat === "debugChannel" ? "minecraft" : config.discord.other.messageMode.toLowerCase();
     if (message !== undefined && chat !== "debugChannel") {
-      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord onBroadcast`);
+      Logger.broadcastMessage(`${username} [${guildRank}]: ${message}`, `Discord`);
     }
 
     if (config.other.owoify.enabled === true) {
@@ -139,6 +139,10 @@ class DiscordManager extends CommunicationBridge {
         break;
 
       case "minecraft":
+        if (fullMessage.length === 0) {
+          return;
+        }
+
         await channel.send({
           files: [
             new AttachmentBuilder(messageToImage(fullMessage), {
@@ -258,6 +262,10 @@ class DiscordManager extends CommunicationBridge {
   hexToDec(hex) {
     if (hex === undefined) {
       return 1752220;
+    }
+
+    if (typeof hex === "number") {
+      return hex;
     }
 
     return parseInt(hex.replace("#", ""), 16);
