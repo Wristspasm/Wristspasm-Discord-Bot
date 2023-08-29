@@ -19,10 +19,6 @@ class MinecraftManager extends CommunicationBridge {
     this.stateHandler = new StateHandler(this);
     this.errorHandler = new ErrorHandler(this);
     this.chatHandler = new ChatHandler(this, new CommandHandler(this));
-
-    require("./other/eventNotifier.js");
-    require("./other/skyblockNotifier.js");
-    require("./other/playerDataLogger.js");
   }
 
   connect() {
@@ -32,6 +28,10 @@ class MinecraftManager extends CommunicationBridge {
     this.errorHandler.registerEvents(this.bot);
     this.stateHandler.registerEvents(this.bot);
     this.chatHandler.registerEvents(this.bot);
+
+    require("./other/eventNotifier.js");
+    require("./other/skyblockNotifier.js");
+    require("./other/playerDataLogger.js");
   }
 
   createBotConnection() {
