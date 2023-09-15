@@ -1,10 +1,10 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/messageToImage.js
 
-const Canvas = require("canvas");
-Canvas.registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
+const { registerFont, createCanvas, loadImage } = require("canvas");
+registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
   family: "Minecraft",
 });
-Canvas.registerFont("src/contracts/Fonts/unifont.ttf", {
+registerFont("src/contracts/Fonts/unifont.ttf", {
   family: "MinecraftUnicode",
 });
 
@@ -28,7 +28,7 @@ const RGBA_COLOR = {
 };
 
 function getHeight(message) {
-  const canvas = Canvas.createCanvas(1, 1);
+  const canvas = createCanvas(1, 1);
   const ctx = canvas.getContext("2d");
   const splitMessageSpace = message.split(" ");
   for (const [i, msg] of Object.entries(splitMessageSpace)) {
@@ -43,7 +43,10 @@ function getHeight(message) {
 
   for (const msg of splitMessage) {
     const currentMessage = msg.substring(1);
-    if (width + ctx.measureText(currentMessage).width > 1000 || msg.charAt(0) === "n") {
+    if (
+      splitMessage.indexOf(msg) !== splitMessage.length - 1 &&
+      (width + ctx.measureText(currentMessage).width > 1000 || msg.charAt(0) === "n")
+    ) {
       width = 5;
       height += 40;
     }
@@ -54,9 +57,9 @@ function getHeight(message) {
   return height + 10;
 }
 
-function generateMessageImage(message) {
+async function generateMessageImage(message, username) {
   const canvasHeight = getHeight(message);
-  const canvas = Canvas.createCanvas(1000, canvasHeight);
+  const canvas = createCanvas(1000, canvasHeight);
   const ctx = canvas.getContext("2d");
   const splitMessageSpace = message.split(" ");
   for (const [i, msg] of Object.entries(splitMessageSpace)) {
@@ -78,9 +81,20 @@ function generateMessageImage(message) {
       width = 5;
       height += 40;
     }
+
+    // Credits to https://github.com/Pixelicc for an idea and code
+    if (currentMessage.trim() === "{skin}") {
+      ctx.drawImage(await loadImage(`https://www.mc-heads.net/avatar/${username}/35`), width, height - 35);
+
+      width += 55;
+
+      continue;
+    }
+
     if (colorCode) {
       ctx.fillStyle = colorCode;
     }
+
     ctx.fillText(currentMessage, width, height);
     width += ctx.measureText(currentMessage).width;
   }

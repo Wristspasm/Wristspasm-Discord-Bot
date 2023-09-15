@@ -13,7 +13,11 @@ module.exports = {
   description: "Updates old verification data to the new format",
 
   execute: async (interaction) => {
-    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+    const user = interaction.member;
+    if (
+      config.discord.commands.checkPerms === true &&
+      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+    ) {
       throw new WristSpasmError("You do not have permission to use this command.");
     }
 

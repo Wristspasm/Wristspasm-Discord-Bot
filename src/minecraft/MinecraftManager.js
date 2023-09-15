@@ -1,4 +1,5 @@
 const CommunicationBridge = require("../contracts/CommunicationBridge.js");
+const { replaceVariables } = require("../contracts/helperFunctions.js");
 const StateHandler = require("./handlers/StateHandler.js");
 const ErrorHandler = require("./handlers/ErrorHandler.js");
 const ChatHandler = require("./handlers/ChatHandler.js");
@@ -43,46 +44,37 @@ class MinecraftManager extends CommunicationBridge {
       viewDistance: "tiny",
       chatLengthLimit: 256,
       profilesFolder: "../../auth-cache",
+      username: "test",
     });
   }
 
   async onBroadcast({ channel, username, message, replyingTo }) {
     Logger.broadcastMessage(`${username}: ${message}`, "Minecraft");
-    if (!this.bot.player) return;
+    if (this.bot.player === undefined) {
+      return;
+    }
 
     if (channel === config.discord.channels.debugChannel && config.discord.channels.debugMode === true) {
       return this.bot.chat(message);
+    }
+
+    if (config.discord.other.filterMessages) {
+      message = filter.clean(message);
     }
 
     if (config.other.owoify.enabled === true && message.startsWith("!") === false) {
       message = owoify(message, config.other.owoify.type);
     }
 
-    const symbol = config.minecraft.bot.messageFormat;
+    message = replaceVariables(config.minecraft.bot.messageFormat, { username, message });
 
-    if (channel === config.discord.channels.guildChatChannel) {
-      return config.discord.other.filterMessages
-        ? this.bot.chat(
-            filter.clean(
-              `/gc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
-            )
-          )
-        : this.bot.chat(
-            `/gc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
-          );
+    const chat = channel === config.discord.channels.officerChannel ? "/oc" : "/gc";
+
+    if (replyingTo) {
+      message = message.replace(username, `${username} replying to ${replyingTo}`);
     }
 
-    if (channel === config.discord.channels.officerChannel) {
-      return config.discord.other.filterMessages
-        ? this.bot.chat(
-            filter.clean(
-              `/oc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
-            )
-          )
-        : this.bot.chat(
-            `/oc ${replyingTo ? `${username} replying to ${replyingTo}${symbol}` : `${username}${symbol}`} ${message}`
-          );
-    }
+    this.bot.chat(`${chat} ${message}`);
   }
 }
 

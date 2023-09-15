@@ -11,12 +11,16 @@ module.exports = {
   description: "Shows every play that got less than required amount of GEXP in the last 7 days",
 
   execute: async (interaction) => {
+    const user = interaction.member;
     const collector = interaction.channel.createMessageComponentCollector({
       compnentType: "DROPDOWN",
       time: 60 * 1000,
     });
 
-    if (interaction.member.roles.cache.has(config.discord.roles.commandRole) === false) {
+    if (
+      config.discord.commands.checkPerms === true &&
+      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+    ) {
       throw new WristSpasmError("You do not have permission to use this command.");
     }
 

@@ -18,7 +18,7 @@ module.exports = {
     const user = interaction.member;
     if (
       config.discord.commands.checkPerms === true &&
-      user.roles.cache.has(config.discord.commands.commandRole) === false
+      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
     ) {
       throw new WristSpasmError("You do not have permission to use this command.");
     }

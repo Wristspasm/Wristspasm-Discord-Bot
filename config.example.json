@@ -2,7 +2,7 @@
   "minecraft": {
     "bot": {
       "prefix": "!",
-      "messageFormat": " »",
+      "messageFormat": "{username} » {message}",
       "messageRepeatBypassLength": 24
     },
     "commands": {
@@ -21,7 +21,6 @@
     },
     "API": {
       "hypixelAPIkey": "HYPIXEL_API_KEY",
-
       "imgurAPIkey": "IMGUR_API_KEY"
     },
     "guildRequirements": {
@@ -64,6 +63,12 @@
       "customTime": {
         "2": ["BANK_INTEREST", "DARK_AUCTION", "JACOBS_CONTEST"]
       }
+    },
+    "hypixelUpdates": {
+      "enabled": true,
+      "hypixelNews": true,
+      "statusUpdates": true,
+      "skyblockVersion": true
     }
   },
   "discord": {
@@ -78,17 +83,24 @@
       "debugMode": true,
       "debugChannel": "DEBUG_CHANNEL_ID"
     },
-    "roles": {
-      "commandRole": "COMMAND_ROLE_ID"
+    "commands": {
+      "checkPerms": true,
+      "commandRole": "COMMAND_ROLE_ID",
+      "users": ["486155512568741900"]
     },
     "other": {
       "messageMode": "minecraft",
+      "messageFormat": "{skin} {rank} {username} {guildRank}§f: {message}",
       "filterMessages": true,
       "joinMessage": false
     }
   },
   "web": {
-    "enabled": true,
+    "enabled": false,
     "port": 1439
+  },
+  "other": {
+    "autoUpdater": true,
+    "autoUpdaterInterval": 12
   }
 }
