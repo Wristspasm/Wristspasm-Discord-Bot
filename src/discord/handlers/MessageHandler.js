@@ -35,6 +35,7 @@ class MessageHandler {
         username: message.member.displayName.replaceAll(" ", ""),
         message: content,
         replyingTo: await this.fetchReply(message),
+        discord: message,
       };
 
       const images = content.split(" ").filter((line) => line.startsWith("http"));
