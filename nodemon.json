@@ -1,3 +1,9 @@
 {
-  "ignore": ["data/*.json", "config.json", "config.example.json", "src/minecraft/other/hypixelUpdates.json"]
+  "ignore": [
+    "data/*.json",
+    "config.json",
+    "config.example.json",
+    "src/minecraft/other/hypixelUpdates.json",
+    "auth-cache/"
+  ]
 }

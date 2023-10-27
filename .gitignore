@@ -4,3 +4,4 @@ config.json
 .env
 package-lock.json
 .prettierrc.json
+auth-cache/

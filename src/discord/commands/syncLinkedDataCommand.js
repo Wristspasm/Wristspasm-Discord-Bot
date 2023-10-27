@@ -6,7 +6,7 @@ module.exports = {
   name: "sync-linked-data",
   description: "Syncs Linked files with each other.",
 
-  execute: async (interaction) => {
+  execute: async (interaction, followUp = false) => {
     if (interaction.user.id !== "486155512568741900") {
       throw new WristSpasmError("You don't have permission to use this command.");
     }
@@ -41,6 +41,12 @@ module.exports = {
         text: `by @duckysolucky | /help [command] for more information`,
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
+
+    if (followUp === true) {
+      successEmbed.setDescription(`Link data has been successfuly synced.`);
+      
+      return await interaction.followUp({ embeds: [successEmbed] });
+    }
 
     await interaction.editReply({ embeds: [successEmbed] });
   },

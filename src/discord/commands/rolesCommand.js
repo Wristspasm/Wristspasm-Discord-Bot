@@ -52,7 +52,7 @@ module.exports = {
     const skyblockLevel = profile?.profile?.leveling?.experience / 100 ?? 0;
     const bwLevel = player?.stats?.bedwars?.level ?? 0;
     const swLevel = player?.stats?.skywars?.level ? Math.floor(player.stats.skywars.level / 5) : 0;
-    const duelsWins = player?.stats.duels?.wins ?? 0;
+    const duelsWins = player?.stats?.duels?.wins ?? 0;
 
     // ? Elite
     if (bwLevel >= 400 || skyblockLevel >= 200) {
@@ -132,7 +132,7 @@ module.exports = {
 
     for (const roleId of bwLvLRoles.concat(swLvLRoles, duelsRoles, skyblockRoles)) {
       if (user.roles.cache.has(roleId)) {
-        await user.roles.remove(roleId).catch((_) => {});
+        user.roles.remove(roleId).catch((_) => {});
       }
     }
 

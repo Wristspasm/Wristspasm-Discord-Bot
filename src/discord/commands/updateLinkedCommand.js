@@ -21,6 +21,8 @@ module.exports = {
       throw new WristSpasmError("No guild members found!");
     }
 
+    const syncLinkedData = require("./syncLinkedDataCommand.js");
+    await syncLinkedData.execute(interaction, true);
     const linked = fs.readFileSync("data/minecraftLinked.json", "utf8");
     if (linked === undefined) {
       throw new WristSpasmError("No linked users found!");
@@ -50,57 +52,14 @@ module.exports = {
       throw new WristSpasmError("Failed to obtain `guildMemberRole` ID from config!");
     }
 
-    let nRemoved = 0;
     const usersRemoved = [];
     for (const userValue of users) {
       const user = userValue[1];
       const { username, id } = user.user;
 
       const userRoles = user.roles.cache.map((role) => role.id);
-
-      if (userRoles.includes(linkedRole)) {
-        const hasRole = linkedUsersArray.includes(id);
-
-        if (hasRole === false) {
-          const unlinkEmbed = new EmbedBuilder()
-            .setAuthor({ name: "Your linked role has been removed" })
-            .setThumbnail("https://imgur.com/fNByP9j.png")
-            .setColor(15548997)
-            .setDescription(
-              `You have been unlinked from the WristSpasm Discord server!\nRecently we have had some issues with verification system and data wasn't stored correctly, You're one of the affected users. This was caused by the Hypixel Network API maintenance.\n\nPlease re-link your account by using the command \`/verify\` in the <#1072881326207795360> channel. If you're not part of the community anymore, feel free to ignore this message.\n\nIf you have any questions, please contact a staff member.`
-            )
-            .setFooter({
-              text: `by @duckysolucky | /help [command] for more information`,
-              iconURL: "https://imgur.com/tgwQJTX.png",
-            });
-
-          await user.roles.remove(linkedRole);
-
-          // ? In case user has guildMemberRole, remove it
-          if (userRoles.includes(guildMemberRole)) {
-            await user.roles.remove(guildMemberRole);
-          }
-
-          const userDM = await user.createDM().catch(() => {
-            console.log(`Faled to send DM to ${username} (${id}), skipping...`);
-          });
-          if (userDM === undefined) {
-            console.log(`Failed to send DM to ${username} (${id}), skipping...`);
-            continue;
-          }
-
-          await userDM.send({
-            embeds: [unlinkEmbed],
-          });
-
-          console.log(`Successfully sent DM to ${username} (${id})`);
-
-          nRemoved++;
-          usersRemoved.push({
-            username,
-            id,
-          });
-        }
+      if (userRoles.includes(linkedRole) && linkedUsersArray.includes(id) === false) {
+        await sendDM(user, linkedRole, userRoles, guildMemberRole, username, id, usersRemoved);
       }
     }
 
@@ -108,9 +67,9 @@ module.exports = {
       .setColor("4BB543")
       .setAuthor({ name: "Success!" })
       .setDescription(
-        `Successfully removed role from \`${nRemoved}\` users!\n${usersRemoved
-          .map((user) => `• <@${user.id}>`)
-          .join("\n")}`
+        `Successfully removed role from \`${usersRemoved.length}\` users!\n${usersRemoved
+          .map((user) => `• <@${user}>\n`)
+          .join("")}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
@@ -120,3 +79,41 @@ module.exports = {
     await interaction.editReply({ embeds: [successEmbed] });
   },
 };
+
+async function sendDM(user, linkedRole, userRoles, guildMemberRole, username, id, usersRemoved) {
+  console.log(`Sending DM to ${username} (${id})`);
+  const unlinkEmbed = new EmbedBuilder()
+    .setAuthor({ name: "Your linked role has been removed" })
+    .setThumbnail("https://imgur.com/fNByP9j.png")
+    .setColor(15548997)
+    .setDescription(
+      `You have been unlinked from the WristSpasm Discord server!\n\nTo link simply execute the \`/verify\` command within the <#1072881326207795360> channel. If you are no longer part of our community, you can disregard this message.\n\nShould you require assistance or have any inquiries, please don't hesitate to reach out to a staff member.`
+    )
+    .setFooter({
+      text: `by @duckysolucky | /help [command] for more information`,
+      iconURL: "https://imgur.com/tgwQJTX.png",
+    });
+
+  await user.roles.remove(linkedRole);
+
+  if (userRoles.includes(guildMemberRole)) {
+    await user.roles.remove(guildMemberRole);
+  }
+
+  const userDM = await user.createDM().catch(() => {
+    console.log(`Faled to send DM to ${username} (${id}), skipping...`);
+  });
+
+  if (userDM === undefined) {
+    console.log(`Failed to send DM to ${username} (${id}), skipping...`);
+    return;
+  }
+
+  await userDM.send({
+    embeds: [unlinkEmbed],
+  });
+
+  console.log(`Successfully sent DM to ${username} (${id})`);
+
+  usersRemoved.push(username);
+}

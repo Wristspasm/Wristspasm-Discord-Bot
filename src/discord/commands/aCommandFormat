@@ -1,3 +1,7 @@
+const WristSpasmError = require("../../contracts/errorHandler.js");
+const { EmbedBuilder } = require("discord.js");
+const config = require("../../../config.json");
+
 module.exports = {
   name: "",
   description: "",
@@ -10,5 +14,13 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction) => {},
+  execute: async (interaction) => {
+    const user = interaction.member;
+    if (
+      config.discord.commands.checkPerms === true &&
+      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+    ) {
+      throw new WristSpasmError("You do not have permission to use this command.");
+    }
+  },
 };
