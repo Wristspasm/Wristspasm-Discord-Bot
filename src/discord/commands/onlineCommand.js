@@ -1,5 +1,4 @@
 const { Embed } = require("../../contracts/embedHandler.js");
-const WristSpasmError = require("../../contracts/errorHandler.js");
 
 module.exports = {
   name: "online",
@@ -7,10 +6,6 @@ module.exports = {
   requiresBot: true,
 
   execute: async (interaction) => {
-    if (bot === undefined || bot._client.chat === undefined) {
-      throw new WristSpasmError("Bot doesn't seem to be connected to Hypixel. Please try again.");
-    }
-
     const cachedMessages = [];
     const messages = new Promise((resolve, reject) => {
       const listener = (message) => {

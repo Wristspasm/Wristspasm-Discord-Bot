@@ -49,7 +49,8 @@ module.exports = {
       throw new WristSpasmError("Failed to obtain `guildMemberRole` ID from config!");
     }
 
-    const guildMembers = (await hypixelRebornAPI.getGuild("player", bot.username)).members.map((member) => member.uuid);
+    const guild = await hypixelRebornAPI.getGuild("player", bot.username);
+    const guildMembers = guild.members.map((member) => member.uuid);
     if (guildMembers === undefined) {
       throw new WristSpasmError("Failed to obtain guild members!");
     }

@@ -4,7 +4,7 @@ const Logger = require("./logger.js");
 
 setInterval(async () => {
   try {
-    const guild = await hypixel.getGuild("player", bot?.username ?? "WristSpasmBOT");
+    const guild = await hypixel.getGuild("name", "WristSpasm");
     const guildMembersChannel = await client.channels.cache.get(config.discord.channels.guildMember);
     const guildLevelChannel = await client.channels.cache.get(config.discord.channels.guildLevel);
 

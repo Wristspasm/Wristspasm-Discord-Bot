@@ -132,9 +132,7 @@ module.exports = {
 
       const errorEmbed = new ErrorEmbed(`${errrorMessage}\`\`\`${error}\`\`\``);
 
-      await interaction.reply({ embeds: [errorEmbed] }).catch(async () => {
-        await interaction.editReply({ embeds: [errorEmbed] });
-      });
+      await interaction.editReply({ embeds: [errorEmbed] });
 
       if (error instanceof WristSpasmError === false) {
         const username = interaction.user.username ?? interaction.user.tag ?? "Unknown";
@@ -156,8 +154,8 @@ module.exports = {
 };
 
 function isBotOnline() {
-  if (bot === undefined || bot._client.chat === undefined) {
-    return false;
+  if (bot === undefined && bot._client.chat === undefined) {
+    return;
   }
 
   return true;

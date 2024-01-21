@@ -1,7 +1,6 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
-const fs = require("fs");
 
 module.exports = {
   name: "delete-roles",
@@ -21,7 +20,8 @@ module.exports = {
       (role) =>
         role.name.includes("Bedwars") ||
         role.name.includes("Skywars") ||
-        (role.name.includes("[") && role.name.includes("]"))
+        (role.name.includes("[") && role.name.includes("]")) ||
+        role.name.includes("Duels")
     );
 
     const roles = [];
@@ -34,11 +34,10 @@ module.exports = {
         data: role,
       });
 
-
       // await role.delete();
     }
 
-    fs.writeFileSync("./roles.json", JSON.stringify(roles));
+    // fs.writeFileSync("./roles.json", JSON.stringify(roles));
 
     const successEmbed = new EmbedBuilder()
       .setTitle("Success!")

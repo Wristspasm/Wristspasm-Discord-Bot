@@ -1,4 +1,3 @@
-const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const fs = require("fs");
@@ -9,10 +8,6 @@ module.exports = {
   requiresBot: true,
 
   execute: async (interaction) => {
-    if (bot === undefined || bot._client.chat === undefined) {
-      throw new WristSpasmError("Bot doesn't seem to be connected to Hypixel. Please try again.");
-    }
-
     const commands = interaction.client.commands;
 
     const { discordCommands, minecraftCommands } = getCommands(commands);
