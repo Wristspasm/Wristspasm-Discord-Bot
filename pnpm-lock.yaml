@@ -51,8 +51,8 @@ dependencies:
     specifier: ^2.0.3
     version: 2.0.3
   hypixel-api-reborn:
-    specifier: ^10.0.0
-    version: 10.0.0
+    specifier: ^11.0.1
+    version: 11.0.1
   imgur:
     specifier: ^2.2.0
     version: 2.2.0
@@ -90,8 +90,8 @@ dependencies:
     specifier: ^3.12.0
     version: 3.12.0
   skyhelper-networth:
-    specifier: 1.16.5
-    version: 1.16.5
+    specifier: 1.18.2
+    version: 1.18.2
   util:
     specifier: ^0.12.4
     version: 0.12.4
@@ -539,6 +539,16 @@ packages:
     dependencies:
       follow-redirects: 1.15.2(debug@4.3.4)
       form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /axios@1.6.5:
+    resolution: {integrity: sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==}
+    dependencies:
+      follow-redirects: 1.15.5
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -1382,6 +1392,16 @@ packages:
       debug: 4.3.4
     dev: false
 
+  /follow-redirects@1.15.5:
+    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
     dependencies:
@@ -1606,14 +1626,14 @@ packages:
       - supports-color
     dev: false
 
-  /hypixel-api-reborn@10.0.0:
-    resolution: {integrity: sha512-KcsCnsB8HdJtwByol8BcL/5Uz4Kj3H6LbLyfd01g43ShaHtc74eCu96cKHA8jc6FrmF7Zx9PomC65t/kDwxvzg==}
+  /hypixel-api-reborn@11.0.1:
+    resolution: {integrity: sha512-ZwsogQVCQqpVldjQESgh1mGhCixDLpPzeifvxqV79D1DvvkIqAXs8bXFZUxlO1xBU5AZNsQTAISawWqCK/iQ1A==}
     engines: {node: '>=14.0.0'}
     dependencies:
       node-fetch: 2.6.7
       object-path: 0.11.8
-      prismarine-nbt: 1.6.0
-      rss-parser: 3.12.0
+      prismarine-nbt: 2.2.1
+      rss-parser: 3.13.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -2542,6 +2562,10 @@ packages:
       ipaddr.js: 1.9.1
     dev: false
 
+  /proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
+
   /psl@1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
     dev: false
@@ -2664,6 +2688,13 @@ packages:
     dependencies:
       entities: 2.2.0
       xml2js: 0.4.23
+    dev: false
+
+  /rss-parser@3.13.0:
+    resolution: {integrity: sha512-7jWUBV5yGN3rqMMj7CZufl/291QAhvrrGpDNE4k/02ZchL0npisiYYqULF71jCEKoIiHvK/Q2e6IkDwPziT7+w==}
+    dependencies:
+      entities: 2.2.0
+      xml2js: 0.5.0
     dev: false
 
   /run-parallel@1.2.0:
@@ -2799,10 +2830,10 @@ packages:
       simple-concat: 1.0.1
     dev: false
 
-  /skyhelper-networth@1.16.5:
-    resolution: {integrity: sha512-iWlVS02K1nBuapbXqGb+ry9YVJiylhYllnHWLBAt3jLMMynTbE8+PpIQ4G4MZvK67a41EEiHOIulRoFVo7xE+g==}
+  /skyhelper-networth@1.18.2:
+    resolution: {integrity: sha512-Y0TnpAc4HsVwTXDHLJSsj2bpjbZSt1mK8RLgQKeRMK4VvTFfNlenEInuSIIQ5sUzGMUrc5gDzvZCsFl82ofcDA==}
     dependencies:
-      axios: 0.27.2
+      axios: 1.6.5
       prismarine-nbt: 2.2.1
     transitivePeerDependencies:
       - debug
@@ -3201,6 +3232,14 @@ packages:
 
   /xml2js@0.4.23:
     resolution: {integrity: sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==}
+    engines: {node: '>=4.0.0'}
+    dependencies:
+      sax: 1.2.4
+      xmlbuilder: 11.0.1
+    dev: false
+
+  /xml2js@0.5.0:
+    resolution: {integrity: sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==}
     engines: {node: '>=4.0.0'}
     dependencies:
       sax: 1.2.4
