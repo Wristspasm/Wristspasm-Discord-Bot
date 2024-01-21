@@ -27,18 +27,15 @@
       "enabled": false,
       "autoAccept": false,
       "requirements": {
-        "bedwarsStars": 0,
+        "bedwarsStars": 100,
         "bedwarsStarsWithFKDR": 0,
         "bedwarsFKDR": 0,
-
         "skywarsStars": 0,
         "skywarsStarsWithKDR": 0,
         "skywarsKDR": 0,
-
         "duelsWins": 0,
         "duelsWinsWithWLR": 0,
         "duelsWLR": 0,
-
         "senitherWeight": 0,
         "lilyWeight": 0,
         "skyblockLevel": 0
@@ -77,16 +74,28 @@
       "serverID": "DISCORD_SERVER_ID"
     },
     "channels": {
-      "guildChatChannel": "GUILD_CHAT_CHANNEL_ID",
-      "officerChannel": "OFFICER_CHANNEL_ID",
-      "loggingChannel": "LOGGING_CHANNEL_ID",
+      "guildChatChannel": "1072863636596465726",
+      "officerChannel": "1072863648181133335",
+      "loggingChannel": "1072863329313374259",
       "debugMode": true,
-      "debugChannel": "DEBUG_CHANNEL_ID",
+      "debugChannel": "1072863535845097543",
+      "botLogsChannel": "1136257841808818176",
+      "guildMember": "1072862992200372224",
+      "guildLevel": "1072863019148775436",
+      "inactivity": "1072863353015369779",
+      "joinRequests": "1072863443394248815",
       "allowedBots": ["BOT_USER_ID"]
+    },
+    "roles": {
+      "commandRole": "700177102925987850",
+      "linkedRole": "1003353024720277504",
+      "guildMemberRole": "600313217603993617",
+      "eliteRole": "1085930785464389653",
+      "noviceRole": "903345611863126126"
     },
     "commands": {
       "checkPerms": true,
-      "commandRole": "COMMAND_ROLE_ID",
+      "commandRole": "700177102925987850",
       "users": ["486155512568741900"]
     },
     "other": {
@@ -103,6 +112,10 @@
     "port": 1439
   },
   "other": {
+    "owoify": {
+      "enabled": false,
+      "type": "owo"
+    },
     "autoUpdater": true,
     "autoUpdaterInterval": 12
   }
