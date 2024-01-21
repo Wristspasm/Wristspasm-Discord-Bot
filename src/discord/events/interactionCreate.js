@@ -2,13 +2,18 @@ const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
 const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
-const { EmbedBuilder } = require("discord.js");
-const Logger = require("../.././Logger.js");
+// eslint-disable-next-line no-unused-vars
+const { EmbedBuilder, CommandInteraction } = require("discord.js");
 const fs = require("fs");
+const config = require("../../../config.json");
+const Logger = require("../.././Logger.js");
+const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 
 module.exports = {
   name: "interactionCreate",
+  /**
+   * @param {CommandInteraction} interaction
+   */
   async execute(interaction) {
     try {
       if (interaction.isChatInputCommand()) {
@@ -21,7 +26,13 @@ module.exports = {
           await interaction.deferReply({ ephemeral: false }).catch(() => {});
         }
 
-        bridgeChat = interaction.channelId;
+        if (command.moderatorOnly === true && isModerator(interaction) === false) {
+          throw new WristSpasmError("You don't have permission to use this command.");
+        }
+
+        if (command.requiresBot === true && isBotOnline() === false) {
+          throw new WristSpasmError("Bot doesn't seem to be connected to Hypixel. Please try again.");
+        }
 
         Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
         await command.execute(interaction);
@@ -78,19 +89,13 @@ module.exports = {
         }
 
         const expiration = (new Date().getTime() / 1000 + formattedTime).toFixed(0);
-        const inactivityEmbed = new EmbedBuilder()
-          .setColor(5763719)
-          .setAuthor({ name: "Inactivity request." })
-          .setThumbnail(`https://www.mc-heads.net/avatar/${username}`)
-          .setDescription(
-            `\`Username:\` ${username}\n\`Requested:\` <t:${(new Date().getTime() / 1000).toFixed(
-              0
-            )}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
-          )
-          .setFooter({
-            text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
+        const date = (new Date().getTime() / 1000).toFixed(0);
+        const inactivityEmbed = new Embed(
+          5763719,
+          "Inactivity Request",
+          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
+        );
+        inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
         const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
         if (channel === undefined) {
@@ -111,56 +116,37 @@ module.exports = {
           reason: reason,
         });
 
-        const inactivityResponse = new EmbedBuilder()
-          .setColor(5763719)
-          .setAuthor({ name: "Inactivity request." })
-          .setDescription(`Inactivity request has been successfully sent to the guild staff.`)
-          .setFooter({
-            text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
+        const inactivityResponse = new SuccessEmbed(
+          `Inactivity request has been successfully sent to the guild staff.`
+        );
 
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
       }
     } catch (error) {
       console.log(error);
-      const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .setAuthor({ name: "An Error has occurred" })
-        .setDescription(
-          `${
-            error instanceof WristSpasmError === false
-              ? "Please try again later. The error has been sent to the Developers.\n\n"
-              : ""
-          }\`\`\`${error}\`\`\``
-        )
-        .setFooter({
-          text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
-        });
+
+      const errrorMessage =
+        error instanceof WristSpasmError
+          ? ""
+          : "Please try again later. The error has been sent to the Developers.\n\n";
+
+      const errorEmbed = new ErrorEmbed(`${errrorMessage}\`\`\`${error}\`\`\``);
 
       await interaction.reply({ embeds: [errorEmbed] }).catch(async () => {
         await interaction.editReply({ embeds: [errorEmbed] });
       });
 
       if (error instanceof WristSpasmError === false) {
-        const errorLog = new EmbedBuilder()
-          .setColor(15158332)
-          .setTitle("Error")
-          .setDescription(
-            `
-        Command: \`${interaction.commandName}\`
-        Options: \`${JSON.stringify(interaction.options.data)}\`
-        User ID: \`${interaction.user.id}\`
-        User: \`${interaction.user.username ?? interaction.user.tag}\`
-        \`\`\`${error.stack}\`\`\``
-          )
-          .setFooter({
-            text: `by DuckySoLucky#5181`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
-          });
+        const username = interaction.user.username ?? interaction.user.tag ?? "Unknown";
+        const commandOptions = JSON.stringify(interaction.options.data) ?? "Unknown";
+        const commandName = interaction.commandName ?? "Unknown";
+        const errorStack = error.stack ?? error ?? "Unknown";
+        const userID = interaction.user.id ?? "Unknown";
 
-        interaction.client.channels.cache.get(config.discord.channels.botLogsChannel).send({
+        const errorLog = new ErrorEmbed(
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
+        );
+        interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194>`,
           embeds: [errorLog],
         });
@@ -168,3 +154,25 @@ module.exports = {
     }
   },
 };
+
+function isBotOnline() {
+  if (bot === undefined || bot._client.chat === undefined) {
+    return false;
+  }
+
+  return true;
+}
+
+function isModerator(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (
+    config.discord.commands.checkPerms === true &&
+    !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+  ) {
+    return false;
+  }
+
+  return true;
+}

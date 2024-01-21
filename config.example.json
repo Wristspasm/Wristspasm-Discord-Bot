@@ -81,7 +81,8 @@
       "officerChannel": "OFFICER_CHANNEL_ID",
       "loggingChannel": "LOGGING_CHANNEL_ID",
       "debugMode": true,
-      "debugChannel": "DEBUG_CHANNEL_ID"
+      "debugChannel": "DEBUG_CHANNEL_ID",
+      "allowedBots": ["BOT_USER_ID"]
     },
     "commands": {
       "checkPerms": true,
@@ -90,9 +91,11 @@
     },
     "other": {
       "messageMode": "minecraft",
-      "messageFormat": "{skin} {rank} {username} {guildRank}§f: {message}",
+      "messageFormat": "{chatType} > {skin} {rank} {username} {guildRank}§f: {message}",
       "filterMessages": true,
-      "joinMessage": false
+      "filterWords": ["dox", "doxx", "doxed", "doxxed", "doxing", "doxxing", "doxes", "doxxes", "zickles"],
+      "joinMessage": true,
+      "autoLimbo": false
     }
   },
   "web": {
