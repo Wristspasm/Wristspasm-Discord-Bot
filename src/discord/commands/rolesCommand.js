@@ -2,7 +2,6 @@ const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
-const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
 const { SuccessEmbed } = require("../../contracts/embedHandler.js");
@@ -64,10 +63,36 @@ module.exports = {
       user.roles.add(config.discord.roles.noviceRole).catch((_) => {});
     }
 
+    const skyblockRoles = [
+      "1204151069849165846",
+      "1204151081240625164",
+      "1204151078653005934",
+      "1204151082884796426",
+      "1204151075112882187",
+      "1204151071686004756",
+      "1204151079919427584",
+      "1204151076811571232",
+      "1204151073506599095",
+    ].reverse();
+    const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
+    if (skyblockLevel) {
+      for (let i = skyblockRoles.length - 1; i > 0; i--) {
+        if (skyblockLevel <= skyblockLvLReqs[i]) {
+          if (user.roles.cache.find((r) => r.id === skyblockRoles[i])) {
+            user.roles.remove(skyblockRoles[i]);
+          }
+
+          continue;
+        }
+
+        user.roles.add(skyblockRoles[i]);
+        break;
+      }
+    }
+
     const username = await getUsername(uuid);
 
     const updateRole = new SuccessEmbed(`Your roles have been successfully synced with \`${username ?? "Unknown"}\`!`);
-
     if (type === "verify") {
       updateRole.setDescription(
         `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`
