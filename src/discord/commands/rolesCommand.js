@@ -76,21 +76,20 @@ module.exports = {
     ].reverse();
     const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
     if (skyblockLevel) {
-      for (let i = skyblockRoles.length - 1; i > 0; i--) {
-        if (skyblockLevel <= skyblockLvLReqs[i]) {
+      for (let i = skyblockRoles.length - 1; i >= 0; i--) {
+        if (skyblockLevel >= skyblockLvLReqs[i]) {
+          user.roles.add(skyblockRoles[i]);
+          break;
+        } else {
           if (user.roles.cache.find((r) => r.id === skyblockRoles[i])) {
             user.roles.remove(skyblockRoles[i]);
           }
-
-          continue;
         }
-
-        user.roles.add(skyblockRoles[i]);
-        break;
       }
     }
 
     const username = await getUsername(uuid);
+    user.setNickname(username).catch((_) => {});
 
     const updateRole = new SuccessEmbed(`Your roles have been successfully synced with \`${username ?? "Unknown"}\`!`);
     if (type === "verify") {
