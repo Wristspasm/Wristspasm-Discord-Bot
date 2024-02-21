@@ -10,12 +10,6 @@ class MessageHandler {
 
   async onMessage(message) {
     try {
-      if (message.content.toLowerCase().startsWith("i'm") | message.content.toLowerCase().startsWith("i am") | message.content.toLowerCase().startsWith("im") | message.content.toLowerCase().startsWith("i’m")) {
-        const response = message.content.slice(message.content.indexOf(" ") + 1).replace(/@/g, "");
-        
-        message.channel.send(`Hi ${response}, I'm dad!`);
-      }
-
       if (message.author.id === client.user.id || !this.shouldBroadcastMessage(message)) {
         return;
       }
