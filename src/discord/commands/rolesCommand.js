@@ -74,7 +74,7 @@ module.exports = {
       "1204151076811571232",
       "1204151073506599095",
     ].reverse();
-    const skyblockLvLReqs = [1, 40, 80, 120, 160, 200, 240, 280, 320, 360];
+    const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360];
     if (skyblockLevel) {
       for (let i = skyblockRoles.length - 1; i >= 0; i--) {
         if (skyblockLevel >= skyblockLvLReqs[i]) {
