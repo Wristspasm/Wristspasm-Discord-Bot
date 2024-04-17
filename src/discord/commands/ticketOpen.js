@@ -1,27 +1,21 @@
+const { ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ChannelType, ButtonStyle } = require("discord.js");
+const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const WristSpasmError = require("../../contracts/errorHandler.js");
-const { Embed } = require("../../contracts/embedHandler.js");
-const { AttachmentBuilder } = require("discord.js");
 const config = require("../../../config.json");
 
-function getTimeStamp(unixTimeStamp) {
-  return new Date(unixTimeStamp).toLocaleString("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    timeZoneName: "short",
-    timeZone: "UTC",
-  });
-}
+const permissions = [
+  PermissionFlagsBits.ReadMessageHistory,
+  PermissionFlagsBits.UseExternalEmojis,
+  PermissionFlagsBits.SendMessages,
+  PermissionFlagsBits.ViewChannel,
+  PermissionFlagsBits.AttachFiles,
+  PermissionFlagsBits.AddReactions,
+  PermissionFlagsBits.EmbedLinks,
+];
 
 module.exports = {
-  name: "close-ticket",
-  description: "Close a support ticket.",
-  moderatorOnly: true,
+  name: "open-ticket",
+  description: "Open a support ticket.",
   options: [
     {
       name: "reason",
@@ -33,42 +27,50 @@ module.exports = {
 
   execute: async (interaction) => {
     const reason = interaction.options.getString("reason") || "No Reason Provided";
-    if (!interaction.channel.name.toLowerCase().startsWith("ticket-")) {
-      throw new WristSpasmError("This is not a ticket channel");
-    }
-
-    const messages = await interaction.channel.messages.fetch();
-    let TranscriptString = "";
-    messages.forEach((msg) => {
-      TranscriptString += `[${getTimeStamp(msg.createdTimestamp)}] | @${msg.author.username} (${msg.author.id}) | ${
-        msg.content
-      }\n`;
+    const channel = await interaction.guild.channels.create({
+      name: `ticket-${interaction.user.username}`,
+      type: ChannelType.GuildText,
+      parent: config.discord.channels.ticketsCategory,
+      permissionOverwrites: [
+        { id: interaction.user.id, allow: permissions },
+        { id: interaction.client.user.id, allow: permissions },
+        { id: interaction.guild.roles.everyone.id, deny: permissions },
+        { id: config.discord.roles.commandRole, allow: permissions },
+      ],
     });
-
-    const firstMessage = interaction.channel.messages.fetchPinned().first();
-    const ticketOwnerId = firstMessage.mentions.users.first().id;
-
-    const transcriptFile = new AttachmentBuilder(
-      Buffer.from(TranscriptString),
-      `transcript-${interaction.channel.name}.txt`
-    );
-
-    const ticketCloseEmbed = new Embed(
-      3447003,
-      "Ticket Closed",
-      `Ticket Opened by <@${ticketOwnerId}>\nTicket Closed by <@${interaction.user.id}>\n\nReason: ${reason}`,
+    
+    const ticketEmbed = new Embed(
+      2067276,
+      "Ticket Opened",
+      `Ticket opened by ${interaction.user.tag} (${interaction.user.id})\n\nReason: ${reason}`,
       {
         text: `by @kathund. | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
       }
     );
 
-    const transcriptChannel = interaction.guild.channels.cache.fetch(config.discord.channels.ticketsLogs);
-    await transcriptChannel.send({ embeds: [ticketCloseEmbed], files: [transcriptFile] });
-    await interaction.client.users.send(ticketOwnerId, { embeds: [ticketCloseEmbed], files: [transcriptFile] });
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setLabel("Close Ticket")
+        .setCustomId(`TICKET_CLOSE_${channel.id}`)
+        .setStyle(ButtonStyle.Danger)
+    );
 
-    await interaction.followUp({ content: "Ticket Closed", ephemeral: true });
-    await delay(2000);
-    await interaction.channel.delete();
+    const openMessage = await channel.send({
+      content: `<@${interaction.user.id}>`,
+      embeds: [ticketEmbed],
+      components: [row],
+    });
+    const staffPing = await channel.send({ content: `<@&${config.discord.roles.commandRole}>` });
+    await delay(500);
+    await openMessage.pin();
+    await staffPing.delete();
+
+    const ticketOpenEmbed = new SuccessEmbed(`Ticket opened in <#${channel.id}>`, {
+      text: `by @kathund. | /help [command] for more information`,
+      iconURL: "https://i.imgur.com/uUuZx2E.png",
+    });
+
+    await interaction.followUp({ embeds: [ticketOpenEmbed], ephemeral: true });
   },
 };
