@@ -1,4 +1,4 @@
-const { EmbedBuilder /*, ActionRowBuilder, SelectMenuBuilder, ButtonBuilder, ButtonStyle*/ } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
 
@@ -89,6 +89,9 @@ module.exports = {
       );
       */
 
+    /*
+
+      // ? #bot-info
     const guildBotInformationMain = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle("<:hypixel:1099643612209348718> Wrist Spasm Guild Bot Information")
@@ -111,5 +114,26 @@ module.exports = {
     await interaction.client.channels.cache
       .get("1136244921716711555")
       .send({ embeds: [guildBotInformationMain, guildBotInformationEmbed] });
+      */
+
+    // ? #bot-info
+    const helpEmbed = new EmbedBuilder().setColor(0x0099ff).setDescription("# Create a ticket here.");
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setLabel("Report a Guild Member")
+        .setCustomId("TICKET_OPEN_REPORT")
+        .setStyle(ButtonStyle.Danger),
+      new ButtonBuilder()
+        .setLabel("Give a Suggestion")
+        .setCustomId("TICKET_OPEN_SUGGESTION")
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
+        .setLabel("Questions or Concerns")
+        .setCustomId("TICKET_OPEN_QUESTION")
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary)
+    );
+
+    await interaction.client.channels.cache.get("FUTURE HELP CHANNEL!!!").send({ embeds: [helpEmbed], components: [row] });
   },
 };

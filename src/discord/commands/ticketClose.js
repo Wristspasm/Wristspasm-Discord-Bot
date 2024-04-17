@@ -1,4 +1,3 @@
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { Embed } = require("../../contracts/embedHandler.js");
 const { unlinkSync, writeFileSync } = require("fs");

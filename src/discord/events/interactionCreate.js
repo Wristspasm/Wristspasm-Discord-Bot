@@ -50,8 +50,7 @@ module.exports = {
           }
 
           await applyCommand.execute(interaction);
-        }
-        if (interaction.customId.startsWith("TICKET_CLOSE_")) {
+        } else if (interaction.customId.startsWith("TICKET_CLOSE_")) {
           const ticketCloseCommand = interaction.client.commands.get("close-ticket");
 
           if (ticketCloseCommand === undefined) {
@@ -59,6 +58,14 @@ module.exports = {
           }
 
           await ticketCloseCommand.execute(interaction);
+        } else if (interaction.customId.startsWith("TICKET_OPEN_")) {
+          const ticketOpenCommand = interaction.client.commands.get("open-ticket");
+
+          if (ticketOpenCommand === undefined) {
+            throw new WristSpasmError("Could not find open-ticket command! Please contact an administrator.");
+          }
+
+          await ticketOpenCommand.execute(interaction, interaction.customId.split("TICKET_OPEN_")[1]);
         }
       }
 

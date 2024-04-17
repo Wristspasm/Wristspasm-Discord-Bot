@@ -25,7 +25,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction) => {
+  execute: async (interaction, type) => {
     const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
     const channel = await interaction.guild.channels.create({
       name: `ticket-${interaction.user.username}`,
@@ -65,6 +65,55 @@ module.exports = {
     await delay(500);
     await openMessage.pin();
     await staffPing.delete();
+    
+    if (type) {
+      switch (type.toLowerCase()) {
+        case "report": {
+          const reportEmbed = new Embed(
+            16711680,
+            "Report a Guild Member",
+            "Please provide the name of the player you are reporting."
+          );
+          await openMessage.reply({ embeds: [reportEmbed] });
+          break;
+        }
+        case "suggestion": {
+          const suggestionEmbed = new Embed(
+            16776960,
+            "Give a Suggestion",
+            "Please provide a short description of your suggestion."
+          );
+          await openMessage.reply({ embeds: [suggestionEmbed] });
+          break;
+        }
+        case "question": {
+          const questionEmbed = new Embed(
+            16776960,
+            "Questions or Concerns",
+            "Please provide a detailed description of your question or concern."
+          );
+          await openMessage.reply({ embeds: [questionEmbed] });
+          break;
+        }
+        // Other
+        default: {
+          const supportEmbed = new Embed(
+            16776960,
+            "General Support",
+            "Please provide a detailed description of your issue."
+          );
+          await openMessage.reply({ embeds: [supportEmbed] });
+          break;
+        }
+      }
+    } else {
+      const supportEmbed = new Embed(
+        16776960,
+        "General Support",
+        "Please provide a detailed description of your issue."
+      );
+      await openMessage.reply({ embeds: [supportEmbed] });
+    }
 
     const ticketOpenEmbed = new SuccessEmbed(`Ticket opened in <#${channel.id}>`, {
       text: `by @kathund. | /help [command] for more information`,
