@@ -1,12 +1,10 @@
 const config = require("../../../config.json");
 
-let channel = null;
-(async () => {
-  channel = await client.channels.fetch(config.discord.channels.botLogsChannel);
-})();
-
 function discordMessage(message) {
-  return channel.send(message);
+  client.channels.fetch(config.discord.channels.botLogsChannel).then((channel) => {
+    channel.send(message);
+  });
+  return;
 }
 
 module.exports = { discordMessage };
