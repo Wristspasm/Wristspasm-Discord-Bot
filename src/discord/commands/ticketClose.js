@@ -1,7 +1,7 @@
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { Embed } = require("../../contracts/embedHandler.js");
-const { AttachmentBuilder } = require("discord.js");
+const { unlinkSync, writeFileSync } = require("fs");
 const config = require("../../../config.json");
 
 function getTimeStamp(unixTimeStamp) {
@@ -32,12 +32,24 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const reason = interaction.options.getString("reason") || "No Reason Provided";
+    const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
     if (!interaction.channel.name.toLowerCase().startsWith("ticket-")) {
       throw new WristSpasmError("This is not a ticket channel");
     }
 
-    const messages = await interaction.channel.messages.fetch();
+    let messages = [];
+    let lastMessageId = null;
+
+    do {
+      const fetchedMessages = await interaction.channel.messages.fetch({ limit: 100, before: lastMessageId });
+      if (fetchedMessages.size === 0) break;
+
+      fetchedMessages.forEach((msg) => messages.push(msg));
+      lastMessageId = fetchedMessages.last().id;
+    } while (true);
+
+    messages = messages.filter((msg) => !msg.author.bot).sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
     let TranscriptString = "";
     messages.forEach((msg) => {
       TranscriptString += `[${getTimeStamp(msg.createdTimestamp)}] | @${msg.author.username} (${msg.author.id}) | ${
@@ -45,13 +57,10 @@ module.exports = {
       }\n`;
     });
 
-    const firstMessage = interaction.channel.messages.fetchPinned().first();
-    const ticketOwnerId = firstMessage.mentions.users.first().id;
+    writeFileSync(`data/transcript-${interaction.channel.name}.txt`, TranscriptString);
 
-    const transcriptFile = new AttachmentBuilder(
-      Buffer.from(TranscriptString),
-      `transcript-${interaction.channel.name}.txt`
-    );
+    const firstMessage = (await interaction.channel.messages.fetchPinned()).first();
+    const ticketOwnerId = firstMessage.mentions.users.first().id;
 
     const ticketCloseEmbed = new Embed(
       3447003,
@@ -63,12 +72,19 @@ module.exports = {
       }
     );
 
-    const transcriptChannel = interaction.guild.channels.cache.fetch(config.discord.channels.ticketsLogs);
-    await transcriptChannel.send({ embeds: [ticketCloseEmbed], files: [transcriptFile] });
-    await interaction.client.users.send(ticketOwnerId, { embeds: [ticketCloseEmbed], files: [transcriptFile] });
+    await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs).send({
+      embeds: [ticketCloseEmbed],
+      files: [`data/transcript-${interaction.channel.name}.txt`],
+    });
+
+    await interaction.client.users.send(ticketOwnerId, {
+      embeds: [ticketCloseEmbed],
+      files: [`data/transcript-${interaction.channel.name}.txt`],
+    });
+
+    unlinkSync(`data/transcript-${interaction.channel.name}.txt`);
 
     await interaction.followUp({ content: "Ticket Closed", ephemeral: true });
-    await delay(2000);
     await interaction.channel.delete();
   },
 };

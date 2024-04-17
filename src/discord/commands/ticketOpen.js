@@ -26,7 +26,7 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const reason = interaction.options.getString("reason") || "No Reason Provided";
+    const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
     const channel = await interaction.guild.channels.create({
       name: `ticket-${interaction.user.username}`,
       type: ChannelType.GuildText,
