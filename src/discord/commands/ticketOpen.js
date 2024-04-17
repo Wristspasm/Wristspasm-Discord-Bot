@@ -38,11 +38,11 @@ module.exports = {
         { id: config.discord.roles.commandRole, allow: permissions },
       ],
     });
-    
+
     const ticketEmbed = new Embed(
       2067276,
       "Ticket Opened",
-      `Ticket opened by ${interaction.user.tag} (${interaction.user.id})\n\nReason: ${reason}`,
+      `Ticket opened by <@${interaction.user.id}>\n\nReason: ${reason}`,
       {
         text: `by @kathund. | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",

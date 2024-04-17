@@ -51,6 +51,15 @@ module.exports = {
 
           await applyCommand.execute(interaction);
         }
+        if (interaction.customId.startsWith("TICKET_CLOSE_")) {
+          const ticketCloseCommand = interaction.client.commands.get("close-ticket");
+
+          if (ticketCloseCommand === undefined) {
+            throw new WristSpasmError("Could not find close-ticket command! Please contact an administrator.");
+          }
+
+          await ticketCloseCommand.execute(interaction);
+        }
       }
 
       // ? Inactivity Form
