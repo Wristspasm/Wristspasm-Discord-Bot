@@ -47,7 +47,9 @@ module.exports = {
       lastMessageId = fetchedMessages.last().id;
     } while (true);
 
-    messages = messages.filter((msg) => !msg.author.bot).sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+    messages = messages
+      .filter((msg) => !msg.author.bot || msg.author.id === interaction.client.user.id)
+      .sort((a, b) => a.createdTimestamp - b.createdTimestamp);
 
     let TranscriptString = "";
     messages.forEach((msg) => {
