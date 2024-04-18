@@ -134,6 +134,6 @@ module.exports = {
       new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary)
     );
 
-    await interaction.client.channels.cache.get("FUTURE HELP CHANNEL!!!").send({ embeds: [helpEmbed], components: [row] });
+    await interaction.client.channels.cache.get("1230429966274007120").send({ embeds: [helpEmbed], components: [row] });
   },
 };
