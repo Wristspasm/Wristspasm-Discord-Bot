@@ -116,6 +116,8 @@
     "port": 1439
   },
   "other": {
+    "staffApplicationQuestions": ["CHANGE THE CONFIG", "CHANGE THE CONFIG", "CHANGE THE CONFIG", "CHANGE THE CONFIG"],
+
     "owoify": {
       "enabled": false,
       "type": "owo"

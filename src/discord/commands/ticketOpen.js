@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ChannelType, Butto
 const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const config = require("../../../config.json");
+const WristSpasmError = require("../../contracts/errorHandler.js");
 
 const permissions = [
   PermissionFlagsBits.ReadMessageHistory,
@@ -95,6 +96,15 @@ module.exports = {
           await openMessage.reply({ embeds: [questionEmbed] });
           break;
         }
+        case "staff": {
+          const questionEmbed = new Embed(
+            16776960,
+            "Staff Application",
+            'Please awnser these questions in detail.\n\nSay "cancel" to close the ticket and stop the application.'
+          );
+          await openMessage.reply({ embeds: [questionEmbed] });
+          break;
+        }
         // Other
         default: {
           const supportEmbed = new Embed(
@@ -105,6 +115,54 @@ module.exports = {
           await openMessage.reply({ embeds: [supportEmbed] });
           break;
         }
+      }
+      if (type.toLowerCase() === "staff") {
+        let msgsSent = 0;
+        const reportEmbed = new Embed(
+          16711680,
+          "Staff Application",
+          `**Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**\n${
+            config.other.staffApplicationQuestions[msgsSent]
+          }`
+        );
+        await interaction.channel.send({ embeds: [reportEmbed] });
+        msgsSent++;
+        let finished = false;
+        interaction.client.on("messageCreate", async (message) => {
+          if (message.author.id !== interaction.user.id) return;
+          if (message.channel.id !== channel.id) return;
+          if (message.author.bot) return;
+          if (message.content === "cancel") {
+            const ticketCloseCommand = interaction.client.commands.get("close-ticket");
+
+            if (ticketCloseCommand === undefined) {
+              throw new WristSpasmError("Could not find close-ticket command! Please contact an administrator.");
+            }
+
+            await ticketCloseCommand.execute(interaction);
+          }
+          if (!finished) {
+            if (msgsSent === config.other.staffApplicationQuestions.length) {
+              const reportEmbed = new Embed(
+                16711680,
+                "Staff Application",
+                "Thank you for applying! Your application will be reviewed shortly."
+              );
+              await channel.send({ embeds: [reportEmbed] });
+              finished = true;
+            } else {
+              const reportEmbed = new Embed(
+                16711680,
+                "Staff Application",
+                `**Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**\n${
+                  config.other.staffApplicationQuestions[msgsSent]
+                }`
+              );
+              await channel.send({ embeds: [reportEmbed] });
+              msgsSent++;
+            }
+          }
+        });
       }
     } else {
       const supportEmbed = new Embed(
