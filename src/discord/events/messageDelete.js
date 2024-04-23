@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const config = require("../../../config.json");
 
 module.exports = {
   name: "messageDelete",
@@ -18,7 +19,7 @@ module.exports = {
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 
-    const channel = message.guild.channels.cache.get("1070775096463073335");
+    const channel = message.guild.channels.cache.get(config.discord.channels.discordLogsChannel);
 
     channel.send({ embeds: [embed] });
   },

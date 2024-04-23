@@ -1,24 +1,11 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
 
 module.exports = {
   name: "embed",
   description: "test",
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(
-        interaction.user.roles.cache.has(config.discord.commands.commandRole) ||
-        config.discord.commands.users.includes(interaction.user.id)
-      )
-    ) {
-      throw new WristSpasmError(
-        "You do not have permission to use this command. You need the `ADMINISTRATOR` permission."
-      );
-    }
-
     /*
       // ? #rules
       const rulesEmbed = new EmbedBuilder()

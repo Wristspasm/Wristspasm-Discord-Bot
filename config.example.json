@@ -85,6 +85,7 @@
       "inactivity": "INACTIVITY_CHANNEL_ID",
       "joinRequests": "JOIN_REQUESTS_CHANNEL_ID",
       "staffChannel": "JOIN_REQUESTS_CHANNEL_ID",
+      "discordLogsChannel": "DISCORD_LOGS_CHANNEL_ID",
       "ticketsLogs": "TICKETS_LOGS_CHANNEL_ID",
       "ticketsCategory": "TICKETS_CATEGORY_ID",
       "allowedBots": ["BOT_USER_ID"]
