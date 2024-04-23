@@ -1,24 +1,11 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
 
 module.exports = {
   name: "embed",
   description: "test",
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(
-        interaction.user.roles.cache.has(config.discord.commands.commandRole) ||
-        config.discord.commands.users.includes(interaction.user.id)
-      )
-    ) {
-      throw new WristSpasmError(
-        "You do not have permission to use this command. You need the `ADMINISTRATOR` permission."
-      );
-    }
-
     /*
       // ? #rules
       const rulesEmbed = new EmbedBuilder()
@@ -134,6 +121,6 @@ module.exports = {
       new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary)
     );
 
-    await interaction.client.channels.cache.get("FUTURE HELP CHANNEL!!!").send({ embeds: [helpEmbed], components: [row] });
+    await interaction.client.channels.cache.get("1206500995740205127").send({ embeds: [helpEmbed], components: [row] });
   },
 };

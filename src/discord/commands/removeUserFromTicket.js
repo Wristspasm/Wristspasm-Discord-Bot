@@ -1,4 +1,5 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
+const { PermissionFlagsBits } = require("discord.js");
 
 const permissions = [
   PermissionFlagsBits.ReadMessageHistory,
@@ -29,13 +30,25 @@ module.exports = {
       throw new WristSpasmError("This is not a ticket channel");
     }
 
-    await interaction.channel.permissionOverwrites.set([
-      ...interaction.channel.permissionOverwrites.cache,
+    const firstMessage = (await interaction.channel.messages.fetchPinned()).first();
+    const ticketOwnerId = firstMessage.mentions.users.first().id;
+
+    if (user.id === ticketOwnerId) {
+      throw new WristSpasmError("You cannot remove the ticket owner from the ticket");
+    }
+
+    const channelPermissions = [
       {
-        id: user.id,
+        id: `${user.id}`,
         deny: permissions,
       },
-    ]);
+    ];
+    interaction.channel.permissionOverwrites.cache.forEach((value, key) => {
+      if (key === user.id) return;
+      channelPermissions.push(value);
+    });
+
+    await interaction.channel.permissionOverwrites.set(channelPermissions);
 
     await interaction.followUp({ content: `<@${user.id}> has been added to this ticket by <@${interaction.user.id}>` });
   },

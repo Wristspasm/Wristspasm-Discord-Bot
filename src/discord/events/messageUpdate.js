@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const config = require("../../../config.json");
 
 module.exports = {
   name: "messageUpdate",
@@ -23,7 +24,7 @@ module.exports = {
         iconURL: "https://imgur.com/tgwQJTX.png",
       });
 
-    const channel = oldMessage.guild.channels.cache.get("1070775096463073335");
+    const channel = oldMessage.guild.channels.cache.get(config.discord.channels.discordLogsChannel);
 
     channel.send({ embeds: [embed] });
   },
