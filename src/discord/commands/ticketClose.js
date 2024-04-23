@@ -73,7 +73,13 @@ module.exports = {
       }
     );
 
-    await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs).send({
+    var ticketLogsChannel = await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs);
+    if (!ticketLogsChannel) {
+      await interaction.followUp({ content: "Ticket Logs Channel not found using default", ephemeral: true });
+      ticketLogsChannel = await interaction.client.channels.cache.get("1230420140953178202");
+    }
+
+    ticketLogsChannel.send({
       embeds: [ticketCloseEmbed],
       files: [`data/transcript-${interaction.channel.name}.txt`],
     });

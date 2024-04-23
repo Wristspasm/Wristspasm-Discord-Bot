@@ -30,7 +30,7 @@ module.exports = {
     const channel = await interaction.guild.channels.create({
       name: `ticket-${interaction.user.username}`,
       type: ChannelType.GuildText,
-      parent: config.discord.channels.ticketsCategory,
+      parent: "1230422748648570970",
       permissionOverwrites: [
         { id: interaction.user.id, allow: permissions },
         { id: interaction.client.user.id, allow: permissions },
@@ -65,7 +65,7 @@ module.exports = {
     await delay(500);
     await openMessage.pin();
     await staffPing.delete();
-    
+
     if (type) {
       switch (type.toLowerCase()) {
         case "report": {
