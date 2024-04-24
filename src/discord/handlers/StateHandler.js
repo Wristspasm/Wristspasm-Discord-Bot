@@ -13,7 +13,7 @@ class StateHandler {
     });
 
     global.guild = await client.guilds.fetch(config.discord.bot.serverID);
-    Logger.discordMessage("Guild ready, successfully fetched " + guild.name);
+    Logger.discordMessage("Guild ready, successfully fetched " + global.guild.name);
 
     const channel = await this.getChannel("Guild");
     if (channel === undefined) {

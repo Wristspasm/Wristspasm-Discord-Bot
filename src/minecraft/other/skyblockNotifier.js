@@ -10,7 +10,7 @@ if (config.minecraft.hypixelUpdates.enabled === true) {
   }
 
   if (config.minecraft.hypixelUpdates.statusUpdates === true) {
-    // setInterval(checkForIncidents, 10000);
+    setInterval(checkForIncidents, 10000);
   }
 
   if (config.minecraft.hypixelUpdates.skyblockVersion === true) {

@@ -13,7 +13,7 @@ class MessageHandler {
       if (message.author.id === client.user.id || !this.shouldBroadcastMessage(message)) {
         return;
       }
-  
+
       if (message.content.toLowerCase().startsWith("no u")) {
         message.channel.send("No u x2");
       }

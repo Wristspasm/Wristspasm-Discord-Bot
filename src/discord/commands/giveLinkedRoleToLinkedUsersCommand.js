@@ -7,22 +7,15 @@ module.exports = {
   name: "give-linked-users-role",
   description: "Give linked users a role.",
   options: [],
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const users = await interaction.guild.members.fetch();
     if (users === undefined) {
       throw new WristSpasmError("No guild members found!");
     }
 
-    const linked = fs.readFileSync("data/minecraftLinked.json", "utf8");
+    const linked = fs.readFileSync("data/linked.json", "utf8");
     if (linked === undefined) {
       throw new WristSpasmError("No linked users found!");
     }
@@ -32,22 +25,14 @@ module.exports = {
       throw new WristSpasmError("Failed to parse Linked data!");
     }
 
-    const linkedUsersArray = Object.values(linkedUsers);
-    if (linkedUsersArray === undefined) {
-      throw new WristSpasmError("Failed to obtain keys of parsed Linked data!");
-    }
-
-    const syncLinkedData = require("./syncLinkedDataCommand.js");
-    await syncLinkedData.execute(interaction, true);
-
-    for (const id of linkedUsersArray) {
-      const user = await interaction.guild.members.fetch(id).catch((_) => {});
-      if (user === undefined) {
+    for (const user of linkedUsers) {
+      const discUser = await interaction.guild.members.fetch(user.id).catch(() => {});
+      if (discUser === undefined) {
         continue;
       }
 
-      user.roles.add(config.discord.roles.linkedRole);
-      console.log(`Added role to ${user.user.username}`);
+      discUser.roles.add(config.discord.roles.linkedRole);
+      console.log(`Added role to ${discUser.user.username}`);
     }
 
     const embed = new EmbedBuilder()

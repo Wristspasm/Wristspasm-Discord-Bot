@@ -29,7 +29,7 @@ module.exports = {
       throw new WristSpasmError("No guild members found!");
     }
 
-    const linked = fs.readFileSync("data/minecraftLinked.json", "utf8");
+    const linked = fs.readFileSync("data/linked.json", "utf8");
     if (linked === undefined) {
       throw new WristSpasmError("No linked users found!");
     }
@@ -37,11 +37,6 @@ module.exports = {
     const linkedUsers = JSON.parse(linked);
     if (linkedUsers === undefined) {
       throw new WristSpasmError("Failed to parse Linked data!");
-    }
-
-    const linkedUsersArray = Object.values(linkedUsers);
-    if (linkedUsersArray === undefined) {
-      throw new WristSpasmError("Failed to obtain keys of parsed Linked data!");
     }
 
     const indexValue = interaction.options.getInteger("index") || 0;

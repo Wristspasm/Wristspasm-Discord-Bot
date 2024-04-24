@@ -74,12 +74,12 @@ module.exports = {
         const time = interaction.fields.getTextInputValue("inactivitytime");
         const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
 
-        const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
+        const linked = JSON.parse(fs.readFileSync("data/linked.json", "utf8"));
         if (linked === undefined) {
           throw new WristSpasmError("No verification data found. Please contact an administrator.");
         }
 
-        const uuid = linked[interaction.user.id];
+        const uuid = linked.find((x) => x.id === interaction.user.id)?.uuid;
         if (uuid === undefined) {
           throw new WristSpasmError("You are no verified. Please verify using /verify.");
         }

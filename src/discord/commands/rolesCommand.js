@@ -16,7 +16,7 @@ module.exports = {
       throw new WristSpasmError("No user found.");
     }
 
-    const linkedData = fs.readFileSync("data/discordLinked.json", "utf8");
+    const linkedData = fs.readFileSync("data/linked.json", "utf8");
     if (linkedData === undefined) {
       throw new WristSpasmError("No linked users found!");
     }
@@ -26,7 +26,7 @@ module.exports = {
       throw new WristSpasmError("No verification data found. Please contact an administrator.");
     }
 
-    const uuid = linked[user.id];
+    const uuid = linked.find((x) => x.id === user.id)?.uuid;
     if (uuid === undefined) {
       throw new WristSpasmError("You are no verified. Please verify using /verify.");
     }
@@ -44,13 +44,13 @@ module.exports = {
 
     const playerIsInGuild = guild.members.find((m) => m.uuid == uuid);
     if (playerIsInGuild) {
-      user.roles.add(config.discord.roles.guildMemberRole).catch((_) => {});
+      user.roles.add(config.discord.roles.guildMemberRole).catch(() => {});
     } else {
-      user.roles.remove(config.discord.roles.guildMemberRole).catch((_) => {});
+      user.roles.remove(config.discord.roles.guildMemberRole).catch(() => {});
     }
 
     if (user.roles.cache.find((r) => r.id === config.discord.roles.linkedRole) === undefined) {
-      user.roles.add(config.discord.roles.linkedRole).catch((_) => {});
+      user.roles.add(config.discord.roles.linkedRole).catch(() => {});
     }
 
     const sbExperience = profile?.profile?.leveling?.experience ?? 0;

@@ -55,6 +55,8 @@
     "util": "^0.12.4"
   },
   "devDependencies": {
-    "eslint": "^8.46.0"
+    "eslint": "^8.43.0",
+    "eslint-plugin-import": "^2.27.5",
+    "prettier": "2.8.8"
   }
 }

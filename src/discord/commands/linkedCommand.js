@@ -32,10 +32,7 @@ module.exports = {
       throw new WristSpasmError("You do not have permission to use this command.");
     }
 
-    const syncLinkedData = require("./syncLinkedDataCommand.js");
-    await syncLinkedData.execute(interaction, true);
-
-    const linked = fs.readFileSync("data/discordLinked.json", "utf8");
+    const linked = fs.readFileSync("data/linked.json", "utf8");
     if (linked === undefined) {
       throw new WristSpasmError("No linked users found!");
     }

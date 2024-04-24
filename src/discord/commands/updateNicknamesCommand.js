@@ -18,9 +18,7 @@ module.exports = {
       throw new WristSpasmError("You do not have permission to use this command.");
     }
 
-    const syncLinkedData = require("./syncLinkedDataCommand.js");
-    await syncLinkedData.execute(interaction, true);
-    const linkedData = fs.readFileSync("data/minecraftLinked.json");
+    const linkedData = fs.readFileSync("data/linked.json");
     if (linkedData === undefined) {
       throw new WristSpasmError("No linked users found!");
     }

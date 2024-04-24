@@ -21,9 +21,7 @@ module.exports = {
       throw new WristSpasmError("No guild members found!");
     }
 
-    const syncLinkedData = require("./syncLinkedDataCommand.js");
-    await syncLinkedData.execute(interaction, true);
-    const linked = fs.readFileSync("data/minecraftLinked.json", "utf8");
+    const linked = fs.readFileSync("data/linked.json", "utf8");
     if (linked === undefined) {
       throw new WristSpasmError("No linked users found!");
     }
@@ -31,11 +29,6 @@ module.exports = {
     const linkedUsers = JSON.parse(linked);
     if (linkedUsers === undefined) {
       throw new WristSpasmError("Failed to parse Linked data!");
-    }
-
-    const linkedUsersArray = Object.values(linkedUsers);
-    if (linkedUsersArray === undefined) {
-      throw new WristSpasmError("Failed to obtain keys of parsed Linked data!");
     }
 
     if (config === undefined) {
@@ -58,7 +51,7 @@ module.exports = {
       const { username, id } = user.user;
 
       const userRoles = user.roles.cache.map((role) => role.id);
-      if (userRoles.includes(linkedRole) && linkedUsersArray.includes(id) === false) {
+      if (userRoles.includes(linkedRole) && linkedUsers.find((x) => x.id === id) === false) {
         await sendDM(user, linkedRole, userRoles, guildMemberRole, username, id, usersRemoved);
       }
     }

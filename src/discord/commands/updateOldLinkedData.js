@@ -1,4 +1,3 @@
-const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
@@ -30,10 +29,16 @@ module.exports = {
       throw new WristSpasmError("No old linked users found!");
     }
 
-    for (const [key, value] of Object.entries(oldData)) {
-      await writeAt("data/discordLinked.json", `${key}`, `${value.data[0]}`);
-      await writeAt("data/minecraftLinked.json", `${value.data[0]}`, `${key}`);
-    }
+    const newData = [];
+    const dupes = [];
+    Object.keys(oldData).forEach((key) => {
+      if (newData.find((x) => x.uuid === oldData[key])) {
+        dupes.push({ id: key, uuid: oldData[key] });
+      } else {
+        newData.push({ id: key, uuid: oldData[key] });
+      }
+    });
+    fs.writeFileSync("data/linked.json", JSON.stringify(newData, null, 2));
 
     const successfullyLinked = new EmbedBuilder()
       .setColor(5763719)

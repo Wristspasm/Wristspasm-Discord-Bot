@@ -1,9 +1,8 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
-const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
 const { EmbedBuilder } = require("discord.js");
+const config = require("../../../config.json");
 const fs = require("fs");
 
 module.exports = {
@@ -31,7 +30,7 @@ module.exports = {
         throw new WristSpasmError("This player does not have a Discord linked.");
       }
 
-      const linkedAccount = interaction.user.username ?? interaction.user.tag;
+      const linkedAccount = interaction.user.username;
       if (linkedAccount === undefined) {
         throw new WristSpasmError("You do not exist? Please contact an administrator.");
       }
@@ -52,20 +51,24 @@ module.exports = {
         throw new WristSpasmError("Failed to obtain UUID of player.");
       }
 
+      const verificationData = JSON.parse(fs.readFileSync("data/linked.json", "utf-8"));
+      if (verificationData.find((x) => x.id === interaction.user.id)) {
+        const updateRolesCommand = require("./rolesCommand.js");
+        await updateRolesCommand.execute(
+          interaction,
+          await interaction.guild.members.fetch(interaction.user.id),
+          "verify"
+        );
+      } else if (verificationData.find((x) => x.uuid === uuid)) {
+        throw new WristSpasmError("This player is already linked to another account.");
+      } else {
+        verificationData.push({ id: interaction.user.id, uuid: uuid });
+        fs.writeFileSync("data/linked.json", JSON.stringify(verificationData, null, 2));
+      }
+
       const user = await interaction.guild.members.fetch(interaction.user);
       user.roles.add(linkedRole).catch(() => {});
       user.setNickname(nickname).catch(() => {});
-
-      const minecraftLinked = require("../../../data/minecraftLinked.json");
-      Object.keys(minecraftLinked).map((uuid) => {
-        if (minecraftLinked[uuid] === interaction.user.id) delete minecraftLinked[uuid];
-      });
-      fs.writeFileSync("data/minecraftLinked.json", JSON.stringify(minecraftLinked, null, 2));
-
-      await Promise.all([
-        writeAt("data/discordLinked.json", `${interaction.user.id}`, `${uuid}`),
-        writeAt("data/minecraftLinked.json", `${uuid}`, `${interaction.user.id}`),
-      ]);
 
       const successfullyLinked = new EmbedBuilder()
         .setColor("4BB543")
@@ -102,14 +105,15 @@ module.exports = {
 
       await interaction.editReply({ embeds: [errorEmbed] });
 
-      if (error.includes("linked") === true) {
+      if (
+        (error.statsWith("The player '") &&
+          error.includes("has linked their Discord account to a different account")) === true
+      ) {
         const verificationTutorialEmbed = new EmbedBuilder()
           .setColor(0x0099ff)
           .setAuthor({ name: "Link with Hypixel Social Media" })
           .setDescription(
-            `**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${
-              interaction.user.username ?? interaction.user.tag
-            }\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`
+            `**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${interaction.user.username}\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`
           )
           .setThumbnail("https://thumbs.gfycat.com/DentalTemptingLeonberger-size_restricted.gif")
           .setTimestamp()

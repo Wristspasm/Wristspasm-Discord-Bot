@@ -1,6 +1,5 @@
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
-const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
+const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
@@ -8,6 +7,7 @@ const fs = require("fs");
 module.exports = {
   name: "overrideverify",
   description: "Connect your Discord account to Minecraft",
+  moderatorOnly: true,
   options: [
     {
       name: "name",
@@ -24,14 +24,6 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const linkedRole = config.discord.roles.linkedRole;
     if (linkedRole === undefined) {
       throw new WristSpasmError("The linked role does not exist. Please contact an administrator.");
@@ -45,18 +37,16 @@ module.exports = {
     const id = interaction.options._hoistedOptions[1].user.id;
     const uuid = await getUUID(username);
 
-    const minecraftLinked = require("../../../data/minecraftLinked.json");
-    Object.keys(minecraftLinked)
-      .filter((uuid) => minecraftLinked[uuid] === id)
-      .map((uuid) => {
-        delete minecraftLinked[uuid];
-      });
-    fs.writeFileSync("data/minecraftLinked.json", JSON.stringify(minecraftLinked, null, 2));
-
-    await Promise.all([
-      writeAt("data/discordLinked.json", `${id}`, `${uuid}`),
-      writeAt("data/minecraftLinked.json", `${uuid}`, `${id}`),
-    ]);
+    const verificationData = JSON.parse(fs.readFileSync("data/linked.json", "utf-8"));
+    if (verificationData.find((x) => x.id === id)) {
+      const updateRolesCommand = require("./rolesCommand.js");
+      await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify");
+    } else if (verificationData.find((x) => x.uuid === uuid)) {
+      throw new WristSpasmError("This player is already linked to another account.");
+    } else {
+      verificationData.push({ id: id, uuid: uuid });
+      fs.writeFileSync("data/linked.json", JSON.stringify(verificationData, null, 2));
+    }
 
     await interaction.guild.members
       .fetch(id)
