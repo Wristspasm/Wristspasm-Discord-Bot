@@ -8,15 +8,9 @@ module.exports = {
   name: "update-nicknames",
   description: "Updates usernames of linked users.",
   options: [],
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
 
     const linkedData = fs.readFileSync("data/linked.json");
     if (linkedData === undefined) {

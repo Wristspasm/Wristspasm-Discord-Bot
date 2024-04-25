@@ -1,6 +1,5 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 // ! This command is only used once to update old verification data to the new format
@@ -10,21 +9,13 @@ const DISABLED = true;
 module.exports = {
   name: "update-old-linked-data",
   description: "Updates old verification data to the new format",
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     if (DISABLED === true) {
       throw new WristSpasmError("This command is disabled.");
     }
-
-    const oldData = JSON.parse(fs.readFileSync("data/oldDiscordLinked.json", "utf8"));
+    const oldData = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
     if (oldData === undefined) {
       throw new WristSpasmError("No old linked users found!");
     }
@@ -35,7 +26,10 @@ module.exports = {
       if (newData.find((x) => x.uuid === oldData[key])) {
         dupes.push({ id: key, uuid: oldData[key] });
       } else {
-        newData.push({ id: key, uuid: oldData[key] });
+        newData.push({
+          id: key,
+          uuid: oldData[key],
+        });
       }
     });
     fs.writeFileSync("data/linked.json", JSON.stringify(newData, null, 2));

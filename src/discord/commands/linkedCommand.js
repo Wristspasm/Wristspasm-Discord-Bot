@@ -1,7 +1,6 @@
 const { getUUID, getUsername } = require("../../contracts/API/PlayerDBAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const moment = require("moment");
 const fs = require("fs");
 
@@ -22,15 +21,9 @@ module.exports = {
       required: false,
     },
   ],
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
 
     const linked = fs.readFileSync("data/linked.json", "utf8");
     if (linked === undefined) {

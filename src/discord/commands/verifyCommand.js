@@ -37,7 +37,7 @@ module.exports = {
 
       if (discordUsername !== linkedAccount) {
         throw new WristSpasmError(
-          `The player '${username}' has linked their Discord account to a different account ('${discordUsername}').`
+          `The player '${username}' has linked their Discord account to a different account ('${discordUsername}').`,
         );
       }
 
@@ -57,7 +57,7 @@ module.exports = {
         await updateRolesCommand.execute(
           interaction,
           await interaction.guild.members.fetch(interaction.user.id),
-          "verify"
+          "verify",
         );
       } else if (verificationData.find((x) => x.uuid === uuid)) {
         throw new WristSpasmError("This player is already linked to another account.");
@@ -91,7 +91,7 @@ module.exports = {
         .replaceAll("Error: [hypixel-api-reborn] ", "")
         .replaceAll(
           "Unprocessable Entity! For help join our Discord Server https://discord.gg/NSEBNMM",
-          "This player does not exist. (Mojang API might be down)"
+          "This player does not exist. (Mojang API might be down)",
         );
 
       const errorEmbed = new EmbedBuilder()
@@ -113,7 +113,7 @@ module.exports = {
           .setColor(0x0099ff)
           .setAuthor({ name: "Link with Hypixel Social Media" })
           .setDescription(
-            `**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${interaction.user.username}\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`
+            `**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${interaction.user.username}\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`,
           )
           .setThumbnail("https://thumbs.gfycat.com/DentalTemptingLeonberger-size_restricted.gif")
           .setTimestamp()

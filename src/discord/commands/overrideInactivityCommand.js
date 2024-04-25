@@ -34,16 +34,9 @@ module.exports = {
       required: false,
     },
   ],
+  moderatorOnly: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const discord = interaction.options._hoistedOptions[0];
     const username = interaction.options.getString("minecraft");
 
