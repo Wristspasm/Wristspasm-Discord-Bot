@@ -118,7 +118,11 @@ module.exports = {
         .setLabel("Questions or Concerns")
         .setCustomId("TICKET_OPEN_QUESTION")
         .setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary)
+      new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setLabel("Apply For Staff")
+        .setCustomId("TICKET_OPEN_STAFF")
+        .setStyle(ButtonStyle.Success)
     );
 
     await interaction.client.channels.cache.get("1230429966274007120").send({ embeds: [helpEmbed], components: [row] });

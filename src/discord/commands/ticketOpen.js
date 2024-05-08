@@ -1,8 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ChannelType, ButtonStyle } = require("discord.js");
 const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const config = require("../../../config.json");
 const WristSpasmError = require("../../contracts/errorHandler.js");
+const config = require("../../../config.json");
 
 const permissions = [
   PermissionFlagsBits.ReadMessageHistory,
