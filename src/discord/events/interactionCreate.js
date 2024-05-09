@@ -22,7 +22,7 @@ module.exports = {
           return;
         }
 
-        if ((command.name == "inactivity") === false) {
+        if ((command.name == "inactivity" || command.name == "embed") === false) {
           await interaction.deferReply({ ephemeral: false }).catch(() => {});
         }
 

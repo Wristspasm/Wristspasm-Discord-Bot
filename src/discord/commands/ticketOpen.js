@@ -123,7 +123,6 @@ module.exports = {
           break;
         }
         case "staff": {
-          const userRoles = interaction.member.roles.cache.map((role) => role.id);
           const questionEmbed = new Embed(
             16776960,
             "Staff Application",
@@ -165,6 +164,9 @@ module.exports = {
           },
         );
         await channel.send({ embeds: [reportEmbed] });
+        let msgs = [];
+        msgs.push(`\n** Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**`);
+        msgs.push(`- ${config.other.staffApplicationQuestions[msgsSent]}`);
         msgsSent++;
         let finished = false;
         interaction.client.on("messageCreate", async (message) => {
@@ -172,16 +174,18 @@ module.exports = {
           if (message.channel.id !== channel.id) return;
           if (message.author.bot) return;
           if (message.content === "cancel") {
+            message.reply("Closing the ticket and stopping the application...");
             const ticketCloseCommand = interaction.client.commands.get("close-ticket");
 
             if (ticketCloseCommand === undefined) {
               throw new WristSpasmError("Could not find close-ticket command! Please contact an administrator.");
             }
-
-            await ticketCloseCommand.execute(interaction);
+            const chan = await interaction.guild.channels.cache.get(channel.id);
+            await ticketCloseCommand.execute(interaction, chan);
           }
           if (!finished) {
             if (msgsSent === config.other.staffApplicationQuestions.length) {
+              msgs.push(message.content);
               const reportEmbed = new Embed(
                 16711680,
                 "Staff Application",
@@ -192,8 +196,12 @@ module.exports = {
                 },
               );
               await channel.send({ embeds: [reportEmbed] });
+              await channel.send(`# Application Questions\n\n${msgs.join("\n")}`);
               finished = true;
             } else {
+              msgs.push(message.content);
+              msgs.push(`\n** Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**`);
+              msgs.push(`- ${config.other.staffApplicationQuestions[msgsSent]}`);
               const reportEmbed = new Embed(
                 16711680,
                 "Staff Application",

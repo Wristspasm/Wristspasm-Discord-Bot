@@ -104,27 +104,15 @@ module.exports = {
       */
 
     // ? #bot-info
-    const helpEmbed = new EmbedBuilder().setColor(0x0099ff).setDescription("# Create a ticket here.");
+    //
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setLabel("Report a Guild Member")
-        .setCustomId("TICKET_OPEN_REPORT")
-        .setStyle(ButtonStyle.Danger),
-      new ButtonBuilder()
-        .setLabel("Give a Suggestion")
-        .setCustomId("TICKET_OPEN_SUGGESTION")
-        .setStyle(ButtonStyle.Success),
-      new ButtonBuilder()
-        .setLabel("Questions or Concerns")
-        .setCustomId("TICKET_OPEN_QUESTION")
-        .setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setLabel("General Support").setCustomId("TICKET_OPEN_NORMAL").setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setLabel("Apply For Staff")
-        .setCustomId("TICKET_OPEN_STAFF")
-        .setStyle(ButtonStyle.Success)
+      new ButtonBuilder().setLabel("Apply For Staff").setCustomId("TICKET_OPEN_STAFF").setStyle(ButtonStyle.Success),
     );
-
-    await interaction.client.channels.cache.get("1234864265152954539").send({ embeds: [helpEmbed], components: [row] });
+    await interaction.channel.send({
+      content:
+        "## Staff Applications are Now Open!\n\nIt's been a while, but they're are finally out!\n\nWe have switched over to a ticket system instead of going off platform to ensure applicants are more comfortable.\nThank you for your interest in supporting the guild. Good luck with your applications!\n_ _",
+    });
+    await interaction.channel.send({ components: [row] });
+    await interaction.reply({ content: "hi", ephemeral: true });
   },
 };
