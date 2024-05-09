@@ -1,5 +1,5 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 // eslint-disable-next-line no-unused-vars
