@@ -125,6 +125,6 @@ module.exports = {
         .setStyle(ButtonStyle.Success)
     );
 
-    await interaction.client.channels.cache.get("1230429966274007120").send({ embeds: [helpEmbed], components: [row] });
+    await interaction.client.channels.cache.get("1234864265152954539").send({ embeds: [helpEmbed], components: [row] });
   },
 };
