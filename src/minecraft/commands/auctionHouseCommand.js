@@ -4,7 +4,7 @@ const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const { renderLore } = require("../../contracts/renderItem.js");
 const getRank = require("../../../API/stats/rank.js");
 const axios = require("axios");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/mowojangAPI.js");
 const { uploadImage } = require("../../contracts/API/imgurAPI.js");
 
 class AuctionHouseCommand extends minecraftCommand {

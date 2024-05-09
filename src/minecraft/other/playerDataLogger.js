@@ -1,4 +1,4 @@
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/mowojangAPI.js");
 const fs = require("fs");
 
 const DEFAULT_DATA = {

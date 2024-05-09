@@ -1,5 +1,5 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const { Embed } = require("../../contracts/embedHandler.js");
 const config = require("../../../config.json");
 const cron = require("node-cron");
