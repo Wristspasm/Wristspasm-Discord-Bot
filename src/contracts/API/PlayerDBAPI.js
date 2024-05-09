@@ -13,7 +13,7 @@ async function getUUID(username) {
       }
     }
 
-    const { data } = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`);
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${username}`);
 
     if (data.errorMessage || data.id === undefined) {
       throw data.errorMessage ?? "Invalid username.";
@@ -26,17 +26,9 @@ async function getUUID(username) {
 
     return data.id;
   } catch (error) {
-    if (error.response.data.errorMessage !== undefined) {
-      throw error.response.data.errorMessage === `Couldn't find any profile with name ${username}`
-        ? "Invalid username."
-        : error.response.data.errorMessage ===
-          "getProfileName.name: Invalid profile name, getProfileName.name: size must be between 1 and 25"
-        ? "Invalid username."
-        : error.response.data.errorMessage;
-    }
+    console.log;
 
-    // eslint-disable-next-line no-throw-literal
-    throw "Request to Mojang API failed. Please try again!";
+    throw error
   }
 }
 
@@ -49,60 +41,51 @@ async function getUsername(uuid) {
       return user.username;
     }
 
-    const { data } = await axios.get(`https://playerdb.co/api/player/minecraft/${uuid}`);
-    if ("data" in data === false) {
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${uuid}`);
+    if (["id", "name"] in data === false) {
       throw data.code == "minecraft.invalid_username" ? "Invalid UUID." : data.message;
     }
 
-    if (data.data?.player?.username === undefined) {
+    if (data.name === undefined) {
       // eslint-disable-next-line no-throw-literal
       throw "No username found for that UUID.";
     }
 
-    cache = cache.filter((data) => data.uuid !== uuid);
+    cache = cache.filter((data) => data.id !== uuid);
     cache.push({
-      username: data.data.player.username,
+      username: data.name,
       uuid: uuid,
       last_save: Date.now(),
     });
 
     fs.writeFileSync("data/usernameCache.json", JSON.stringify(cache));
 
-    console.log(`Cached username for ${data.data.player.username} (${uuid})`);
+    console.log(`Cached username for ${data.name} (${uuid})`);
 
-    return data.data.player.username;
+    return data.name;
   } catch (error) {
-    console.log(error);
-    if (error.response?.data === undefined) {
-      console.log;
-      // eslint-disable-next-line no-throw-literal
-      throw "Request to Mojang API failed. Please try again!";
-    }
+    console.log;
 
-    console.log(uuid, error.response.data);
-
-    throw error.response.data.message === `No Minecraft user could be found.`
-      ? "Invalid UUID."
-      : error.response.data.message;
+    throw error
   }
 }
 
 async function resolveUsernameOrUUID(username) {
   try {
-    const { data } = await axios.get(`https://playerdb.co/api/player/minecraft/${username}`);
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${username}`);
 
     if (data.success === false || data.error === true) {
       throw data.message == "Mojang API lookup failed." ? "Invalid username." : data.message;
     }
 
-    if (data.data?.player?.raw_id === undefined) {
+    if (data.id === undefined) {
       // eslint-disable-next-line no-throw-literal
       throw "No UUID found for that username.";
     }
 
     return {
-      username: data.data.player.username,
-      uuid: data.data.player.raw_id,
+      username: data.name,
+      uuid: data.id,
     };
   } catch (error) {
     console.log(error);
