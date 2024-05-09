@@ -26,9 +26,10 @@ async function getUUID(username) {
 
     return data.id;
   } catch (error) {
-    console.log;
-
-    throw error
+    // eslint-disable-next-line no-throw-literal
+    if (error.response.data === "Not found") throw "Invalid username.";
+    console.log(error);
+    throw error;
   }
 }
 
@@ -42,19 +43,10 @@ async function getUsername(uuid) {
     }
 
     const { data } = await axios.get(`https://mowojang.matdoes.dev/${uuid}`);
-    if (["id", "name"] in data === false) {
-      throw data.code == "minecraft.invalid_username" ? "Invalid UUID." : data.message;
-    }
-
-    if (data.name === undefined) {
-      // eslint-disable-next-line no-throw-literal
-      throw "No username found for that UUID.";
-    }
-
     cache = cache.filter((data) => data.id !== uuid);
     cache.push({
       username: data.name,
-      uuid: uuid,
+      uuid: data.id,
       last_save: Date.now(),
     });
 
@@ -64,9 +56,10 @@ async function getUsername(uuid) {
 
     return data.name;
   } catch (error) {
-    console.log;
-
-    throw error
+    // eslint-disable-next-line no-throw-literal
+    if (error.response.data === "Not found") throw "Invalid UUID.";
+    console.log(error);
+    throw error;
   }
 }
 
@@ -74,21 +67,15 @@ async function resolveUsernameOrUUID(username) {
   try {
     const { data } = await axios.get(`https://mowojang.matdoes.dev/${username}`);
 
-    if (data.success === false || data.error === true) {
-      throw data.message == "Mojang API lookup failed." ? "Invalid username." : data.message;
-    }
-
-    if (data.id === undefined) {
-      // eslint-disable-next-line no-throw-literal
-      throw "No UUID found for that username.";
-    }
-
     return {
       username: data.name,
       uuid: data.id,
     };
   } catch (error) {
+    // eslint-disable-next-line no-throw-literal
+    if (error.response.data === "Not found") throw "Invalid Username Or UUID.";
     console.log(error);
+    throw error;
   }
 }
 
