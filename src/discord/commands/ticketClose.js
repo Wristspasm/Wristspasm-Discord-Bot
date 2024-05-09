@@ -30,9 +30,12 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction) => {
+  execute: async (interaction, channel = null) => {
     const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
-    if (!interaction.channel.name.toLowerCase().startsWith("ticket-")) {
+    if (channel === null) {
+      channel = interaction.channel;
+    }
+    if (!channel.name.toLowerCase().startsWith("ticket-")) {
       throw new WristSpasmError("This is not a ticket channel");
     }
 
@@ -40,7 +43,7 @@ module.exports = {
     let lastMessageId = null;
 
     do {
-      const fetchedMessages = await interaction.channel.messages.fetch({ limit: 100, before: lastMessageId });
+      const fetchedMessages = await channel.messages.fetch({ limit: 100, before: lastMessageId });
       if (fetchedMessages.size === 0) break;
 
       fetchedMessages.forEach((msg) => messages.push(msg));
@@ -60,7 +63,7 @@ module.exports = {
 
     writeFileSync(`data/transcript-${interaction.channel.name}.txt`, TranscriptString);
 
-    const firstMessage = (await interaction.channel.messages.fetchPinned()).first();
+    const firstMessage = (await channel.messages.fetchPinned()).first();
     const ticketOwnerId = firstMessage.mentions.users.first().id;
 
     const ticketCloseEmbed = new Embed(
@@ -92,6 +95,6 @@ module.exports = {
     unlinkSync(`data/transcript-${interaction.channel.name}.txt`);
 
     await interaction.followUp({ content: "Ticket Closed", ephemeral: true });
-    await interaction.channel.delete();
+    await channel.delete();
   },
 };
