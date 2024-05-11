@@ -196,7 +196,10 @@ module.exports = {
                 },
               );
               await channel.send({ embeds: [reportEmbed] });
-              await channel.send(`# Application Questions\n\n${msgs.join("\n")}`);
+              await channel.send(`# Application Questions\n\n_ _`);
+              msgs.forEach(async (msg) => {
+                await channel.send(msg);
+              });
               finished = true;
             } else {
               msgs.push(message.content);
