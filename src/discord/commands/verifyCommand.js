@@ -1,6 +1,6 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUUID } = require("../../contracts/API/mowojangAPI.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const fs = require("fs");

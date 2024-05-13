@@ -1,4 +1,4 @@
-const { getUsername } = require("../../contracts/API/PlayerDBAPI.js");
+const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");

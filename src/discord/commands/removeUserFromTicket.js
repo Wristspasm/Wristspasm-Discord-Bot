@@ -50,6 +50,6 @@ module.exports = {
 
     await interaction.channel.permissionOverwrites.set(channelPermissions);
 
-    await interaction.followUp({ content: `<@${user.id}> has been added to this ticket by <@${interaction.user.id}>` });
+    await interaction.followUp({ content: `<@${user.id}> has been removed from this ticket by <@${interaction.user.id}>` });
   },
 };
