@@ -29,7 +29,7 @@ module.exports = {
   execute: async (interaction, type) => {
     const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
     const userRoles = interaction.member.roles.cache.map((role) => role.id);
-    if (type.toLowerCase() === "staff" && !userRoles.includes(config.discord.roles.guildMemberRole)) {
+    if (type && type.toLowerCase() === "staff" && !userRoles.includes(config.discord.roles.guildMemberRole)) {
       const noPermissionEmbed = new Embed(
         16711680,
         "No Permission",
