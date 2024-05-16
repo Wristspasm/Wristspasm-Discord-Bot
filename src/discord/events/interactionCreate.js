@@ -161,7 +161,7 @@ module.exports = {
           `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
-          content: `<@&987936050649391194>`,
+          content: `<@&987936050649391194> <@1169174913832202306>`,
           embeds: [errorLog],
         });
       }

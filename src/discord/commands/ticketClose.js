@@ -87,10 +87,14 @@ module.exports = {
       files: [`data/transcript-${interaction.channel.name}.txt`],
     });
 
-    await interaction.client.users.send(ticketOwnerId, {
-      embeds: [ticketCloseEmbed],
-      files: [`data/transcript-${interaction.channel.name}.txt`],
-    });
+    try {
+      await interaction.client.users.send(ticketOwnerId, {
+        embeds: [ticketCloseEmbed],
+        files: [`data/transcript-${interaction.channel.name}.txt`],
+      });
+    } catch (e) {
+      await interaction.followUp({ content: "User has DMs disabled", ephemeral: true });
+    }
 
     unlinkSync(`data/transcript-${interaction.channel.name}.txt`);
 
