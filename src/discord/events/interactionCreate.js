@@ -1,13 +1,13 @@
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
-// eslint-disable-next-line no-unused-vars
-const { EmbedBuilder, CommandInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
-const fs = require("fs");
+const { writeAt } = require("../../contracts/helperFunctions.js");
 const config = require("../../../config.json");
 const Logger = require("../.././Logger.js");
-const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
+const fs = require("fs");
 
 module.exports = {
   name: "interactionCreate",
@@ -75,7 +75,7 @@ module.exports = {
                 new ButtonBuilder()
                   .setLabel("Leave Giveaway")
                   .setCustomId(`g.l.${giveaway.id}`)
-                  .setStyle(ButtonStyle.Danger),
+                  .setStyle(ButtonStyle.Danger)
               );
 
               await interaction.followUp({
@@ -84,8 +84,14 @@ module.exports = {
                 ephemeral: true,
               });
             }
+            if (giveaway.guildOnly === true && isGuildMember(interaction) === false) {
+              return await interaction.editReply({ content: "This giveaway is for guild members only." });
+            }
+            if (giveaway.verifiedOnly === true && isVerified(interaction) === false) {
+              return await interaction.editReply({ content: "This giveaway is for verified members only." });
+            }
 
-            giveaway.users.push({ id: interaction.user.id, winner: false });
+            giveaway.users.push({ id: interaction.user.id, winner: false, claimed: false });
             fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
             return await interaction.editReply({ content: "You have successfully entered the giveaway." });
           }
@@ -135,7 +141,7 @@ module.exports = {
         const formattedTime = time * 86400;
         if (formattedTime > 21 * 86400) {
           throw new WristSpasmError(
-            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
+            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
           );
         }
 
@@ -144,7 +150,7 @@ module.exports = {
         const inactivityEmbed = new Embed(
           5763719,
           "Inactivity Request",
-          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
+          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
         );
         inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -168,7 +174,7 @@ module.exports = {
         });
 
         const inactivityResponse = new SuccessEmbed(
-          `Inactivity request has been successfully sent to the guild staff.`,
+          `Inactivity request has been successfully sent to the guild staff.`
         );
 
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
@@ -193,7 +199,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,
@@ -220,6 +226,26 @@ function isModerator(interaction) {
     config.discord.commands.checkPerms === true &&
     !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
   ) {
+    return false;
+  }
+
+  return true;
+}
+function isGuildMember(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (!(userRoles.includes(config.discord.roles.guildMemberRole) || config.discord.commands.users.includes(user.id))) {
+    return false;
+  }
+
+  return true;
+}
+function isVerified(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (!(userRoles.includes(config.discord.roles.linkedRole) || config.discord.commands.users.includes(user.id))) {
     return false;
   }
 

@@ -28,15 +28,23 @@ async function checkGiveaways() {
           {
             name: "Prize",
             value: giveaway.prize,
+            inline: true,
           },
           {
             name: "Winners",
             value: winners,
+            inline: true,
           },
           {
             name: "Ends At",
             value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+            inline: true,
           },
+          {
+            name: "Host",
+            value: `<@${giveaway.host.id}>`,
+            inline: false,
+          }
         );
 
       giveaway.ended = true;
@@ -46,8 +54,13 @@ async function checkGiveaways() {
         new ButtonBuilder()
           .setLabel("Enter Giveaway")
           .setCustomId(`g.e.${giveaway.id}`)
-          .setStyle(ButtonStyle.Success)
+          .setStyle(ButtonStyle.Secondary)
           .setDisabled(true),
+        new ButtonBuilder()
+          .setLabel("Claim Giveaway")
+          .setCustomId(`t.o.g.${giveaway.id}`)
+          .setStyle(ButtonStyle.Primary)
+          .setDisabled(false)
       );
       message.edit({ embeds: [giveawayEmbed], components: [row] });
     });
