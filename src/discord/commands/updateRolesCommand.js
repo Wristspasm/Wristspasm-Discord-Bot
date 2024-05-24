@@ -61,7 +61,7 @@ module.exports = {
           `Updating roles for <@${user.id}>\n\nProgress: \`${index}/${totalMembers}\` (\`${(
             (index / totalMembers) *
             100
-          ).toFixed(2)}%\`)`
+          ).toFixed(2)}%\`)`,
         )
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
@@ -84,7 +84,7 @@ module.exports = {
       .setDescription(
         `Successfully updated role to \`${updatedMembers.length}\` users!\n${updatedMembers
           .map((user) => `• <@${user.id}>`)
-          .join("\n")}`
+          .join("\n")}`,
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,

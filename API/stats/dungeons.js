@@ -46,8 +46,8 @@ module.exports = (player, profile) => {
     const HIGEHST_TIER_COMPLETED = MASTER_CATACOMBS?.highest_tier_completed
       ? `M${MASTER_CATACOMBS?.highest_tier_completed}`
       : catacombs?.highest_tier_completed
-      ? `F${catacombs?.highest_tier_completed}`
-      : null;
+        ? `F${catacombs?.highest_tier_completed}`
+        : null;
 
     const perks = {
       catacombs_boss_luck: profile?.perks.catacombs_boss_luck ?? 0,

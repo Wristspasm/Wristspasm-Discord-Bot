@@ -3,7 +3,7 @@ const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 // eslint-disable-next-line no-unused-vars
-const { EmbedBuilder, CommandInteraction } = require("discord.js");
+const { EmbedBuilder, CommandInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const fs = require("fs");
 const config = require("../../../config.json");
 const Logger = require("../.././Logger.js");
@@ -66,6 +66,41 @@ module.exports = {
           }
 
           await ticketOpenCommand.execute(interaction, interaction.customId.split("TICKET_OPEN_")[1]);
+        } else if (interaction.customId.startsWith("g.e.")) {
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          if (giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1])) {
+            const giveaway = giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1]);
+            if (giveaway.users.includes(interaction.user.id)) {
+              const row = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                  .setLabel("Leave Giveaway")
+                  .setCustomId(`g.l.${giveaway.id}`)
+                  .setStyle(ButtonStyle.Danger),
+              );
+
+              await interaction.followUp({
+                content: "You have already entered the giveaway.",
+                components: [row],
+                ephemeral: true,
+              });
+            }
+
+            giveaway.users.push({ id: interaction.user.id, winner: false });
+            fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+            return await interaction.editReply({ content: "You have successfully entered the giveaway." });
+          }
+        } else if (interaction.customId.startsWith("g.l.")) {
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          if (giveawayData.find((x) => x.id === interaction.customId.split("g.l.")[1])) {
+            const giveaway = giveawayData.find((x) => x.id === interaction.customId.split("g.l.")[1]);
+            if (!giveaway.users.includes(interaction.user.id)) {
+              return await interaction.editReply({ content: "You are not in the giveaway." });
+            }
+
+            giveaway.users = giveaway.users.filter((x) => x !== interaction.user.id);
+            fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+            return await interaction.editReply({ content: "You have successfully left the giveaway." });
+          }
         }
       }
 
@@ -100,7 +135,7 @@ module.exports = {
         const formattedTime = time * 86400;
         if (formattedTime > 21 * 86400) {
           throw new WristSpasmError(
-            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
+            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
           );
         }
 
@@ -109,7 +144,7 @@ module.exports = {
         const inactivityEmbed = new Embed(
           5763719,
           "Inactivity Request",
-          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
+          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
         );
         inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -133,7 +168,7 @@ module.exports = {
         });
 
         const inactivityResponse = new SuccessEmbed(
-          `Inactivity request has been successfully sent to the guild staff.`
+          `Inactivity request has been successfully sent to the guild staff.`,
         );
 
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
@@ -158,7 +193,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,

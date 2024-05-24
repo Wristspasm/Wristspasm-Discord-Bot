@@ -69,7 +69,7 @@ module.exports = {
       .setDescription(
         `Successfully removed role from \`${usersRemoved.length}\` users!\n${usersRemoved
           .map((user) => `• <@${user}>\n`)
-          .join("")}`
+          .join("")}`,
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
@@ -87,7 +87,7 @@ async function sendDM(user, linkedRole, userRoles, guildMemberRole, username, id
     .setThumbnail("https://imgur.com/fNByP9j.png")
     .setColor(15548997)
     .setDescription(
-      `You have been unlinked from the WristSpasm Discord server!\n\nTo link simply execute the \`/verify\` command within the <#1072881326207795360> channel. If you are no longer part of our community, you can disregard this message.\n\nShould you require assistance or have any inquiries, please don't hesitate to reach out to a staff member.`
+      `You have been unlinked from the WristSpasm Discord server!\n\nTo link simply execute the \`/verify\` command within the <#1072881326207795360> channel. If you are no longer part of our community, you can disregard this message.\n\nShould you require assistance or have any inquiries, please don't hesitate to reach out to a staff member.`,
     )
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,

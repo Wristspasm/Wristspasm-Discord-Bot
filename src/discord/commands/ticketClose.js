@@ -73,7 +73,7 @@ module.exports = {
       {
         text: `by @kathund. | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
-      }
+      },
     );
 
     var ticketLogsChannel = await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs);

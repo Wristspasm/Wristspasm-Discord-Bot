@@ -33,7 +33,7 @@ module.exports = {
       bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars;
     if (meetRequirements === false) {
       throw new WristSpasmError(
-        `You do not meet the requirements to join the guild. Please try again once you meet the requirements.`
+        `You do not meet the requirements to join the guild. Please try again once you meet the requirements.`,
       );
     }
 

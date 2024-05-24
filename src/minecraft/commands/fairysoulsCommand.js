@@ -33,7 +33,7 @@ class FairySoulsCommand extends minecraftCommand {
         `/gc ${username}'s Fairy Souls: ${fairy_souls_collected}/${total} | Progress: ${(
           (fairy_souls_collected / total) *
           100
-        ).toFixed(2)}%`
+        ).toFixed(2)}%`,
       );
     } catch (error) {
       this.send(`/gc [ERROR] ${error}`);

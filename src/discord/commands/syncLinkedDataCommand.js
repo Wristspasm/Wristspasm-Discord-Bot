@@ -44,7 +44,7 @@ module.exports = {
 
     if (followUp === true) {
       successEmbed.setDescription(`Link data has been successfuly synced.`);
-      
+
       return await interaction.followUp({ embeds: [successEmbed] });
     }
 
