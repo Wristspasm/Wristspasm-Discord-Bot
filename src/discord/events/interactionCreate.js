@@ -50,22 +50,22 @@ module.exports = {
           }
 
           await applyCommand.execute(interaction);
-        } else if (interaction.customId.startsWith("TICKET_CLOSE_")) {
+        } else if (interaction.customId.startsWith("t.c.")) {
           const ticketCloseCommand = interaction.client.commands.get("close-ticket");
-
           if (ticketCloseCommand === undefined) {
             throw new WristSpasmError("Could not find close-ticket command! Please contact an administrator.");
           }
-
           await ticketCloseCommand.execute(interaction);
-        } else if (interaction.customId.startsWith("TICKET_OPEN_")) {
+        } else if (interaction.customId.startsWith("t.o.")) {
           const ticketOpenCommand = interaction.client.commands.get("open-ticket");
-
           if (ticketOpenCommand === undefined) {
             throw new WristSpasmError("Could not find open-ticket command! Please contact an administrator.");
           }
-
-          await ticketOpenCommand.execute(interaction, interaction.customId.split("TICKET_OPEN_")[1]);
+          if (interaction.customId.startsWith("t.o.g.")) {
+            await ticketOpenCommand.execute(interaction, null, interaction.customId.split("t.o.g.")[1]);
+          } else {
+            await ticketOpenCommand.execute(interaction, interaction.customId.split("t.o.")[1]);
+          }
         } else if (interaction.customId.startsWith("g.e.")) {
           const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
           if (giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1])) {
@@ -125,8 +125,11 @@ module.exports = {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
                 },
-              );
-
+              )
+              .setFooter({
+                text: `by @kathund. | /help [command] for more information`,
+                iconURL: "https://i.imgur.com/uUuZx2E.png",
+              });
             const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
             await message.edit({ embeds: [giveawayEmbed] });
             fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
@@ -135,7 +138,6 @@ module.exports = {
         } else if (interaction.customId.startsWith("g.l.")) {
           const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
           const giveawayId = interaction.customId.split("g.l.")[1];
-
           if (giveawayData.find((x) => x.id === giveawayId)) {
             const giveaway = giveawayData.find((x) => x.id === giveawayId);
             const userIndex = giveaway.users.findIndex((user) => user.id === interaction.user.id);
@@ -170,7 +172,11 @@ module.exports = {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
                 },
-              );
+              )
+              .setFooter({
+                text: `by @kathund. | /help [command] for more information`,
+                iconURL: "https://i.imgur.com/uUuZx2E.png",
+              });
             const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
             await message.edit({ embeds: [giveawayEmbed] });
             fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));

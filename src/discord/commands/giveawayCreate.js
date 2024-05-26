@@ -89,7 +89,11 @@ module.exports = {
           name: "Ends At",
           value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`,
         },
-      );
+      )
+      .setFooter({
+        text: `by @kathund. | /help [command] for more information`,
+        iconURL: "https://i.imgur.com/uUuZx2E.png",
+      });
 
     const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
     const giveaway = await channel.send({ embeds: [giveawayEmbed] });

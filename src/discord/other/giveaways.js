@@ -27,7 +27,10 @@ async function checkGiveaways() {
           .setStyle(ButtonStyle.Success)
           .setDisabled(false),
       );
-      message.reply({ content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`, components: [claimRow] });
+      message.reply({
+        content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`,
+        components: [claimRow],
+      });
       const giveawayEmbed = new EmbedBuilder()
         .setColor(3447003)
         .setTitle("Giveaway")
@@ -55,7 +58,12 @@ async function checkGiveaways() {
             name: "Ends At",
             value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
           },
-        );
+        )
+        .setFooter({
+          text: `by @kathund. | /help [command] for more information`,
+          iconURL: "https://i.imgur.com/uUuZx2E.png",
+        });
+
       giveaway.ended = true;
       fs.writeFileSync("data/giveaways.json", JSON.stringify(giveaways, null, 2));
 

@@ -72,7 +72,11 @@ module.exports = {
           name: "Ends At",
           value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
         },
-      );
+      )
+      .setFooter({
+        text: `by @kathund. | /help [command] for more information`,
+        iconURL: "https://i.imgur.com/uUuZx2E.png",
+      });
     giveaway.ended = true;
     fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
 

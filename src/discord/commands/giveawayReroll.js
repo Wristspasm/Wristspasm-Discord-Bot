@@ -58,11 +58,8 @@ module.exports = {
         .setDisabled(false),
     );
     message.reply({
-      content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`,
+      content: `Congratulations to ${newWinners.join(", ")} for winning the giveaway!`,
       components: [claimRow],
-    });
-    message.reply({
-      content: `Giveaway rerolled! Congratulations to ${newWinners.join(", ")} for winning the giveaway!`,
     });
     fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
     await interaction.followUp({ content: "Giveaway rerolled!" });
