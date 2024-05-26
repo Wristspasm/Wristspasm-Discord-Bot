@@ -36,6 +36,7 @@ module.exports = {
       description: "Channel to create the giveaway in",
       type: 7,
       required: false,
+      channel_types: [0],
     },
     {
       name: "guild-only",
@@ -60,31 +61,34 @@ module.exports = {
     const guildOnly = interaction.options.getBoolean("guild-only") || false;
     const verifiedOnly = interaction.options.getBoolean("verified-only") || false;
 
-    const endTimestamp = Math.floor(Date.now() + ms(duration) / 1000);
+    const endTimestamp = Math.floor((Date.now() + ms(duration)) / 1000);
     const giveawayEmbed = new EmbedBuilder()
       .setColor(3447003)
       .setTitle("Giveaway")
       .addFields(
         {
           name: "Prize",
-          value: prize,
-          inline: true,
-        },
-        {
-          name: "Winners",
-          value: winners,
-          inline: true,
-        },
-        {
-          name: "Ends At",
-          value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`,
+          value: `${prize}`,
           inline: true,
         },
         {
           name: "Host",
-          value: host.toString(),
-          inline: false,
-        }
+          value: `<@${host.id}>`,
+          inline: true,
+        },
+        {
+          name: "Entries",
+          value: "0",
+          inline: true,
+        },
+        {
+          name: "Winners",
+          value: `${winners}`,
+        },
+        {
+          name: "Ends At",
+          value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`,
+        },
       );
 
     const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
@@ -105,7 +109,11 @@ module.exports = {
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setLabel("Enter Giveaway").setCustomId(`g.e.${giveaway.id}`).setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setLabel("Claim Giveaway").setCustomId(`t.o.g.${giveaway.id}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
+      new ButtonBuilder()
+        .setLabel("Claim Giveaway")
+        .setCustomId(`t.o.g.${giveaway.id}`)
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(true),
     );
     await giveaway.edit({ embeds: [giveawayEmbed], components: [row] });
 

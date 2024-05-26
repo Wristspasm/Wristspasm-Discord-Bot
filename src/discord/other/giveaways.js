@@ -20,33 +20,42 @@ async function checkGiveaways() {
       }
       const channel = await guild.channels.fetch(giveaway.channel);
       const message = await channel.messages.fetch(giveaway.id);
-      message.reply({ content: `Congratulations to ${winners.join(", ")} for winning the giveaway!` });
+      const claimRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setLabel("Claim Giveaway")
+          .setCustomId(`t.o.g.${giveaway.id}`)
+          .setStyle(ButtonStyle.Success)
+          .setDisabled(false),
+      );
+      message.reply({ content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`, components: [claimRow] });
       const giveawayEmbed = new EmbedBuilder()
         .setColor(3447003)
         .setTitle("Giveaway")
         .addFields(
           {
             name: "Prize",
-            value: giveaway.prize,
-            inline: true,
-          },
-          {
-            name: "Winners",
-            value: winners,
-            inline: true,
-          },
-          {
-            name: "Ends At",
-            value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+            value: `${giveaway.prize}`,
             inline: true,
           },
           {
             name: "Host",
-            value: `<@${giveaway.host.id}>`,
-            inline: false,
-          }
+            value: `<@${giveaway.host}>`,
+            inline: true,
+          },
+          {
+            name: "Entries",
+            value: `${giveaway.users.length}`,
+            inline: true,
+          },
+          {
+            name: "Winners",
+            value: `${giveaway.winners}`,
+          },
+          {
+            name: "Ends At",
+            value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+          },
         );
-
       giveaway.ended = true;
       fs.writeFileSync("data/giveaways.json", JSON.stringify(giveaways, null, 2));
 
@@ -59,8 +68,8 @@ async function checkGiveaways() {
         new ButtonBuilder()
           .setLabel("Claim Giveaway")
           .setCustomId(`t.o.g.${giveaway.id}`)
-          .setStyle(ButtonStyle.Primary)
-          .setDisabled(false)
+          .setStyle(ButtonStyle.Success)
+          .setDisabled(false),
       );
       message.edit({ embeds: [giveawayEmbed], components: [row] });
     });

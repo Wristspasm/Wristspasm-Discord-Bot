@@ -1,3 +1,4 @@
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -39,16 +40,31 @@ module.exports = {
     const channel = await interaction.guild.channels.fetch(giveaway.channel);
     const message = await channel.messages.fetch(giveaway.id);
     const newWinners = [];
+    const users = giveaway.users.filter((x) => x.winner === false);
+    if (users.length === 0) {
+      return interaction.followUp({ content: "No users to reroll!" });
+    }
     for (let i = 0; i < winners; i++) {
-      const users = giveaway.users.filter((x) => x.winner === false);
       if (users.length === 0) break;
       const winner = users[Math.floor(Math.random() * users.length)];
-      winners.push(`<@${winner.id}>`);
+      newWinners.push(`<@${winner.id}>`);
       giveaway.users.find((x) => x.id === winner.id).winner = true;
     }
+    const claimRow = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setLabel("Claim Giveaway")
+        .setCustomId(`t.o.g.${giveaway.id}`)
+        .setStyle(ButtonStyle.Success)
+        .setDisabled(false),
+    );
+    message.reply({
+      content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`,
+      components: [claimRow],
+    });
     message.reply({
       content: `Giveaway rerolled! Congratulations to ${newWinners.join(", ")} for winning the giveaway!`,
     });
     fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+    await interaction.followUp({ content: "Giveaway rerolled!" });
   },
 };
