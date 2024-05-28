@@ -64,7 +64,7 @@ async function printProgress(interaction, linked, uuid, id, username) {
     .setColor(3066993)
     .setAuthor({ name: "Updating nicknames..." })
     .setDescription(
-      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`
+      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`,
     )
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,

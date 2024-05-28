@@ -1,13 +1,13 @@
+// eslint-disable-next-line no-unused-vars
+const { EmbedBuilder, CommandInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
-// eslint-disable-next-line no-unused-vars
-const { EmbedBuilder, CommandInteraction } = require("discord.js");
-const fs = require("fs");
+const { writeAt } = require("../../contracts/helperFunctions.js");
 const config = require("../../../config.json");
 const Logger = require("../.././Logger.js");
-const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
+const fs = require("fs");
 
 module.exports = {
   name: "interactionCreate",
@@ -50,22 +50,138 @@ module.exports = {
           }
 
           await applyCommand.execute(interaction);
-        } else if (interaction.customId.startsWith("TICKET_CLOSE_")) {
+        } else if (interaction.customId.startsWith("t.c.")) {
           const ticketCloseCommand = interaction.client.commands.get("close-ticket");
-
           if (ticketCloseCommand === undefined) {
             throw new WristSpasmError("Could not find close-ticket command! Please contact an administrator.");
           }
-
           await ticketCloseCommand.execute(interaction);
-        } else if (interaction.customId.startsWith("TICKET_OPEN_")) {
+        } else if (interaction.customId.startsWith("t.o.")) {
           const ticketOpenCommand = interaction.client.commands.get("open-ticket");
-
           if (ticketOpenCommand === undefined) {
             throw new WristSpasmError("Could not find open-ticket command! Please contact an administrator.");
           }
+          if (interaction.customId.startsWith("t.o.g.")) {
+            await ticketOpenCommand.execute(interaction, null, interaction.customId.split("t.o.g.")[1]);
+          } else {
+            await ticketOpenCommand.execute(interaction, interaction.customId.split("t.o.")[1]);
+          }
+        } else if (interaction.customId.startsWith("g.e.")) {
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          if (giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1])) {
+            const giveaway = giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1]);
+            if (giveaway.host === interaction.user.id) {
+              return await interaction.followUp({ content: "You cannot enter your own giveaway.", emphemeral: true });
+            }
+            const userIndex = giveaway.users.findIndex((user) => user.id === interaction.user.id);
+            if (userIndex !== -1) {
+              const row = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                  .setLabel("Leave Giveaway")
+                  .setCustomId(`g.l.${giveaway.id}`)
+                  .setStyle(ButtonStyle.Danger),
+              );
 
-          await ticketOpenCommand.execute(interaction, interaction.customId.split("TICKET_OPEN_")[1]);
+              return await interaction.followUp({
+                content: "You have already entered the giveaway.",
+                components: [row],
+                ephemeral: true,
+              });
+            }
+
+            if (giveaway.guildOnly === true && !isGuildMember(interaction)) {
+              return await interaction.editReply({ content: "This giveaway is for guild members only." });
+            }
+
+            if (giveaway.verifiedOnly === true && !isVerified(interaction)) {
+              return await interaction.editReply({ content: "This giveaway is for verified members only." });
+            }
+
+            giveaway.users.push({ id: interaction.user.id, winner: false, claimed: false });
+            const giveawayEmbed = new EmbedBuilder()
+              .setColor(3447003)
+              .setTitle("Giveaway")
+              .addFields(
+                {
+                  name: "Prize",
+                  value: `${giveaway.prize}`,
+                  inline: true,
+                },
+                {
+                  name: "Host",
+                  value: `<@${giveaway.host}>`,
+                  inline: true,
+                },
+                {
+                  name: "Entries",
+                  value: `${giveaway.users.length}`,
+                  inline: true,
+                },
+                {
+                  name: "Winners",
+                  value: `${giveaway.winners}`,
+                },
+                {
+                  name: "Ends At",
+                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+                },
+              )
+              .setFooter({
+                text: `by @kathund. | /help [command] for more information`,
+                iconURL: "https://i.imgur.com/uUuZx2E.png",
+              });
+            const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
+            await message.edit({ embeds: [giveawayEmbed] });
+            fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+            return await interaction.editReply({ content: "You have successfully entered the giveaway." });
+          }
+        } else if (interaction.customId.startsWith("g.l.")) {
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          const giveawayId = interaction.customId.split("g.l.")[1];
+          if (giveawayData.find((x) => x.id === giveawayId)) {
+            const giveaway = giveawayData.find((x) => x.id === giveawayId);
+            const userIndex = giveaway.users.findIndex((user) => user.id === interaction.user.id);
+            if (userIndex === -1) {
+              return await interaction.editReply({ content: "You are not in the giveaway." });
+            }
+            giveaway.users.splice(userIndex, 1);
+            const giveawayEmbed = new EmbedBuilder()
+              .setColor(3447003)
+              .setTitle("Giveaway")
+              .addFields(
+                {
+                  name: "Prize",
+                  value: `${giveaway.prize}`,
+                  inline: true,
+                },
+                {
+                  name: "Host",
+                  value: `<@${giveaway.host}>`,
+                  inline: true,
+                },
+                {
+                  name: "Entries",
+                  value: `${giveaway.users.length}`,
+                  inline: true,
+                },
+                {
+                  name: "Winners",
+                  value: `${giveaway.winners}`,
+                },
+                {
+                  name: "Ends At",
+                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+                },
+              )
+              .setFooter({
+                text: `by @kathund. | /help [command] for more information`,
+                iconURL: "https://i.imgur.com/uUuZx2E.png",
+              });
+            const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
+            await message.edit({ embeds: [giveawayEmbed] });
+            fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+            return await interaction.editReply({ content: "You have successfully left the giveaway." });
+          }
         }
       }
 
@@ -100,7 +216,7 @@ module.exports = {
         const formattedTime = time * 86400;
         if (formattedTime > 21 * 86400) {
           throw new WristSpasmError(
-            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
+            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
           );
         }
 
@@ -109,7 +225,7 @@ module.exports = {
         const inactivityEmbed = new Embed(
           5763719,
           "Inactivity Request",
-          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
+          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
         );
         inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -133,7 +249,7 @@ module.exports = {
         });
 
         const inactivityResponse = new SuccessEmbed(
-          `Inactivity request has been successfully sent to the guild staff.`
+          `Inactivity request has been successfully sent to the guild staff.`,
         );
 
         await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
@@ -158,10 +274,10 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
-          content: `<@&987936050649391194>`,
+          content: `<@&987936050649391194> <@1169174913832202306>`,
           embeds: [errorLog],
         });
       }
@@ -185,6 +301,26 @@ function isModerator(interaction) {
     config.discord.commands.checkPerms === true &&
     !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
   ) {
+    return false;
+  }
+
+  return true;
+}
+function isGuildMember(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (!(userRoles.includes(config.discord.roles.guildMemberRole) || config.discord.commands.users.includes(user.id))) {
+    return false;
+  }
+
+  return true;
+}
+function isVerified(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (!(userRoles.includes(config.discord.roles.linkedRole) || config.discord.commands.users.includes(user.id))) {
     return false;
   }
 

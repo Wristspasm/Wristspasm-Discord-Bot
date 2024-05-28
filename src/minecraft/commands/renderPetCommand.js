@@ -39,7 +39,7 @@ class RenderCommand extends minecraftCommand {
 
       const renderedItem = await renderLore(
         `§7[Lvl ${pet.level}] §${getRarityColor(pet.tier)}${pet.display_name}`,
-        pet.lore
+        pet.lore,
       );
 
       const upload = await uploadImage(renderedItem);

@@ -17,7 +17,7 @@ module.exports = {
       })
       .addFields(
         { name: "Before", value: oldMessage.content, inline: false },
-        { name: "After", value: newMessage.content, inline: false }
+        { name: "After", value: newMessage.content, inline: false },
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,

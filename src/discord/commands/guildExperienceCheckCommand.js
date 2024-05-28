@@ -112,7 +112,7 @@ module.exports = {
           label: `${config.minecraft.guild.guildExp.toLocaleString()}`,
           description: `Show everyone below ${config.minecraft.guild.guildExp.toLocaleString()} Guild Experience`,
           value: `command.guildexpcheck.${config.minecraft.guild.guildExp}`,
-        }
+        },
       );
 
     collector.resetTimer();

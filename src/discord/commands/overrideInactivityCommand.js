@@ -71,8 +71,8 @@ module.exports = {
       .setDescription(
         `\`Username:\` ${username}\n\`Requested:\` <t:${toFixed(
           new Date().getTime() / 1000,
-          0
-        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`
+          0,
+        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`,
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,

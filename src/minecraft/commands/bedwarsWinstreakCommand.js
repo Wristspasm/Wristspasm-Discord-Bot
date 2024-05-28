@@ -26,7 +26,7 @@ class DenickerCommand extends minecraftCommand {
       const [player, response] = await Promise.all([
         hypixel.getPlayer(username),
         axios.get(
-          `${config.minecraft.API.antiSniperAPI}/winstreak?key=${config.minecraft.API.antiSniperKey}&name=${username}`
+          `${config.minecraft.API.antiSniperAPI}/winstreak?key=${config.minecraft.API.antiSniperKey}&name=${username}`,
         ),
       ]);
 
@@ -39,7 +39,7 @@ class DenickerCommand extends minecraftCommand {
           response.data.player.data.four_three_winstreak
         } | Fours: ${response.data.player.data.four_four_winstreak} | 4v4: ${
           response.data.player.data.two_four_winstreak
-        }`
+        }`,
       );
     } catch (error) {
       if (error.player == null) {

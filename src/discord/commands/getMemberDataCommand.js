@@ -60,8 +60,8 @@ module.exports = {
             JSON.stringify(
               Object.values(output).sort((a, b) => b.playtimeUnix - a.playtimeUnix),
               null,
-              2
-            )
+              2,
+            ),
           ),
           name: "memberData.json",
         },
