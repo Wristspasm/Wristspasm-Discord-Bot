@@ -64,7 +64,7 @@ async function update() {
     const oldScore =
       (oldProfile.player_stats?.mythos?.burrows_dug_combat?.total || 0) +
       (oldProfile.player_stats?.mythos?.burrows_dug_treasure?.total || 0);
-    scores.push({ username: data.player.displayname, uuid: uuids[i], score: newScore - oldScore });
+    scores.push({ username: data.playerRes.displayname, uuid: uuids[i], score: newScore - oldScore });
   }
   scores.filter((score) => score.score > 0).sort((a, b) => b.score - a.score);
   const string = scores
