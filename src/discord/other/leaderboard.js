@@ -73,7 +73,7 @@ async function update() {
   const string = scores
     .filter((score) => score.score > 0)
     .sort((a, b) => b.score - a.score)
-    .map(async (score, index) => {
+    .map((score, index) => {
       return `${index + 1}. \`${score.username}\` - ${score.score}`;
     })
     .join("\n");
