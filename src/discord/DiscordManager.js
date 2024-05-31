@@ -60,6 +60,7 @@ class DiscordManager extends CommunicationBridge {
         : client.on(event.name, (...args) => event.execute(...args));
 
       require("./other/statsChannel.js");
+      require("./other/leaderboard.js");
       require("./other/weeklyPurge.js");
       require("./other/giveaways.js");
     }
