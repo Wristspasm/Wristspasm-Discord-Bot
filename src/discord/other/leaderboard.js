@@ -58,7 +58,7 @@ async function update() {
     await delay(500);
     const data = await getLatestProfile(uuids[i]);
     if (!fs.existsSync(`latest/${uuids[i]}.json`)) {
-      fs.writeFileSync(`latest/${uuids[i]}.json`, JSON.stringify(data));
+      fs.writeFileSync(`latest/${uuids[i]}.json`, JSON.stringify(data.profile));
     }
     const oldProfile = JSON.parse(fs.readFileSync(`latest/${uuids[i]}.json`));
     const newScore =
