@@ -1,10 +1,10 @@
 const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
+const { getUsername } = require("../../contracts/API/mowojangAPI.js");
+const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
 const fs = require("fs");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 
 module.exports = {
   name: "roles",
@@ -64,17 +64,19 @@ module.exports = {
     }
 
     const skyblockRoles = [
-      "1204151069849165846",
-      "1204151081240625164",
-      "1204151078653005934",
-      "1204151082884796426",
-      "1204151075112882187",
-      "1204151071686004756",
-      "1204151079919427584",
-      "1204151076811571232",
-      "1204151073506599095",
-    ].reverse();
-    const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360];
+      config.discord.roles.skyblockLevelRole40,
+      config.discord.roles.skyblockLevelRole80,
+      config.discord.roles.skyblockLevelRole120,
+      config.discord.roles.skyblockLevelRole160,
+      config.discord.roles.skyblockLevelRole200,
+      config.discord.roles.skyblockLevelRole240,
+      config.discord.roles.skyblockLevelRole280,
+      config.discord.roles.skyblockLevelRole320,
+      config.discord.roles.skyblockLevelRole360,
+      config.discord.roles.skyblockLevelRole400,
+      config.discord.roles.skyblockLevelRole440,
+    ];
+    const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440];
     if (skyblockLevel) {
       for (let i = skyblockRoles.length - 1; i >= 0; i--) {
         if (skyblockLevel >= skyblockLvLReqs[i]) {

@@ -88,6 +88,7 @@
       "discordLogsChannel": "DISCORD_LOGS_CHANNEL_ID",
       "ticketsLogs": "TICKETS_LOGS_CHANNEL_ID",
       "ticketsCategory": "TICKETS_CATEGORY_ID",
+      "punishmentsChannel": "PUNISHMENTS_CHANNEL_ID",
       "allowedBots": ["BOT_USER_ID"]
     },
     "roles": {
@@ -96,7 +97,19 @@
       "guildMemberRole": "GUILD_MEMBER_ROLE_ID",
       "sweatRole": "SWEAT_ROLE_ID",
       "eliteRole": "ELITE_ROLE_ID",
-      "noviceRole": "NOVICE_ROLE_ID"
+      "noviceRole": "NOVICE_ROLE_ID",
+      "skyblockLevelRole440": "440_ROLE_ID",
+      "skyblockLevelRole400": "400_ROLE_ID",
+      "skyblockLevelRole360": "360_ROLE_ID",
+      "skyblockLevelRole320": "320_ROLE_ID",
+      "skyblockLevelRole280": "280_ROLE_ID",
+      "skyblockLevelRole240": "240_ROLE_ID",
+      "skyblockLevelRole200": "200_ROLE_ID",
+      "skyblockLevelRole160": "160_ROLE_ID",
+      "skyblockLevelRole120": "120_ROLE_ID",
+      "skyblockLevelRole80": "80_ROLE_ID",
+      "skyblockLevelRole40": "40_ROLE_ID",
+      "skyblockLevelRole0": "0_ROLE_ID"
     },
     "commands": {
       "checkPerms": true,

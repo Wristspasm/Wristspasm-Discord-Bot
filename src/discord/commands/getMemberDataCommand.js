@@ -27,7 +27,6 @@ module.exports = {
   moderatorOnly: true,
 
   execute: async (interaction) => {
-
     const data = JSON.parse(fs.readFileSync("data/playerData.json"));
     if (data === undefined) {
       throw new WristSpasmError("No data found");

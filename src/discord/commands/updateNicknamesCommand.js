@@ -11,7 +11,6 @@ module.exports = {
   moderatorOnly: true,
 
   execute: async (interaction) => {
-
     const linkedData = fs.readFileSync("data/linked.json");
     if (linkedData === undefined) {
       throw new WristSpasmError("No linked users found!");

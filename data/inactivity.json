@@ -11,15 +11,15 @@
     "reason": "5"
   },
   "2700c8b565c74d8e9be5eb7a6ae19295": {
-    "username": "FemboyDark",
+    "username": "CatboyDark",
     "uuid": "2700c8b565c74d8e9be5eb7a6ae19295",
-    "discord": "Dark#6469",
+    "discord": "catboydark#0",
     "discord_id": "622326625530544128",
-    "requested": "1672933984",
-    "requested_formatted": "1/5/2023, 4:53:04 PM",
-    "expiration": "1674143584",
-    "expiration_formatted": "1/19/2023, 4:53:04 PM",
-    "reason": "Test"
+    "requested": "1716247630",
+    "requested_formatted": "5/21/2024, 12:27:10 AM",
+    "expiration": "1716334030",
+    "expiration_formatted": "5/22/2024, 12:27:10 AM",
+    "reason": "e"
   },
   "7301afb195ac4f35907d8a2d88ee8885": {
     "username": "Udderly_cool",
@@ -37,11 +37,11 @@
     "uuid": "70f34847bdb444da9dfd796810c8a97e",
     "discord": "ton618_dc#0",
     "discord_id": "889131748233994314",
-    "requested": "1690978383",
-    "requested_formatted": "8/2/2023, 2:13:03 PM",
-    "expiration": "1692187982",
-    "expiration_formatted": "8/16/2023, 2:13:02 PM",
-    "reason": "Vacation"
+    "requested": "1715978938",
+    "requested_formatted": "5/17/2024, 9:48:57 PM",
+    "expiration": "1717188537",
+    "expiration_formatted": "5/31/2024, 9:48:57 PM",
+    "reason": "vacation :)"
   },
   "6418580189494eacaa9e4e504ec962fe": {
     "username": "realdavebro",
@@ -64,5 +64,126 @@
     "expiration": "1698464461",
     "expiration_formatted": "10/28/2023, 3:41:01 AM",
     "reason": "not home no computer sad :( might be home early not sure"
+  },
+  "7beccf72094548dca4d7a0582c162488": {
+    "username": "SN0WED",
+    "uuid": "7beccf72094548dca4d7a0582c162488",
+    "discord": "993333#0",
+    "discord_id": "1004182294862508152",
+    "requested": "1715561214",
+    "requested_formatted": "5/13/2024, 1:46:54 AM",
+    "expiration": "1715647614",
+    "expiration_formatted": "5/14/2024, 1:46:54 AM",
+    "reason": "Not going to be offline but just don't kick me because I just started playing again which you can probably tell by my gexp this week lol"
+  },
+  "ada132f6a9b3485a9af5827b2614bfa9": {
+    "username": "StickyG",
+    "uuid": "ada132f6a9b3485a9af5827b2614bfa9",
+    "discord": "stickyg#0",
+    "discord_id": "223531165884088322",
+    "requested": "1716243191",
+    "requested_formatted": "5/20/2024, 11:13:10 PM",
+    "expiration": "1716847990",
+    "expiration_formatted": "5/27/2024, 11:13:10 PM",
+    "reason": "Taking a week break from hypixel just to recoop because I got a new job"
+  },
+  "341fe087040040d9b8e746620b1c8b20": {
+    "username": "Mossy_",
+    "uuid": "341fe087040040d9b8e746620b1c8b20",
+    "discord": "mossys#0",
+    "discord_id": "184023515777859584",
+    "requested": "1716248148",
+    "requested_formatted": "5/21/2024, 12:35:47 AM",
+    "expiration": "1716852947",
+    "expiration_formatted": "5/28/2024, 12:35:47 AM",
+    "reason": "Qualified and will be participating in the NCAA national championships :cool:"
+  },
+  "3a868f545aa0492e983b8af9b3c0a613": {
+    "username": "DarkerPhoenix",
+    "uuid": "3a868f545aa0492e983b8af9b3c0a613",
+    "discord": "milan_vhd#0",
+    "discord_id": "414461870636793886",
+    "requested": "1716669121",
+    "requested_formatted": "5/25/2024, 9:32:00 PM",
+    "expiration": "1717878721",
+    "expiration_formatted": "6/8/2024, 9:32:01 PM",
+    "reason": "probably not being able to meet the 50k req next 3-4 weeks bc of exams"
+  },
+  "cd1564f1221745eeb125cc2437a84ed5": {
+    "username": "TropicalRex",
+    "uuid": "cd1564f1221745eeb125cc2437a84ed5",
+    "discord": "rex1484#0",
+    "discord_id": "431884023741284352",
+    "requested": "1716759027",
+    "requested_formatted": "5/26/2024, 10:30:26 PM",
+    "expiration": "1716845427",
+    "expiration_formatted": "5/27/2024, 10:30:27 PM",
+    "reason": "test"
+  },
+  "616f54f46c8a4bb1b64256ac45f10857": {
+    "username": "boml9",
+    "uuid": "616f54f46c8a4bb1b64256ac45f10857",
+    "discord": "jonasudene#0",
+    "discord_id": "424670615757127690",
+    "requested": "1716839702",
+    "requested_formatted": "5/27/2024, 8:55:02 PM",
+    "expiration": "1718049302",
+    "expiration_formatted": "6/10/2024, 8:55:02 PM",
+    "reason": "Exams and waiting for smt to do else than dungeon"
+  },
+  "089f6cf28ea94ed7b5d2beb18eaaeae9": {
+    "username": "SBEChat",
+    "uuid": "089f6cf28ea94ed7b5d2beb18eaaeae9",
+    "discord": "duddywuddy#0",
+    "discord_id": "453268222620205066",
+    "requested": "1716991738",
+    "requested_formatted": "5/29/2024, 3:08:58 PM",
+    "expiration": "1718201338",
+    "expiration_formatted": "6/12/2024, 3:08:58 PM",
+    "reason": "More Exams!! (I wanna kms)"
+  },
+  "add71246c46e455c8345c129ea6f146c": {
+    "username": "kathund",
+    "uuid": "add71246c46e455c8345c129ea6f146c",
+    "discord": "kathund.#0",
+    "discord_id": "1169174913832202306",
+    "requested": "1716991799",
+    "requested_formatted": "5/29/2024, 3:09:58 PM",
+    "expiration": "1718201398",
+    "expiration_formatted": "6/12/2024, 3:09:58 PM",
+    "reason": "probs longer but im going to vanish for a while no motivation"
+  },
+  "50bf08b39c7c4fdb8f8517afd407113a": {
+    "username": "SoupyRaccn",
+    "uuid": "50bf08b39c7c4fdb8f8517afd407113a",
+    "discord": "soupyraccn#0",
+    "discord_id": "448912690329419776",
+    "requested": "1717005361",
+    "requested_formatted": "5/29/2024, 6:56:00 PM",
+    "expiration": "1718819760",
+    "expiration_formatted": "6/19/2024, 6:56:00 PM",
+    "reason": "test"
+  },
+  "5a4f9c13dc3e461bbd55d868507ef30b": {
+    "username": "PuppyGirlJulian",
+    "uuid": "5a4f9c13dc3e461bbd55d868507ef30b",
+    "discord": "julian_30476#0",
+    "discord_id": "1228285256579158036",
+    "requested": "1717005451",
+    "requested_formatted": "5/29/2024, 6:57:31 PM",
+    "expiration": "1718215051",
+    "expiration_formatted": "6/12/2024, 6:57:31 PM",
+    "reason": "exams"
+  },
+  "da40f7c9cb224368b3643ffafc14aba2": {
+    "username": "aqua302",
+    "uuid": "da40f7c9cb224368b3643ffafc14aba2",
+    "discord": "aqua302#0",
+    "discord_id": "796972114220548137",
+    "requested": "1717289860",
+    "requested_formatted": "6/2/2024, 1:57:39 AM",
+    "expiration": "1718499459",
+    "expiration_formatted": "6/16/2024, 1:57:39 AM",
+    "reason": "School and going overseas. xx"
   }
 }

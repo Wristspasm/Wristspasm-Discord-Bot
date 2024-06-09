@@ -1,1 +1,561 @@
-[]
+[
+  {
+    "host": "1169174913832202306",
+    "winners": 1,
+    "prize": "headpats",
+    "endTimestamp": 1716732386,
+    "channel": "1070774833916424253",
+    "id": "1244275459118858250",
+    "users": [
+      {
+        "id": "448912690329419776",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "431884023741284352",
+        "winner": true,
+        "claimed": true
+      },
+      {
+        "id": "847424795863285761",
+        "winner": false,
+        "claimed": false
+      }
+    ],
+    "ended": true,
+    "guildOnly": false,
+    "verifiedOnly": false
+  },
+  {
+    "host": "1169174913832202306",
+    "winners": 1,
+    "prize": "50m",
+    "endTimestamp": 1716911227,
+    "channel": "1072874866518265896",
+    "id": "1244678281941356725",
+    "users": [
+      {
+        "id": "231181071998255104",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "488357674342416407",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "453268222620205066",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1063850775215869982",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "414461870636793886",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "494171373175046155",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "889131748233994314",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "862394484183793675",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "735179963094925445",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "396806895521759252",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "603472374607773726",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "934796630522212383",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "242015960385454080",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "634804120670175264",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1212763776856625204",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "597597731346841600",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "353927323226996737",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1208199799006953576",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "847424795863285761",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "184023515777859584",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "325807550958272513",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "875344655997354056",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "339084013610205184",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "994656832163418132",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1004182294862508152",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1029219361707278396",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "694608393993715792",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "691715784816328735",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "832757110243590195",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "882994761319993414",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "747486054038241420",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1228285256579158036",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "448912690329419776",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "625334840807391272",
+        "winner": true,
+        "claimed": true
+      },
+      {
+        "id": "305618461902503956",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "816174615780392961",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "431884023741284352",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "400319118764408835",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "690638729827581985",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "843906818929459282",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "486155512568741900",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "329068703863799808",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "791489741975191572",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "572697431716790273",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "492612112728981510",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "602045403776417793",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "947215033820147803",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1140476253762240672",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "259525094273974274",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1142957814428487763",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "403176224920436737",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "827416281086296065",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "712110222092795905",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1213269314778431572",
+        "winner": false,
+        "claimed": false
+      }
+    ],
+    "ended": true,
+    "guildOnly": true,
+    "verifiedOnly": false
+  },
+  {
+    "host": "1169174913832202306",
+    "winners": 1,
+    "prize": "50m",
+    "endTimestamp": 1717035889,
+    "channel": "1072874866518265896",
+    "id": "1245201154627997727",
+    "users": [
+      {
+        "id": "847424795863285761",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "597597731346841600",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1208199799006953576",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "305618461902503956",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "405127009073627137",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "448912690329419776",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "994656832163418132",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "602045403776417793",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "353927323226996737",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "259525094273974274",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1029219361707278396",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "690638729827581985",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "791489741975191572",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "827416281086296065",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "492612112728981510",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "735179963094925445",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "712110222092795905",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "997904708729589871",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "242015960385454080",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "520665279282282497",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "184023515777859584",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "603472374607773726",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "231181071998255104",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "431884023741284352",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1212763776856625204",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "694608393993715792",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "572697431716790273",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1063850775215869982",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "339084013610205184",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "414461870636793886",
+        "winner": true,
+        "claimed": true
+      },
+      {
+        "id": "889131748233994314",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "875344655997354056",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "329068703863799808",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "486155512568741900",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "396806895521759252",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "488357674342416407",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "634804120670175264",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "832757110243590195",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "882994761319993414",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "453268222620205066",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "747486054038241420",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1101922022445031525",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "223531165884088322",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "843906818929459282",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1004182294862508152",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "1140476253762240672",
+        "winner": false,
+        "claimed": false
+      },
+      {
+        "id": "622935093425602572",
+        "winner": false,
+        "claimed": false
+      }
+    ],
+    "ended": true,
+    "guildOnly": true,
+    "verifiedOnly": false
+  }
+]

@@ -242,6 +242,19 @@ class StateHandler extends eventHandler {
           prefix: config.minecraft.bot.prefix,
         })} | by @duckysolucky`,
       );
+
+      const uuid = await getUUID(username);
+      const verificationData = JSON.parse(fs.readFileSync("data/linked.json", "utf-8"));
+      if (verificationData.find((x) => x.uuid === uuid)) {
+        const guild = await client.guilds.fetch(config.discord.bot.serverID);
+        const member = await guild.members.fetch(verificationData.find((x) => x.uuid === uuid).id);
+        const roles = member.roles.cache.map((role) => role.id);
+
+        if (!roles.includes(config.discord.roles.guildMemberRole)) {
+          await member.roles.add(config.discord.roles.guildMemberRole);
+        }
+      }
+
       return [
         this.minecraft.broadcastHeadedEmbed({
           message: replaceVariables(messages.joinMessage, { username }),

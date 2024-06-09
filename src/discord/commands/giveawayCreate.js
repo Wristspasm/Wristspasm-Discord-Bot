@@ -6,6 +6,7 @@ module.exports = {
   name: "giveaway-create",
   description: "Create a giveaway",
   moderatorOnly: true,
+  ephemeral: true,
   options: [
     {
       name: "prize",

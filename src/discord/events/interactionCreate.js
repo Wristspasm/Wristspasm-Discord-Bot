@@ -22,8 +22,13 @@ module.exports = {
           return;
         }
 
-        if ((command.name == "inactivity" || command.name == "embed") === false) {
-          await interaction.deferReply({ ephemeral: false }).catch(() => {});
+        const commandNames = ["inactivity", "embed"];
+        if (!commandNames.includes(command.name)) {
+          if (command.ephemeral === true) {
+            await interaction.deferReply({ ephemeral: true }).catch(() => {});
+          } else {
+            await interaction.deferReply({ ephemeral: false }).catch(() => {});
+          }
         }
 
         if (command.moderatorOnly === true && isModerator(interaction) === false) {
