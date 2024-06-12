@@ -786,7 +786,10 @@ function isModerator(interaction) {
 
   if (
     config.discord.commands.checkPerms === true &&
-    !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+    !(
+      config.discord.commands.commandRoles.some((role) => userRoles.includes(role)) ||
+      config.discord.commands.users.includes(user.id)
+    )
   ) {
     return false;
   }

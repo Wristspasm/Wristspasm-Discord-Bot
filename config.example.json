@@ -100,7 +100,7 @@
     },
     "commands": {
       "checkPerms": true,
-      "commandRole": "COMMAND_ROLE_ID",
+      "commandRoles": ["COMMAND_ROLE_ID", "ADMIN_COMMAND_ROLE_ID"],
       "users": ["486155512568741900"]
     },
     "other": {
