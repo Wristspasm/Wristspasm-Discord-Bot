@@ -11,6 +11,7 @@ const DISABLED = true;
 module.exports = {
   name: "update-old-linked-data",
   description: "Updates old verification data to the new format",
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;

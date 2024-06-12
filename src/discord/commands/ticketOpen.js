@@ -25,6 +25,7 @@ const permissions = [
 module.exports = {
   name: "open-ticket",
   description: "Open a support ticket.",
+  defer: true,
   options: [
     {
       name: "reason",

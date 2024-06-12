@@ -24,6 +24,7 @@ function formatUnixTime(milliseconds) {
 module.exports = {
   name: "get-member-data",
   description: "Get member data",
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;

@@ -5,6 +5,7 @@ module.exports = {
   description: "Unmutes the given user.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "name",

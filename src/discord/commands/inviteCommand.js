@@ -5,6 +5,7 @@ module.exports = {
   description: "Invites the given user to the guild.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "name",

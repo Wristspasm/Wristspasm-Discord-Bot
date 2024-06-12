@@ -1,6 +1,7 @@
 module.exports = {
   name: "",
   description: "",
+  defer: true,
   options: [
     {
       name: "",

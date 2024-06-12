@@ -5,6 +5,7 @@ module.exports = {
   description: "Mutes the given user for a given amount of time.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "name",

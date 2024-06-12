@@ -5,6 +5,7 @@ module.exports = {
   name: "giveaway-end",
   description: "Create a giveaway",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "id",

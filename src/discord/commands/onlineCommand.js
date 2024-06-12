@@ -4,6 +4,7 @@ module.exports = {
   name: "online",
   description: "List of online members.",
   requiresBot: true,
+  defer: true,
 
   execute: async (interaction) => {
     const cachedMessages = [];

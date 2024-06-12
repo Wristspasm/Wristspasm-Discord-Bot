@@ -21,6 +21,7 @@ module.exports = {
   name: "close-ticket",
   description: "Close a support ticket.",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "reason",

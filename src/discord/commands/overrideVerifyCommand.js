@@ -8,6 +8,7 @@ const fs = require("fs");
 module.exports = {
   name: "overrideverify",
   description: "Connect your Discord account to Minecraft",
+  defer: true,
   options: [
     {
       name: "name",

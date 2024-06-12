@@ -8,7 +8,7 @@ const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 module.exports = {
   name: "get-non-linked-members",
   description: "Get a list of all members who have not linked their account.",
-  options: [],
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;

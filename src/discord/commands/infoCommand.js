@@ -6,6 +6,7 @@ module.exports = {
   name: "info",
   description: "Shows information about the bot.",
   requiresBot: true,
+  defer: true,
 
   execute: async (interaction) => {
     const commands = interaction.client.commands;

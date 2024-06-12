@@ -6,6 +6,7 @@ const fs = require("fs");
 module.exports = {
   name: "update-linked",
   description: "Removes role from unlinked users and sends them a DM to verify.",
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;

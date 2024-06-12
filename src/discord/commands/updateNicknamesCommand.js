@@ -7,6 +7,7 @@ const fs = require("fs");
 module.exports = {
   name: "update-nicknames",
   description: "Updates usernames of linked users.",
+  defer: true,
   options: [],
 
   execute: async (interaction) => {

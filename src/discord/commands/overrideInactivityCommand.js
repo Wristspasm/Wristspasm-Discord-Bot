@@ -8,6 +8,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "overrideinactivity",
   description: "Send an inactivity notice to the guild staff",
+  defer: true,
   options: [
     {
       name: "discord",

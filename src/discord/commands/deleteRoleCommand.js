@@ -5,7 +5,7 @@ const config = require("../../../config.json");
 module.exports = {
   name: "delete-roles",
   description: "Delete specific roles.",
-  options: [],
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;

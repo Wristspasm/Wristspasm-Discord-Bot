@@ -6,6 +6,7 @@ const fs = require("fs");
 module.exports = {
   name: "update-roles",
   description: "Updates roles of linked users",
+  defer: true,
   options: [
     {
       name: "index",

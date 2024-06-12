@@ -9,6 +9,7 @@ const fs = require("fs");
 module.exports = {
   name: "gexpcheck",
   description: "Shows every play that got less than required amount of GEXP in the last 7 days",
+  defer: true,
 
   execute: async (interaction) => {
     const user = interaction.member;
