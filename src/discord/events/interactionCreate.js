@@ -58,6 +58,16 @@ module.exports = {
         .setCustomId("e.e.m")
         .setStyle(ButtonStyle.Primary)
         .setEmoji("<:icons_edit:1249307514680512512>");
+      const addImageButton = new ButtonBuilder()
+        .setLabel("Add Image")
+        .setCustomId("e.e.i")
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji("<:icons_edit:1249307514680512512>");
+      const deleteImageButton = new ButtonBuilder()
+        .setLabel("Delete Image")
+        .setCustomId("e.d.i")
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji("<:icons_busy:1249309744259268620>");
       const addEmbedButton = new ButtonBuilder()
         .setLabel("Add Embed")
         .setCustomId("e.a.e")
@@ -138,7 +148,7 @@ module.exports = {
           if (giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1])) {
             const giveaway = giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1]);
             if (giveaway.host === interaction.user.id) {
-              return await interaction.followUp({ content: "You cannot enter your own giveaway.", emphemeral: true });
+              return await interaction.followUp({ content: "You cannot enter your own giveaway.", ephemeral: true });
             }
             const userIndex = giveaway.users.findIndex((user) => user.id === interaction.user.id);
             if (userIndex !== -1) {
@@ -146,7 +156,7 @@ module.exports = {
                 new ButtonBuilder()
                   .setLabel("Leave Giveaway")
                   .setCustomId(`g.l.${giveaway.id}`)
-                  .setStyle(ButtonStyle.Danger),
+                  .setStyle(ButtonStyle.Danger)
               );
 
               return await interaction.followUp({
@@ -191,7 +201,7 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -238,7 +248,7 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -294,14 +304,14 @@ module.exports = {
                     embedDescriptionButton,
                     embedEditFieldsButton,
                     embedFooterImageButton,
-                    embedFooterButton,
+                    embedFooterButton
                   ),
                   new ActionRowBuilder().addComponents(
                     embedImageButton,
                     embedThumbnailButton,
                     embedTitleButton,
                     homeButton,
-                    quitButton,
+                    quitButton
                   ),
                 ],
               });
@@ -319,9 +329,9 @@ module.exports = {
                         .setLabel("color")
                         .setPlaceholder("input color")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Short),
-                    ),
-                  ),
+                        .setStyle(TextInputStyle.Short)
+                    )
+                  )
               );
             } else if (embedBuilderCase.startsWith("em.description")) {
               const embedIndex = embedBuilderCase.split("em.description.")[1];
@@ -336,9 +346,9 @@ module.exports = {
                         .setLabel("description")
                         .setPlaceholder("description")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Paragraph),
-                    ),
-                  ),
+                        .setStyle(TextInputStyle.Paragraph)
+                    )
+                  )
               );
             } else if (embedBuilderCase.startsWith("em.image")) {
               const embedIndex = embedBuilderCase.split("em.image.")[1];
@@ -353,9 +363,9 @@ module.exports = {
                         .setLabel("image")
                         .setPlaceholder("image")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Short),
-                    ),
-                  ),
+                        .setStyle(TextInputStyle.Short)
+                    )
+                  )
               );
             } else if (embedBuilderCase.startsWith("em.thumbnail")) {
               const embedIndex = embedBuilderCase.split("em.thumbnail.")[1];
@@ -370,9 +380,9 @@ module.exports = {
                         .setLabel("thumbnail")
                         .setPlaceholder("thumbnail")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Short),
-                    ),
-                  ),
+                        .setStyle(TextInputStyle.Short)
+                    )
+                  )
               );
             } else if (embedBuilderCase.startsWith("em.title")) {
               const embedIndex = embedBuilderCase.split("em.title.")[1];
@@ -387,9 +397,9 @@ module.exports = {
                         .setLabel("title")
                         .setPlaceholder("input title")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Short),
-                    ),
-                  ),
+                        .setStyle(TextInputStyle.Short)
+                    )
+                  )
               );
             }
           } else if (embedBuilderCase.startsWith("ed")) {
@@ -397,6 +407,11 @@ module.exports = {
             const embeds = interaction.message.embeds;
             embeds.filter((embed, index) => index !== embedIndex);
             await interaction.update({ embeds: embeds });
+          } else if (embedBuilderCase.startsWith("imgDel")) {
+            const imageIndex = embedBuilderCase.split("imgDel.")[1];
+            const images = interaction.message.attachments;
+            images.splice(imageIndex, 1);
+            await interaction.update({ files: images });
           } else {
             switch (embedBuilderCase) {
               case "e.m": {
@@ -411,21 +426,70 @@ module.exports = {
                           .setLabel("edit message")
                           .setPlaceholder("new message?")
                           .setRequired(false)
-                          .setStyle(TextInputStyle.Paragraph),
-                      ),
-                    ),
+                          .setStyle(TextInputStyle.Paragraph)
+                      )
+                    )
                 );
+                break;
+              }
+              case "e.i": {
+                await interaction.showModal(
+                  new ModalBuilder()
+                    .setCustomId("e.e.i")
+                    .setTitle("Add Image")
+                    .addComponents(
+                      new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                          .setCustomId("imageUrl")
+                          .setLabel("add img")
+                          .setPlaceholder("img url?")
+                          .setRequired(true)
+                          .setStyle(TextInputStyle.Short)
+                      )
+                    )
+                );
+                break;
+              }
+              case "d.i": {
+                const buttons = [];
+                const buttons2 = [];
+                interaction.message.attachments.forEach((img) => {
+                  if (buttons.length >= 5) {
+                    buttons2.push({
+                      custom_id: `e.imgDel.${interaction.message.attachments.indexOf(img)}`,
+                      label: `Image: ${interaction.message.attachments.indexOf(img) + 1}`,
+                      style: ButtonStyle.Primary,
+                      type: ComponentType.Button,
+                    });
+                  } else {
+                    buttons.push({
+                      custom_id: `e.imgDel.${interaction.message.attachments.indexOf(img)}`,
+                      label: `Image: ${interaction.message.attachments.indexOf(img) + 1}`,
+                      style: ButtonStyle.Primary,
+                      type: ComponentType.Button,
+                    });
+                  }
+                });
+                const components = [];
+                if (buttons.length !== 0) {
+                  components.push(new ActionRowBuilder({ components: buttons }));
+                }
+                if (buttons2.length !== 0) {
+                  components.push(new ActionRowBuilder({ components: buttons2 }));
+                }
+                components.push(new ActionRowBuilder().addComponents(homeButton, quitButton));
+                await interaction.update({ components: components });
                 break;
               }
               case "a.e": {
                 if (interaction.message.embeds.length >= 9) {
                   await interaction.update({
                     components: [
-                      new ActionRowBuilder().addComponents(editMessageButton),
+                      new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
                       new ActionRowBuilder().addComponents(
                         addEmbedButton.setDisabled(true),
                         editEmbedButton,
-                        deleteEmbedButton,
+                        deleteEmbedButton
                       ),
                       new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
                       new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
@@ -436,7 +500,7 @@ module.exports = {
                 } else {
                   await interaction.update({
                     components: [
-                      new ActionRowBuilder().addComponents(editMessageButton),
+                      new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
                       new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
                       new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
                       new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
@@ -524,9 +588,9 @@ module.exports = {
                           .setLabel("import json")
                           .setPlaceholder("json text")
                           .setRequired(true)
-                          .setStyle(TextInputStyle.Paragraph),
-                      ),
-                    ),
+                          .setStyle(TextInputStyle.Paragraph)
+                      )
+                    )
                 );
                 break;
               }
@@ -544,11 +608,11 @@ module.exports = {
                   content: "Embed Builder",
                   embeds: [],
                   components: [
-                    new ActionRowBuilder().addComponents(editMessageButton),
+                    new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
                     new ActionRowBuilder().addComponents(
                       addEmbedButton,
                       editEmbedButton.setDisabled(true),
-                      deleteEmbedButton.setDisabled(true),
+                      deleteEmbedButton.setDisabled(true)
                     ),
                     new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
                     new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
@@ -563,16 +627,16 @@ module.exports = {
                     new ActionRowBuilder().addComponents(
                       addEmbedButton.setDisabled(true),
                       editEmbedButton.setDisabled(true),
-                      deleteEmbedButton.setDisabled(true),
+                      deleteEmbedButton.setDisabled(true)
                     ),
                     new ActionRowBuilder().addComponents(
                       importJsonButton.setDisabled(true),
-                      exportJsonButton.setDisabled(true),
+                      exportJsonButton.setDisabled(true)
                     ),
                     new ActionRowBuilder().addComponents(
                       resetButton.setDisabled(true),
                       sendButton.setDisabled(true),
-                      quitButton.setDisabled(true),
+                      quitButton.setDisabled(true)
                     ),
                   ],
                 });
@@ -589,16 +653,16 @@ module.exports = {
                     new ActionRowBuilder().addComponents(
                       addEmbedButton.setDisabled(true),
                       editEmbedButton.setDisabled(true),
-                      deleteEmbedButton.setDisabled(true),
+                      deleteEmbedButton.setDisabled(true)
                     ),
                     new ActionRowBuilder().addComponents(
                       importJsonButton.setDisabled(true),
-                      exportJsonButton.setDisabled(true),
+                      exportJsonButton.setDisabled(true)
                     ),
                     new ActionRowBuilder().addComponents(
                       resetButton.setDisabled(true),
                       sendButton.setDisabled(true),
-                      quitButton.setDisabled(true),
+                      quitButton.setDisabled(true)
                     ),
                   ],
                 });
@@ -607,7 +671,7 @@ module.exports = {
               case "home": {
                 await interaction.update({
                   components: [
-                    new ActionRowBuilder().addComponents(editMessageButton),
+                    new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
                     new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
                     new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
                     new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
@@ -652,7 +716,7 @@ module.exports = {
           const formattedTime = time * 86400;
           if (formattedTime > 21 * 86400) {
             throw new WristSpasmError(
-              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
+              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
             );
           }
 
@@ -661,7 +725,7 @@ module.exports = {
           const inactivityEmbed = new Embed(
             5763719,
             "Inactivity Request",
-            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
+            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
           );
           inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -685,13 +749,41 @@ module.exports = {
           });
 
           const inactivityResponse = new SuccessEmbed(
-            `Inactivity request has been successfully sent to the guild staff.`,
+            `Inactivity request has been successfully sent to the guild staff.`
           );
 
           await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
         } else if (interaction.customId === "e.e.m") {
           const msg = interaction.fields.getTextInputValue("editMessage") || "";
           await interaction.update({ content: `${msg}` });
+        } else if (interaction.customId === "e.e.i") {
+          const images = [];
+          interaction.message.attachments.forEach((img) => images.push(img.url));
+          images.push(interaction.fields.getTextInputValue("imageUrl"));
+          if (images.length >= 10) {
+            deleteImageButton.setDisabled(false);
+            addImageButton.setDisabled(true);
+            await interaction.update({
+              files: [images],
+              components: [
+                new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
+                new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
+                new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
+                new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
+              ],
+            });
+            await interaction.followUp({ content: "Max Images" });
+          } else {
+            await interaction.update({
+              files: [images],
+              components: [
+                new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
+                new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
+                new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
+                new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
+              ],
+            });
+          }
         } else if (interaction.customId === "e.j.i") {
           const jsonData = JSON.parse(interaction.fields.getTextInputValue("importJson"));
           if (jsonData.content == null) {
@@ -718,7 +810,7 @@ module.exports = {
             content: jsonData.content,
             embeds: embeds,
             components: [
-              new ActionRowBuilder().addComponents(editMessageButton),
+              new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
               new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
               new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
               new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
@@ -761,7 +853,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,

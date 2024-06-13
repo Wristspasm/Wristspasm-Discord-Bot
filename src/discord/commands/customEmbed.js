@@ -51,6 +51,16 @@ module.exports = {
       .setCustomId("e.e.m")
       .setStyle(ButtonStyle.Primary)
       .setEmoji("<:icons_edit:1249307514680512512>");
+    const addImageButton = new ButtonBuilder()
+      .setLabel("Add Image")
+      .setCustomId("e.e.i")
+      .setStyle(ButtonStyle.Primary)
+      .setEmoji("<:icons_edit:1249307514680512512>");
+    const deleteImageButton = new ButtonBuilder()
+      .setLabel("Delete Image")
+      .setCustomId("e.d.i")
+      .setStyle(ButtonStyle.Danger)
+      .setEmoji("<:icons_busy:1249309744259268620>");
     const addEmbedButton = new ButtonBuilder()
       .setLabel("Add Embed")
       .setCustomId("e.a.e")
@@ -93,27 +103,28 @@ module.exports = {
 
     let content = "";
     const embeds = [];
+    const files = [];
 
     if (preset === "duckysolucky") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
-        }),
+        })
       );
     } else if (preset === "kathund") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @kathund. | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
-        }),
+        })
       );
     } else if (preset === "george_filos") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @george_filos | /help [command] for more information`,
           iconURL: "https://cdn.discordapp.com/avatars/177083022305263616/4ee1d5f278a36a61aa9164b9263c8722.webp",
-        }),
+        })
       );
     } else if (preset === "success") {
       embeds.push(new SuccessEmbed("Success Embed"));
@@ -150,11 +161,15 @@ module.exports = {
       editEmbedButton.setDisabled(true);
       deleteEmbedButton.setDisabled(true);
     }
+    if (files.length === 0) {
+      deleteImageButton.setDisabled(true);
+    }
+
     await interaction.followUp({
       content,
       embeds,
       components: [
-        new ActionRowBuilder().addComponents(editMessageButton),
+        new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
         new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
         new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
         new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
