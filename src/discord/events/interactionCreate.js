@@ -274,7 +274,31 @@ module.exports = {
               .setStyle(ButtonStyle.Primary);
             const embedEditFieldsButton = new ButtonBuilder()
               .setLabel("Edit Fields")
-              .setCustomId(`e.em.editFields.${embedBuilderCase.split("em.select.")[1]}`)
+              .setCustomId(`e.em.editFields.edit.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Primary);
+            const embedAddFieldsButton = new ButtonBuilder()
+              .setLabel("Add Field")
+              .setCustomId(`e.em.editFields.add.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Primary);
+            const embedSelectFieldButton = new ButtonBuilder()
+              .setLabel("Select Field")
+              .setCustomId(`e.em.editFields.select.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Primary);
+            const embedFieldNameButton = new ButtonBuilder()
+              .setLabel("Select Field")
+              .setCustomId(`e.em.editFields.name.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Primary);
+            const embedFieldValueButton = new ButtonBuilder()
+              .setLabel("Select Field")
+              .setCustomId(`e.em.editFields.value.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Secondary);
+            const embedFieldInlineButton = new ButtonBuilder()
+              .setLabel("Toggle Inline")
+              .setCustomId(`e.em.editFields.inline.${embedBuilderCase.split("em.select.")[1]}`)
+              .setStyle(ButtonStyle.Danger);
+            const embedDeleteFieldsButton = new ButtonBuilder()
+              .setLabel("Delete Field")
+              .setCustomId(`e.em.editFields.delete.${embedBuilderCase.split("em.select.")[1]}`)
               .setStyle(ButtonStyle.Primary);
             const embedFooterImageButton = new ButtonBuilder()
               .setLabel("Footer Image")
@@ -350,6 +374,163 @@ module.exports = {
                     )
                   )
               );
+            } else if (embedBuilderCase.startsWith("em.editFields.")) {
+              const type = embedBuilderCase.split("em.editFields.")[1].split(".")[0];
+              let embedIndex = embedBuilderCase.split(`em.editFields.${type}.`)[1].split(".")[0];
+              const embeds = interaction.message.embeds;
+              embeds[embedIndex] = new EmbedBuilder(embeds[embedIndex]);
+              switch (type) {
+                case "edit": {
+                  await interaction.update({
+                    components: [
+                      new ActionRowBuilder().addComponents(
+                        embedAddFieldsButton,
+                        embedSelectFieldButton,
+                        embedDeleteFieldsButton
+                      ),
+                      new ActionRowBuilder().addComponents(homeButton, quitButton),
+                    ],
+                  });
+                  break;
+                }
+                case "add": {
+                  embeds[embedIndex].addFields({
+                    name: "change",
+                    value: "me",
+                    inline: false,
+                  });
+                  const fieldIndex = embeds[embedIndex].toJSON().fields.length - 1;
+                  await interaction.update({
+                    components: [
+                      new ActionRowBuilder().addComponents(
+                        embedFieldNameButton.setCustomId(`e.em.editFields.name.${embedIndex}.${fieldIndex}`),
+                        embedFieldValueButton.setCustomId(`e.em.editFields.value.${embedIndex}.${fieldIndex}`),
+                        embedFieldInlineButton.setCustomId(`e.em.editFields.inline.${embedIndex}.${fieldIndex}`)
+                      ),
+                      new ActionRowBuilder().addComponents(homeButton, quitButton),
+                    ],
+                  });
+                  break;
+                }
+                case "name": {
+                  const fieldIndex = embedIndex.split(".")[1];
+                  embedIndex = embedIndex.split(".")[0];
+                  await interaction.showModal(
+                    new ModalBuilder()
+                      .setCustomId(`e.editFields.name.${embedIndex}.${fieldIndex}`)
+                      .setTitle("Edit field name")
+                      .addComponents(
+                        new ActionRowBuilder().addComponents(
+                          new TextInputBuilder()
+                            .setCustomId("fieldName")
+                            .setLabel("Edit field name")
+                            .setPlaceholder("Edit field name")
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Short)
+                        )
+                      )
+                  );
+                  break;
+                }
+                case "value": {
+                  const fieldIndex = embedIndex.split(".")[1];
+                  embedIndex = embedIndex.split(".")[0];
+                  await interaction.showModal(
+                    new ModalBuilder()
+                      .setCustomId(`e.editFields.value.${embedIndex}.${fieldIndex}`)
+                      .setTitle("Edit field value")
+                      .addComponents(
+                        new ActionRowBuilder().addComponents(
+                          new TextInputBuilder()
+                            .setCustomId("fieldValue")
+                            .setLabel("Edit field value")
+                            .setPlaceholder("Edit field value")
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Short)
+                        )
+                      )
+                  );
+                  break;
+                }
+                case "inline": {
+                  const fieldIndex = embedIndex.split(".")[1];
+                  embedIndex = embedIndex.split(".")[0];
+                  embeds[embedIndex] = embeds[embedIndex].toJSON();
+                  embeds[embedIndex].fields[fieldIndex].inline = !embeds[embedIndex].fields[fieldIndex].inline;
+                  embeds[embedIndex].fields === true
+                    ? embedFieldInlineButton.setStyle(ButtonStyle.Success)
+                    : embedFieldInlineButton.setStyle(ButtonStyle.Danger);
+                  embeds[embedIndex] = new EmbedBuilder(embeds[embedIndex]);
+                  await interaction.update({
+                    embeds,
+                    components: [
+                      new ActionRowBuilder().addComponents(
+                        embedFieldNameButton.setCustomId(`e.em.editFields.name.${embedIndex}.${fieldIndex}`),
+                        embedFieldValueButton.setCustomId(`e.em.editFields.value.${embedIndex}.${fieldIndex}`),
+                        embedFieldInlineButton.setCustomId(`e.em.editFields.inline.${embedIndex}.${fieldIndex}`)
+                      ),
+                      new ActionRowBuilder().addComponents(homeButton, quitButton),
+                    ],
+                  });
+                  break;
+                }
+                case "delete": {
+                  const buttons = [];
+                  const buttons2 = [];
+                  const buttons3 = [];
+                  const buttons4 = [];
+                  const fields = embeds[embedIndex].toJSON().fields;
+                  if (fields) {
+                    fields.forEach((field) => {
+                      if (buttons3.length >= 5) {
+                        buttons4.push({
+                          custom_id: `e.fieldDel.${fields.indexOf(field)}`,
+                          label: `Field: ${fields.indexOf(field) + 1}`,
+                          style: ButtonStyle.Primary,
+                          type: ComponentType.Button,
+                        });
+                      } else if (buttons2.length >= 5) {
+                        buttons3.push({
+                          custom_id: `e.fieldDel.${fields.indexOf(field)}`,
+                          label: `Field: ${fields.indexOf(field) + 1}`,
+                          style: ButtonStyle.Primary,
+                          type: ComponentType.Button,
+                        });
+                      } else if (buttons.length >= 5) {
+                        buttons2.push({
+                          custom_id: `e.fieldDel.${fields.indexOf(field)}`,
+                          label: `Field: ${fields.indexOf(field) + 1}`,
+                          style: ButtonStyle.Primary,
+                          type: ComponentType.Button,
+                        });
+                      } else {
+                        buttons.push({
+                          custom_id: `e.fieldDel.${fields.indexOf(field)}`,
+                          label: `Field: ${fields.indexOf(field) + 1}`,
+                          style: ButtonStyle.Primary,
+                          type: ComponentType.Button,
+                        });
+                      }
+                    });
+                  }
+                  const components = [];
+                  if (buttons.length !== 0) {
+                    components.push(new ActionRowBuilder({ components: buttons }));
+                  }
+                  if (buttons2.length !== 0) {
+                    components.push(new ActionRowBuilder({ components: buttons2 }));
+                  }
+                  if (buttons3.length !== 0) {
+                    components.push(new ActionRowBuilder({ components: buttons3 }));
+                  }
+                  if (buttons4.length !== 0) {
+                    components.push(new ActionRowBuilder({ components: buttons4 }));
+                  }
+                  components.push(new ActionRowBuilder().addComponents(homeButton, quitButton));
+                  await interaction.update({ components: components });
+                  break;
+                }
+              }
             } else if (embedBuilderCase.startsWith("em.image")) {
               const embedIndex = embedBuilderCase.split("em.image.")[1];
               await interaction.showModal(
@@ -831,6 +1012,14 @@ module.exports = {
             embeds[embedIndex].data[item] = data;
           }
           await interaction.update({ embeds: embeds });
+        } else if (interaction.customId.startsWith("e.editFields")) {
+          const item = interaction.customId.split("e.editFields.")[1].split(".")[0];
+          const embedIndex = interaction.customId.split("e.editFields.")[1].split(".")[1];
+          const fieldIndex = interaction.customId.split("e.editFields.")[1].split(".")[2];
+          const data = interaction.fields.getTextInputValue(item);
+          const embeds = interaction.message.embeds;
+          embeds[embedIndex].fields[fieldIndex][item] = data;
+          await interaction.update({ embeds });
         }
       }
     } catch (error) {
