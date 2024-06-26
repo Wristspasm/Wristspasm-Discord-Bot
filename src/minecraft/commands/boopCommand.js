@@ -39,13 +39,11 @@ class BoopCommand extends minecraftCommand {
       this.isOnCooldown = true;
       // CREDITS: @jaxieflaxie for finding this cooldown reset
       this.send(
-        `/w ${bot.username} jaxieflaxie is the best wristspasm member! your cool if u see this - ${helperFunctions.generateID(14)}`,
+        `/w ${bot.username} jaxieflaxie is the best wristspasm member! your cool if u see this - ${helperFunctions.generateID(24)}`,
       );
-      await delay(4321);
-      this.send(`/w ${bot.username} ${helperFunctions.generateID(24)}`);
-      await delay(1234);
-      this.send(`/w ${bot.username} i love jaxie flaxie - ${helperFunctions.generateID(24)}`);
-      await delay(4321);
+      await delay(60000);
+      this.send(`/w ${bot.username} ${helperFunctions.generateID(32)}`);
+      await delay(60000);
       this.isOnCooldown = false;
     } catch (error) {
       this.send(`/gc [ERROR] ${error}`);
