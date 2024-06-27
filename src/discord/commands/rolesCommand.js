@@ -64,17 +64,19 @@ module.exports = {
     }
 
     const skyblockRoles = [
-      "1204151069849165846",
-      "1204151081240625164",
-      "1204151078653005934",
-      "1204151082884796426",
-      "1204151075112882187",
-      "1204151071686004756",
-      "1204151079919427584",
-      "1204151076811571232",
-      "1204151073506599095",
+      "1239224505478680657", // @[440]
+      "1205606874272243742", // @[400]
+      "1204151069849165846", // @[360]
+      "1204151081240625164", // @[320]
+      "1204151078653005934", // @[280]
+      "1204151082884796426", // @[240]
+      "1204151075112882187", // @[200]
+      "1204151071686004756", // @[160]
+      "1204151079919427584", // @[120]
+      "1204151076811571232", // @[80]
+      "1204151073506599095", // @[40]
     ].reverse();
-    const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360];
+    const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440];
     if (skyblockLevel) {
       for (let i = skyblockRoles.length - 1; i >= 0; i--) {
         if (skyblockLevel >= skyblockLvLReqs[i]) {
@@ -94,7 +96,7 @@ module.exports = {
     const updateRole = new SuccessEmbed(`Your roles have been successfully synced with \`${username ?? "Unknown"}\`!`);
     if (type === "verify") {
       updateRole.setDescription(
-        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`,
+        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`
       );
       await interaction.followUp({ embeds: [updateRole], ephemeral: true });
     } else {
