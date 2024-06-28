@@ -1,7 +1,6 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const { Embed } = require("../../contracts/embedHandler.js");
-const config = require("../../../config.json");
 const cron = require("node-cron");
 const fs = require("fs");
 
@@ -40,7 +39,7 @@ async function purge() {
       .map(([username, weeklyExperience]) => `\`${username}\` » ${weeklyExperience.toLocaleString()}\n`)
       .join("");
 
-    const channel = await client.channels.fetch(config.discord.channels.staffChannel);
+    const channel = await client.channels.fetch("1072877138346262598");
     if (list.length > 2048) {
       fs.writeFileSync("data/weeklyPurge.txt", list.replaceAll("`", ""));
 
@@ -59,5 +58,3 @@ async function purge() {
 }
 
 cron.schedule("0 0 * * 1", purge);
-setTimeout(() => purge, 60 * 60 * 60 * 24 * 7 * 1000); // 7 days
-purge();
