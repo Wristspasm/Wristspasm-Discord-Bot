@@ -91,7 +91,6 @@
       "allowedBots": ["BOT_USER_ID"]
     },
     "roles": {
-      "commandRole": "COMMAND_ROLE_ID",
       "linkedRole": "LINKED_ROLE_ID",
       "guildMemberRole": "GUILD_MEMBER_ROLE_ID",
       "sweatRole": "SWEAT_ROLE_ID",

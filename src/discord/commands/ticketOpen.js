@@ -46,17 +46,19 @@ module.exports = {
         {
           text: `by @kathund. | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
-        },
+        }
       );
       await interaction.followUp({ embeds: [noPermissionEmbed], ephemeral: true });
       return;
     }
-    let channelPerms = [
+    const channelPerms = [
       { id: interaction.user.id, allow: permissions },
       { id: interaction.client.user.id, allow: permissions },
-      { id: config.discord.roles.commandRole, allow: permissions },
       { id: interaction.guild.roles.everyone.id, deny: permissions },
     ];
+    config.discord.roles.commandRoles.forEach((role) => {
+      channelPerms.push({ id: role, allow: permissions });
+    });
 
     let giveaway = null;
     let giveawayEmbed = null;
@@ -87,7 +89,7 @@ module.exports = {
             {
               name: "Host",
               value: `<@${giveaway.host}>`,
-            },
+            }
           )
           .setFooter({
             text: `by @kathund. | /help [command] for more information`,
@@ -112,11 +114,11 @@ module.exports = {
       {
         text: `by @kathund. | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
-      },
+      }
     );
 
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setLabel("Close Ticket").setCustomId(`t.c.${channel.id}`).setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setLabel("Close Ticket").setCustomId(`t.c.${channel.id}`).setStyle(ButtonStyle.Danger)
     );
 
     const openMessage = await channel.send({
@@ -124,7 +126,9 @@ module.exports = {
       embeds: [ticketEmbed],
       components: [row],
     });
-    const staffPing = await channel.send({ content: `<@&${config.discord.roles.commandRole}>` });
+    const staffPing = await channel.send({
+      content: `${config.discord.commands.commandRoles.map((role) => `<@&${role}>`).join(" ")}`,
+    });
     await delay(500);
     await openMessage.pin();
     await staffPing.delete();
@@ -142,7 +146,7 @@ module.exports = {
             {
               text: `by @kathund. | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
-            },
+            }
           );
           await openMessage.reply({ embeds: [reportEmbed] });
           break;
@@ -155,7 +159,7 @@ module.exports = {
             {
               text: `by @kathund. | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
-            },
+            }
           );
           await openMessage.reply({ embeds: [suggestionEmbed] });
           break;
@@ -168,7 +172,7 @@ module.exports = {
             {
               text: `by @kathund. | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
-            },
+            }
           );
           await openMessage.reply({ embeds: [questionEmbed] });
           break;
@@ -181,7 +185,7 @@ module.exports = {
             {
               text: `by @kathund. | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
-            },
+            }
           );
           await openMessage.reply({ embeds: [questionEmbed] });
           break;
@@ -195,7 +199,7 @@ module.exports = {
             {
               text: `by @kathund. | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
-            },
+            }
           );
           await openMessage.reply({ embeds: [supportEmbed] });
           break;
@@ -212,10 +216,10 @@ module.exports = {
           {
             text: `by @kathund. | /help [command] for more information`,
             iconURL: "https://i.imgur.com/uUuZx2E.png",
-          },
+          }
         );
         await channel.send({ embeds: [reportEmbed] });
-        let msgs = [];
+        const msgs = [];
         msgs.push(`\n** Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**`);
         msgs.push(`- ${config.other.staffApplicationQuestions[msgsSent]}`);
         msgsSent++;
@@ -244,7 +248,7 @@ module.exports = {
                 {
                   text: `by @kathund. | /help [command] for more information`,
                   iconURL: "https://i.imgur.com/uUuZx2E.png",
-                },
+                }
               );
               await channel.send({ embeds: [reportEmbed] });
               await channel.send(`# Application Questions\n\n_ _`);
@@ -265,7 +269,7 @@ module.exports = {
                 {
                   text: `by @kathund. | /help [command] for more information`,
                   iconURL: "https://i.imgur.com/uUuZx2E.png",
-                },
+                }
               );
               await channel.send({ embeds: [reportEmbed] });
               msgsSent++;
@@ -281,7 +285,7 @@ module.exports = {
         {
           text: `by @kathund. | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
-        },
+        }
       );
       if (!giveaway) await openMessage.reply({ embeds: [supportEmbed] });
     }

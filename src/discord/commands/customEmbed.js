@@ -1,5 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
 const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
+const { ActionRowBuilder, EmbedBuilder } = require("discord.js");
+const { buttons } = require("../other/embedBuilder.js");
 module.exports = {
   name: "embed",
   description: "Embed Builder",
@@ -45,61 +46,6 @@ module.exports = {
   execute: async (interaction) => {
     const preset = interaction.options.getString("preset") || null;
     let messageImport = interaction.options.getString("message-import") || null;
-
-    const editMessageButton = new ButtonBuilder()
-      .setLabel("Edit Message")
-      .setCustomId("e.e.m")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("<:icons_edit:1249307514680512512>");
-    const addImageButton = new ButtonBuilder()
-      .setLabel("Add Image")
-      .setCustomId("e.e.i")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("<:icons_edit:1249307514680512512>");
-    const deleteImageButton = new ButtonBuilder()
-      .setLabel("Delete Image")
-      .setCustomId("e.d.i")
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji("<:icons_busy:1249309744259268620>");
-    const addEmbedButton = new ButtonBuilder()
-      .setLabel("Add Embed")
-      .setCustomId("e.a.e")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("<:icons_createchannels:1249307311143653407>");
-    const editEmbedButton = new ButtonBuilder()
-      .setLabel("Edit Embed")
-      .setCustomId("e.e.e")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("<:icons_edit:1249307514680512512>");
-    const deleteEmbedButton = new ButtonBuilder()
-      .setLabel("Delete Embed")
-      .setCustomId("e.d.e")
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji("<:icons_busy:1249309744259268620>");
-    const importJsonButton = new ButtonBuilder()
-      .setLabel("Import JSON")
-      .setCustomId("e.j.i")
-      .setStyle(ButtonStyle.Secondary)
-      .setEmoji("<:icons_Download:1249306613727367198>");
-    const exportJsonButton = new ButtonBuilder()
-      .setLabel("Export JSON")
-      .setCustomId("e.j.e")
-      .setStyle(ButtonStyle.Secondary);
-    const resetButton = new ButtonBuilder()
-      .setLabel("Reset")
-      .setCustomId("e.reset")
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji("<:icons_delete:1249309581490786372>");
-    const sendButton = new ButtonBuilder()
-      .setLabel("Send")
-      .setCustomId("e.send")
-      .setStyle(ButtonStyle.Success)
-      .setEmoji("<:icons_Correct:1249308284075376641>");
-    const quitButton = new ButtonBuilder()
-      .setLabel("Quit")
-      .setCustomId("e.quit")
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji("<:icons_Wrong:1249307619739570218>");
 
     let content = "";
     const embeds = [];
@@ -158,21 +104,21 @@ module.exports = {
     }
 
     if (embeds.length === 0) {
-      editEmbedButton.setDisabled(true);
-      deleteEmbedButton.setDisabled(true);
+      buttons.editEmbed.setDisabled(true);
+      buttons.deleteEmbed.setDisabled(true);
     }
     if (files.length === 0) {
-      deleteImageButton.setDisabled(true);
+      buttons.deleteImage.setDisabled(true);
     }
 
     await interaction.followUp({
       content,
       embeds,
       components: [
-        new ActionRowBuilder().addComponents(editMessageButton, addImageButton, deleteImageButton),
-        new ActionRowBuilder().addComponents(addEmbedButton, editEmbedButton, deleteEmbedButton),
-        new ActionRowBuilder().addComponents(importJsonButton, exportJsonButton),
-        new ActionRowBuilder().addComponents(resetButton, sendButton, quitButton),
+        new ActionRowBuilder().addComponents(buttons.editMessage, buttons.addImage, buttons.deleteImage),
+        new ActionRowBuilder().addComponents(buttons.addEmbed, buttons.editEmbed, buttons.deleteEmbed),
+        new ActionRowBuilder().addComponents(buttons.importJson, buttons.exportJson),
+        new ActionRowBuilder().addComponents(buttons.reset, buttons.send),
       ],
     });
   },

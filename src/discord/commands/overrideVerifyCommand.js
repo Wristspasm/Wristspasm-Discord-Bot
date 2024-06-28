@@ -8,6 +8,7 @@ const fs = require("fs");
 module.exports = {
   name: "overrideverify",
   description: "Connect your Discord account to Minecraft",
+  moderatorOnly: true,
   defer: true,
   options: [
     {
@@ -25,14 +26,6 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const linkedRole = config.discord.roles.linkedRole;
     if (linkedRole === undefined) {
       throw new WristSpasmError("The linked role does not exist. Please contact an administrator.");

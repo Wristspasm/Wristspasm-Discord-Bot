@@ -8,6 +8,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "overrideinactivity",
   description: "Send an inactivity notice to the guild staff",
+  moderatorOnly: true,
   defer: true,
   options: [
     {
@@ -37,14 +38,6 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const discord = interaction.options._hoistedOptions[0];
     const username = interaction.options.getString("minecraft");
 
@@ -79,8 +72,8 @@ module.exports = {
       .setDescription(
         `\`Username:\` ${username}\n\`Requested:\` <t:${toFixed(
           new Date().getTime() / 1000,
-          0,
-        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`,
+          0
+        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,

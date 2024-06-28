@@ -59,9 +59,9 @@ class DiscordManager extends CommunicationBridge {
         ? client.once(event.name, (...args) => event.execute(...args))
         : client.on(event.name, (...args) => event.execute(...args));
 
-      require("./other/statsChannel.js");
-      require("./other/weeklyPurge.js");
-      require("./other/giveaways.js");
+      // require("./other/statsChannel.js");
+      // require("./other/weeklyPurge.js");
+      // require("./other/giveaways.js");
     }
 
     process.on("SIGINT", async () => {
@@ -100,7 +100,7 @@ class DiscordManager extends CommunicationBridge {
     if (message !== undefined && chat !== "debugChannel") {
       Logger.broadcastMessage(
         `${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`,
-        `Discord`,
+        `Discord`
       );
     }
 

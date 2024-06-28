@@ -1,23 +1,17 @@
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
+const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
 const config = require("../../../config.json");
 const fs = require("fs");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 
 module.exports = {
   name: "get-non-linked-members",
   description: "Get a list of all members who have not linked their account.",
+  moderatorOnly: true,
   defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
 
     const users = await interaction.guild.members.fetch();
     if (users === undefined) {

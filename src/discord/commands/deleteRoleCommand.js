@@ -1,27 +1,18 @@
-const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 
 module.exports = {
   name: "delete-roles",
   description: "Delete specific roles.",
+  moderatorOnly: true,
   defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const guildRoles = interaction.guild.roles.cache.filter(
       (role) =>
         role.name.includes("Bedwars") ||
         role.name.includes("Skywars") ||
         (role.name.includes("[") && role.name.includes("]")) ||
-        role.name.includes("Duels"),
+        role.name.includes("Duels")
     );
 
     const roles = [];
