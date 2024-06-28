@@ -7,17 +7,10 @@ const fs = require("fs");
 module.exports = {
   name: "update-guild-members",
   description: "Removes role from players which have left the guild, they receive a DM to reapply.",
-  options: [],
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const users = await interaction.guild.members.fetch();
     if (users === undefined) {
       throw new WristSpasmError("No guild members found!");

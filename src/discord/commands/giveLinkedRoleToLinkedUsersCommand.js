@@ -6,16 +6,10 @@ const fs = require("fs");
 module.exports = {
   name: "give-linked-users-role",
   description: "Give linked users a role.",
-  options: [],
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
 
     const users = await interaction.guild.members.fetch();
     if (users === undefined) {

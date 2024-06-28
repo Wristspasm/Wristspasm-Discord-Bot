@@ -9,6 +9,7 @@ const fs = require("fs");
 module.exports = {
   name: "verify",
   description: "Connect your Discord account to Minecraft",
+  defer: true,
   options: [
     {
       name: "name",

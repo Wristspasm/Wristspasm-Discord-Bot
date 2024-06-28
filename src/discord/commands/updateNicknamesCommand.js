@@ -1,23 +1,15 @@
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 module.exports = {
   name: "update-nicknames",
   description: "Updates usernames of linked users.",
-  options: [],
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const syncLinkedData = require("./syncLinkedDataCommand.js");
     await syncLinkedData.execute(interaction, true);
     const linkedData = fs.readFileSync("data/minecraftLinked.json");
@@ -72,7 +64,7 @@ async function printProgress(interaction, linked, uuid, id, username) {
     .setColor(3066993)
     .setAuthor({ name: "Updating nicknames..." })
     .setDescription(
-      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`,
+      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`
     )
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
@@ -84,12 +76,6 @@ async function printProgress(interaction, linked, uuid, id, username) {
 
 async function updateUsername(user, username, id, failedUsers, updatedUsers) {
   if (user === undefined || user.nickname === username || user.user.username === username) {
-    return;
-  }
-
-  if (user.roles.cache.has(config.discord.roles.commandRole)) {
-    console.log(user);
-    console.log(`Skipping ${username} (${id}) because they have the "Muted" role.`);
     return;
   }
 

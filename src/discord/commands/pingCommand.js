@@ -3,6 +3,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "ping",
   description: "Shows the latency of the bot.",
+  defer: true,
 
   execute: async (interaction) => {
     const clientLatency = Date.now() - interaction.createdTimestamp;

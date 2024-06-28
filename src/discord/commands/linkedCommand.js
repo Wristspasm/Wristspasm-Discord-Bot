@@ -1,13 +1,14 @@
 const { getUUID, getUsername } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const moment = require("moment");
 const fs = require("fs");
 
 module.exports = {
   name: "linked",
   description: "Get an username / discord profile of specified user.",
+  moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "discord",
@@ -24,14 +25,6 @@ module.exports = {
   ],
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const syncLinkedData = require("./syncLinkedDataCommand.js");
     await syncLinkedData.execute(interaction, true);
 

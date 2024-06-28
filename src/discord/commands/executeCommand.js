@@ -5,6 +5,7 @@ module.exports = {
   description: "Executes commands as the minecraft bot.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "command",

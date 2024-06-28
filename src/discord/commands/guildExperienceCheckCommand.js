@@ -9,20 +9,14 @@ const fs = require("fs");
 module.exports = {
   name: "gexpcheck",
   description: "Shows every play that got less than required amount of GEXP in the last 7 days",
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
     const collector = interaction.channel.createMessageComponentCollector({
       compnentType: "DROPDOWN",
       time: 60 * 1000,
     });
-
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
 
     const inactivity = JSON.parse(fs.readFileSync("data/inactivity.json", "utf8"));
     if (inactivity === undefined) {
@@ -119,7 +113,7 @@ module.exports = {
           label: `${config.minecraft.guild.guildExp.toLocaleString()}`,
           description: `Show everyone below ${config.minecraft.guild.guildExp.toLocaleString()} Guild Experience`,
           value: `command.guildexpcheck.${config.minecraft.guild.guildExp}`,
-        },
+        }
       );
 
     collector.resetTimer();

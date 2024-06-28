@@ -6,6 +6,7 @@ const fs = require("fs");
 module.exports = {
   name: "help",
   description: "Shows help menu.",
+  defer: true,
   options: [
     {
       name: "command",

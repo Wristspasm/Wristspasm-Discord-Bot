@@ -5,6 +5,7 @@ module.exports = {
   name: "restart",
   description: "Restarts the bot.",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const restartEmbed = new Embed(15548997, "Restarting...", "The bot is restarting. This might take few seconds.", {

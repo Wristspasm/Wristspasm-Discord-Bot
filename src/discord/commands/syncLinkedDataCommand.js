@@ -5,6 +5,7 @@ const fs = require("fs");
 module.exports = {
   name: "sync-linked-data",
   description: "Syncs Linked files with each other.",
+  defer: true,
 
   execute: async (interaction, followUp = false) => {
     if (interaction.user.id !== "486155512568741900") {

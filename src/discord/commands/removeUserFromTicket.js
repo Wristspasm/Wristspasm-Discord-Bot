@@ -15,6 +15,7 @@ module.exports = {
   name: "remove-user-from-ticket",
   description: "Remove a user from a ticket.",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "user",

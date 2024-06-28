@@ -6,10 +6,11 @@ module.exports = {
   name: "giveaway-create",
   description: "Create a giveaway",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "prize",
-      description: "Minecraft Username",
+      description: "Giveaway Prize",
       type: 3,
       required: true,
     },

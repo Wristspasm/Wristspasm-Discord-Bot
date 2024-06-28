@@ -5,6 +5,7 @@ module.exports = {
   description: "Promotes the given user by one guild rank.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "name",

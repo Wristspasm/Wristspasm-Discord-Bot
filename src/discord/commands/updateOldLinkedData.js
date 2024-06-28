@@ -1,7 +1,6 @@
 const { writeAt } = require("../../contracts/helperFunctions.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 // ! This command is only used once to update old verification data to the new format
@@ -11,16 +10,10 @@ const DISABLED = true;
 module.exports = {
   name: "update-old-linked-data",
   description: "Updates old verification data to the new format",
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     if (DISABLED === true) {
       throw new WristSpasmError("This command is disabled.");
     }

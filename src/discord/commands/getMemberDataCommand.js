@@ -1,5 +1,4 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 function formatUnixTime(milliseconds) {
@@ -24,16 +23,10 @@ function formatUnixTime(milliseconds) {
 module.exports = {
   name: "get-member-data",
   description: "Get member data",
+  moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
-    const user = interaction.member;
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(user.roles.cache.has(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
-    ) {
-      throw new WristSpasmError("You do not have permission to use this command.");
-    }
-
     const data = JSON.parse(fs.readFileSync("data/playerData.json"));
     if (data === undefined) {
       throw new WristSpasmError("No data found");

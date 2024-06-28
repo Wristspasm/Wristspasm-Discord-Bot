@@ -9,6 +9,7 @@ const { SuccessEmbed } = require("../../contracts/embedHandler.js");
 module.exports = {
   name: "roles",
   description: "Update your current roles",
+  defer: true,
 
   execute: async (interaction, user, type) => {
     user = await interaction.guild.members.fetch(user ?? interaction.user);

@@ -8,6 +8,7 @@ const fs = require("fs");
 module.exports = {
   name: "apply",
   description: "Request to join the guild.",
+  defer: true,
 
   execute: async (interaction) => {
     const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));

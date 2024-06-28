@@ -1,5 +1,13 @@
-// eslint-disable-next-line no-unused-vars
-const { EmbedBuilder, CommandInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const {
+  // eslint-disable-next-line no-unused-vars
+  CommandInteraction,
+  ActionRowBuilder,
+  InteractionType,
+  ButtonBuilder,
+  EmbedBuilder,
+  ButtonStyle,
+} = require("discord.js");
+const { handleEmbedButtonClick, handleEmbedModelSubmit } = require("../other/embedBuilder.js");
 const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
@@ -22,8 +30,12 @@ module.exports = {
           return;
         }
 
-        if ((command.name == "inactivity" || command.name == "embed") === false) {
-          await interaction.deferReply({ ephemeral: false }).catch(() => {});
+        if (command.defer === true) {
+          if (command.ephemeral === true) {
+            await interaction.deferReply({ ephemeral: true });
+          } else {
+            await interaction.deferReply({ ephemeral: false });
+          }
         }
 
         if (command.moderatorOnly === true && isModerator(interaction) === false) {
@@ -39,10 +51,14 @@ module.exports = {
       }
 
       if (interaction.isButton()) {
-        await interaction.deferReply({ ephemeral: true });
+        if (!interaction.customId.startsWith("e.")) {
+          await interaction.deferReply({ ephemeral: true });
+        }
 
-        // ? Apply Button
-        if (interaction.customId.includes("guild.apply_button")) {
+        if (interaction.customId.startsWith("e.")) {
+          await handleEmbedButtonClick(interaction);
+        } else if (interaction.customId.includes("guild.apply_button")) {
+          // ? Apply Button
           const applyCommand = interaction.client.commands.get("apply");
 
           if (applyCommand === undefined) {
@@ -71,7 +87,7 @@ module.exports = {
           if (giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1])) {
             const giveaway = giveawayData.find((x) => x.id === interaction.customId.split("g.e.")[1]);
             if (giveaway.host === interaction.user.id) {
-              return await interaction.followUp({ content: "You cannot enter your own giveaway.", emphemeral: true });
+              return await interaction.followUp({ content: "You cannot enter your own giveaway.", ephemeral: true });
             }
             const userIndex = giveaway.users.findIndex((user) => user.id === interaction.user.id);
             if (userIndex !== -1) {
@@ -79,7 +95,7 @@ module.exports = {
                 new ButtonBuilder()
                   .setLabel("Leave Giveaway")
                   .setCustomId(`g.l.${giveaway.id}`)
-                  .setStyle(ButtonStyle.Danger),
+                  .setStyle(ButtonStyle.Danger)
               );
 
               return await interaction.followUp({
@@ -124,7 +140,7 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -171,7 +187,7 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -185,74 +201,78 @@ module.exports = {
         }
       }
 
-      // ? Inactivity Form
-      if (interaction.customId === "inactivityform") {
-        const time = interaction.fields.getTextInputValue("inactivitytime");
-        const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
+      if (interaction.type === InteractionType.ModalSubmit) {
+        if (interaction.customId.startsWith("e.")) {
+          await handleEmbedModelSubmit(interaction);
+          // ? Inactivity Form
+        } else if (interaction.customId === "inactivityform") {
+          const time = interaction.fields.getTextInputValue("inactivitytime");
+          const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
 
-        const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
-        if (linked === undefined) {
-          throw new WristSpasmError("No verification data found. Please contact an administrator.");
-        }
+          const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
+          if (linked === undefined) {
+            throw new WristSpasmError("No verification data found. Please contact an administrator.");
+          }
 
-        const uuid = linked[interaction.user.id];
-        if (uuid === undefined) {
-          throw new WristSpasmError("You are no verified. Please verify using /verify.");
-        }
+          const uuid = linked[interaction.user.id];
+          if (uuid === undefined) {
+            throw new WristSpasmError("You are no verified. Please verify using /verify.");
+          }
 
-        const [guild, username] = await Promise.all([
-          hypixelRebornAPI.getGuild("name", "WristSpasm"),
-          getUsername(linked[interaction.user.id]),
-        ]);
+          const [guild, username] = await Promise.all([
+            hypixelRebornAPI.getGuild("name", "WristSpasm"),
+            getUsername(linked[interaction.user.id]),
+          ]);
 
-        if (guild === undefined) {
-          throw new WristSpasmError("Guild data not found. Please contact an administrator.");
-        }
+          if (guild === undefined) {
+            throw new WristSpasmError("Guild data not found. Please contact an administrator.");
+          }
 
-        if (isNaN(time) || time < 1) {
-          throw new WristSpasmError("Please enter a valid number.");
-        }
+          if (isNaN(time) || time < 1) {
+            throw new WristSpasmError("Please enter a valid number.");
+          }
 
-        const formattedTime = time * 86400;
-        if (formattedTime > 21 * 86400) {
-          throw new WristSpasmError(
-            "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
+          const formattedTime = time * 86400;
+          if (formattedTime > 21 * 86400) {
+            throw new WristSpasmError(
+              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
+            );
+          }
+
+          const expiration = (new Date().getTime() / 1000 + formattedTime).toFixed(0);
+          const date = (new Date().getTime() / 1000).toFixed(0);
+          const inactivityEmbed = new Embed(
+            5763719,
+            "Inactivity Request",
+            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
           );
+          inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
+
+          const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
+          if (channel === undefined) {
+            throw new WristSpasmError("Inactivity channel not found. Please contact an administrator.");
+          }
+
+          await channel.send({ embeds: [inactivityEmbed] });
+
+          writeAt("data/inactivity.json", uuid, {
+            username: username,
+            uuid: uuid,
+            discord: interaction.user.tag,
+            discord_id: interaction.user.id,
+            requested: (new Date().getTime() / 1000).toFixed(0),
+            requested_formatted: new Date().toLocaleString(),
+            expiration: expiration,
+            expiration_formatted: new Date(expiration * 1000).toLocaleString(),
+            reason: reason,
+          });
+
+          const inactivityResponse = new SuccessEmbed(
+            `Inactivity request has been successfully sent to the guild staff.`
+          );
+
+          await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
         }
-
-        const expiration = (new Date().getTime() / 1000 + formattedTime).toFixed(0);
-        const date = (new Date().getTime() / 1000).toFixed(0);
-        const inactivityEmbed = new Embed(
-          5763719,
-          "Inactivity Request",
-          `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
-        );
-        inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
-
-        const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
-        if (channel === undefined) {
-          throw new WristSpasmError("Inactivity channel not found. Please contact an administrator.");
-        }
-
-        await channel.send({ embeds: [inactivityEmbed] });
-
-        writeAt("data/inactivity.json", uuid, {
-          username: username,
-          uuid: uuid,
-          discord: interaction.user.tag,
-          discord_id: interaction.user.id,
-          requested: (new Date().getTime() / 1000).toFixed(0),
-          requested_formatted: new Date().toLocaleString(),
-          expiration: expiration,
-          expiration_formatted: new Date(expiration * 1000).toLocaleString(),
-          reason: reason,
-        });
-
-        const inactivityResponse = new SuccessEmbed(
-          `Inactivity request has been successfully sent to the guild staff.`,
-        );
-
-        await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
       }
     } catch (error) {
       console.log(error);
@@ -274,7 +294,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,
@@ -299,7 +319,10 @@ function isModerator(interaction) {
 
   if (
     config.discord.commands.checkPerms === true &&
-    !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))
+    !(
+      config.discord.commands.commandRoles.some((role) => userRoles.includes(role)) ||
+      config.discord.commands.users.includes(user.id)
+    )
   ) {
     return false;
   }
