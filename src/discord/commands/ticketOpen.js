@@ -56,7 +56,7 @@ module.exports = {
       { id: interaction.client.user.id, allow: permissions },
       { id: interaction.guild.roles.everyone.id, deny: permissions },
     ];
-    config.discord.roles.commandRoles.forEach((role) => {
+    config.discord.commands.commandRoles.forEach((role) => {
       channelPerms.push({ id: role, allow: permissions });
     });
 
@@ -122,7 +122,7 @@ module.exports = {
     );
 
     const openMessage = await channel.send({
-      content: `<@${interaction.user.id}>`,
+      content: `<@${interaction.user.id}> | ${reason}`,
       embeds: [ticketEmbed],
       components: [row],
     });

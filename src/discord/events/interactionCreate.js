@@ -6,6 +6,9 @@ const {
   ButtonBuilder,
   EmbedBuilder,
   ButtonStyle,
+  ModalBuilder,
+  TextInputStyle,
+  TextInputBuilder,
 } = require("discord.js");
 const { handleEmbedButtonClick, handleEmbedModelSubmit } = require("../other/embedBuilder.js");
 const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
@@ -51,7 +54,7 @@ module.exports = {
       }
 
       if (interaction.isButton()) {
-        if (!interaction.customId.startsWith("e.")) {
+        if (!interaction.customId.startsWith("e.") && !interaction.customId.startsWith("g.edit.")) {
           await interaction.deferReply({ ephemeral: true });
         }
 
@@ -95,7 +98,7 @@ module.exports = {
                 new ButtonBuilder()
                   .setLabel("Leave Giveaway")
                   .setCustomId(`g.l.${giveaway.id}`)
-                  .setStyle(ButtonStyle.Danger)
+                  .setStyle(ButtonStyle.Danger),
               );
 
               return await interaction.followUp({
@@ -140,7 +143,11 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                }
+                },
+                {
+                  name: "Requirements",
+                  value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+                },
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -151,6 +158,59 @@ module.exports = {
             fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
             return await interaction.editReply({ content: "You have successfully entered the giveaway." });
           }
+        } else if (interaction.customId.startsWith("g.edit.")) {
+          const giveawayId = interaction.customId.split("g.edit.")[1];
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          if (interaction.user.id !== giveawayData.find((x) => x.id === giveawayId).host) {
+            return await interaction.reply({ content: "You are not the host of this giveaway.", ephemeral: true });
+          }
+          await interaction.showModal(
+            new ModalBuilder()
+              .setCustomId(`g.edit.${giveawayId}`)
+              .setTitle("Edit Givaeway")
+              .addComponents(
+                new ActionRowBuilder().addComponents(
+                  new TextInputBuilder()
+                    .setCustomId("prize")
+                    .setLabel("Prize")
+                    .setPlaceholder("Leave empty to keep the current")
+                    .setRequired(false)
+                    .setStyle(TextInputStyle.Short),
+                ),
+                new ActionRowBuilder().addComponents(
+                  new TextInputBuilder()
+                    .setCustomId("winners")
+                    .setLabel("Winners")
+                    .setPlaceholder("Leave empty to keep the current")
+                    .setRequired(false)
+                    .setStyle(TextInputStyle.Short),
+                ),
+                new ActionRowBuilder().addComponents(
+                  new TextInputBuilder()
+                    .setCustomId("endTimestamp")
+                    .setLabel("End Timestamp")
+                    .setPlaceholder("UNIX TIMESTAMP ONLY | Leave empty to keep the current")
+                    .setRequired(false)
+                    .setStyle(TextInputStyle.Short),
+                ),
+                new ActionRowBuilder().addComponents(
+                  new TextInputBuilder()
+                    .setCustomId("guild")
+                    .setLabel("Guild Only")
+                    .setPlaceholder("0 = OFF 1 = ON | Leave empty to keep the current")
+                    .setRequired(false)
+                    .setStyle(TextInputStyle.Short),
+                ),
+                new ActionRowBuilder().addComponents(
+                  new TextInputBuilder()
+                    .setCustomId("verified")
+                    .setLabel("Verified Only")
+                    .setPlaceholder("0 = OFF 1 = ON | Leave empty to keep the current")
+                    .setRequired(false)
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
+          );
         } else if (interaction.customId.startsWith("g.l.")) {
           const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
           const giveawayId = interaction.customId.split("g.l.")[1];
@@ -187,7 +247,11 @@ module.exports = {
                 {
                   name: "Ends At",
                   value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
-                }
+                },
+                {
+                  name: "Requirements",
+                  value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+                },
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -204,7 +268,85 @@ module.exports = {
       if (interaction.type === InteractionType.ModalSubmit) {
         if (interaction.customId.startsWith("e.")) {
           await handleEmbedModelSubmit(interaction);
-          // ? Inactivity Form
+        } else if (interaction.customId.startsWith("g.edit.")) {
+          const giveawayId = interaction.customId.split("g.edit.")[1];
+          const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
+          const giveaway = giveawayData.find((x) => x.id === giveawayId);
+          if (interaction.user.id !== giveaway.host) {
+            return await interaction.reply({ content: "You are not the host of this giveaway.", ephemeral: true });
+          }
+          let prize = interaction.fields.getTextInputValue("prize");
+          let winners = interaction.fields.getTextInputValue("winners");
+          let endTimestamp = interaction.fields.getTextInputValue("endTimestamp");
+          let guild = interaction.fields.getTextInputValue("guild");
+          let verified = interaction.fields.getTextInputValue("verified");
+          if (prize.length === 0) {
+            prize = giveaway.prize;
+          }
+          if (winners.length === 0) {
+            winners = giveaway.winners;
+          }
+          if (endTimestamp.length === 0) {
+            endTimestamp = giveaway.endTimestamp;
+          }
+          if (guild.length === 0) {
+            guild = giveaway.guildOnly;
+          }
+          if (verified.length === 0) {
+            verified = giveaway.verifiedOnly;
+          }
+          winners = Number(winners);
+          endTimestamp = Number(endTimestamp);
+          guild = Number(guild);
+          verified = Number(verified);
+          if (isNaN(winners) || isNaN(endTimestamp) || isNaN(guild) || isNaN(verified)) {
+            return await interaction.reply({ content: "Please enter a valid number.", ephemeral: true });
+          }
+          giveaway.prize = prize;
+          giveaway.winners = winners;
+          giveaway.endTimestamp = endTimestamp;
+          giveaway.guildOnly = guild === 1;
+          giveaway.verifiedOnly = verified === 1;
+          const giveawayEmbed = new EmbedBuilder()
+            .setColor(3447003)
+            .setTitle("Giveaway")
+            .addFields(
+              {
+                name: "Prize",
+                value: `${giveaway.prize}`,
+                inline: true,
+              },
+              {
+                name: "Host",
+                value: `<@${giveaway.host}>`,
+                inline: true,
+              },
+              {
+                name: "Entries",
+                value: `${giveaway.users.length}`,
+                inline: true,
+              },
+              {
+                name: "Winners",
+                value: `${giveaway.winners}`,
+              },
+              {
+                name: "Ends At",
+                value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+              },
+              {
+                name: "Requirements",
+                value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+              },
+            )
+            .setFooter({
+              text: `by @kathund. | /help [command] for more information`,
+              iconURL: "https://i.imgur.com/uUuZx2E.png",
+            });
+          const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
+          await message.edit({ embeds: [giveawayEmbed] });
+          fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
+          return await interaction.reply({ content: "Giveaway has been successfully edited.", ephemeral: true });
         } else if (interaction.customId === "inactivityform") {
           const time = interaction.fields.getTextInputValue("inactivitytime");
           const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
@@ -235,7 +377,7 @@ module.exports = {
           const formattedTime = time * 86400;
           if (formattedTime > 21 * 86400) {
             throw new WristSpasmError(
-              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
+              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
             );
           }
 
@@ -244,7 +386,7 @@ module.exports = {
           const inactivityEmbed = new Embed(
             5763719,
             "Inactivity Request",
-            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
+            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
           );
           inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -268,7 +410,7 @@ module.exports = {
           });
 
           const inactivityResponse = new SuccessEmbed(
-            `Inactivity request has been successfully sent to the guild staff.`
+            `Inactivity request has been successfully sent to the guild staff.`,
           );
 
           await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
@@ -294,7 +436,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,
