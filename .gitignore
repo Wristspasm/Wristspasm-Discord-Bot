@@ -6,3 +6,4 @@ package-lock.json
 .prettierrc.json
 auth-cache/
 data/usernameCache.json
+logs/

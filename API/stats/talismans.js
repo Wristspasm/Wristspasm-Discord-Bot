@@ -24,7 +24,7 @@ module.exports = async (profile) => {
       profile.inventory?.inv_contents?.data !== null
     ) {
       const { i: talisman_bag_data } = await decodeData(
-        Buffer.from(profile.inventory.bag_contents.talisman_bag.data, "base64")
+        Buffer.from(profile.inventory.bag_contents.talisman_bag.data, "base64"),
       );
 
       output.power = titleCase(profile.accessory_bag_storage?.selected_power);

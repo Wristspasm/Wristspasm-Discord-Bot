@@ -13,7 +13,7 @@ module.exports = (profile) => {
       belt: getBelt(
         Object.keys(crimsonIsle.dojo ?? {})
           .filter((key) => key.startsWith("dojo_points"))
-          .reduce((acc, key) => acc + (crimsonIsle.dojo[key] ?? 0), 0)
+          .reduce((acc, key) => acc + (crimsonIsle.dojo[key] ?? 0), 0),
       ),
       force: {
         points: crimsonIsle.dojo?.dojo_points_mob_kb ?? 0,

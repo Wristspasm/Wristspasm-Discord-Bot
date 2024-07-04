@@ -44,8 +44,8 @@ module.exports = (profile) => {
       petData.hatching?.level > pet.level
         ? petData.hatching.name
         : petData.name
-        ? petData.name[pet.rarity] ?? petData.name.default
-        : titleCase(pet.type.replaceAll("_", " "));
+          ? petData.name[pet.rarity] ?? petData.name.default
+          : titleCase(pet.type.replaceAll("_", " "));
 
     // Rarity upgrades
     if (pet.heldItem == "PET_ITEM_TIER_BOOST" && !pet.ignoresTierBoost) {
@@ -210,8 +210,8 @@ module.exports = (profile) => {
     lore.push(
       "",
       `§7Total XP: §e${formatNumber(pet.exp, true, 10)} §6/ §e${formatNumber(pet.xpMaxLevel, true, 10)} §6(${Math.floor(
-        (pet.exp / pet.xpMaxLevel) * 100
-      )}%)`
+        (pet.exp / pet.xpMaxLevel) * 100,
+      )}%)`,
     );
 
     if (petData.obtainsExp !== "feed") {
