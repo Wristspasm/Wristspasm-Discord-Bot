@@ -2,13 +2,13 @@ const {
   // eslint-disable-next-line no-unused-vars
   CommandInteraction,
   ActionRowBuilder,
+  TextInputBuilder,
   InteractionType,
+  TextInputStyle,
   ButtonBuilder,
   EmbedBuilder,
   ButtonStyle,
   ModalBuilder,
-  TextInputStyle,
-  TextInputBuilder,
 } = require("discord.js");
 const { handleEmbedButtonClick, handleEmbedModelSubmit } = require("../other/embedBuilder.js");
 const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
@@ -32,13 +32,17 @@ module.exports = {
         if (command === undefined) {
           return;
         }
-
+        const memberRoles = interaction.member.roles.cache.map((role) => role.id);
         if (command.defer === true) {
           if (command.ephemeral === true) {
             await interaction.deferReply({ ephemeral: true });
           } else {
             await interaction.deferReply({ ephemeral: false });
           }
+        }
+
+        if (memberRoles.some((role) => config.discord.commands.blacklistRoles.includes(role))) {
+          throw new WristSpasmError("You are blacklisted from the bot.");
         }
 
         if (command.moderatorOnly === true && isModerator(interaction) === false) {
@@ -146,7 +150,13 @@ module.exports = {
                 },
                 {
                   name: "Requirements",
-                  value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+                  value: `Guild Member: ${
+                    giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                  }\nVerified: ${
+                    giveaway.verifiedOnly
+                      ? "<:icons_Correct:1256841688895459348>"
+                      : "<:icons_Wrong:1256841707232690198>"
+                  }`,
                 },
               )
               .setFooter({
@@ -250,7 +260,13 @@ module.exports = {
                 },
                 {
                   name: "Requirements",
-                  value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+                  value: `Guild Member: ${
+                    giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                  }\nVerified: ${
+                    giveaway.verifiedOnly
+                      ? "<:icons_Correct:1256841688895459348>"
+                      : "<:icons_Wrong:1256841707232690198>"
+                  }`,
                 },
               )
               .setFooter({
@@ -336,7 +352,11 @@ module.exports = {
               },
               {
                 name: "Requirements",
-                value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+                value: `Guild Member: ${
+                  giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                }\nVerified: ${
+                  giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                }`,
               },
             )
             .setFooter({

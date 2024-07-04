@@ -97,7 +97,7 @@ module.exports = {
     const updateRole = new SuccessEmbed(`Your roles have been successfully synced with \`${username ?? "Unknown"}\`!`);
     if (type === "verify") {
       updateRole.setDescription(
-        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`
+        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`,
       );
       await interaction.followUp({ embeds: [updateRole], ephemeral: true });
     } else {

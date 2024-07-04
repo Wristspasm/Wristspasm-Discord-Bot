@@ -56,21 +56,21 @@ module.exports = {
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
           iconURL: "https://imgur.com/tgwQJTX.png",
-        })
+        }),
       );
     } else if (preset === "kathund") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @kathund. | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
-        })
+        }),
       );
     } else if (preset === "george_filos") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @george_filos | /help [command] for more information`,
           iconURL: "https://cdn.discordapp.com/avatars/177083022305263616/4ee1d5f278a36a61aa9164b9263c8722.webp",
-        })
+        }),
       );
     } else if (preset === "success") {
       embeds.push(new SuccessEmbed("Success Embed"));

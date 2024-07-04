@@ -12,7 +12,6 @@ module.exports = {
   defer: true,
 
   execute: async (interaction) => {
-
     const users = await interaction.guild.members.fetch();
     if (users === undefined) {
       throw new WristSpasmError("No guild members found!");

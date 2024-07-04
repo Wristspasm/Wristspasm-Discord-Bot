@@ -79,7 +79,7 @@ async function handleEmbedButtonClick(interaction) {
               new ActionRowBuilder().addComponents(
                 buttons.addEmbed,
                 buttons.editEmbed.setDisabled(true),
-                buttons.deleteEmbed.setDisabled(true)
+                buttons.deleteEmbed.setDisabled(true),
               ),
               new ActionRowBuilder().addComponents(buttons.importJson, buttons.exportJson),
               new ActionRowBuilder().addComponents(buttons.reset, buttons.send),
@@ -128,9 +128,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("import json")
                     .setPlaceholder("json text")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Paragraph)
-                )
-              )
+                    .setStyle(TextInputStyle.Paragraph),
+                ),
+              ),
           );
           break;
         }
@@ -237,9 +237,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("edit message")
                     .setPlaceholder("new message?")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Paragraph)
-                )
-              )
+                    .setStyle(TextInputStyle.Paragraph),
+                ),
+              ),
           );
           break;
         }
@@ -255,7 +255,7 @@ async function handleEmbedButtonClick(interaction) {
               new ActionRowBuilder().addComponents(
                 buttons.addEmbed,
                 buttons.editEmbed.setDisabled(false),
-                buttons.deleteEmbed.setDisabled(false)
+                buttons.deleteEmbed.setDisabled(false),
               ),
               new ActionRowBuilder().addComponents(buttons.importJson, buttons.exportJson),
               new ActionRowBuilder().addComponents(buttons.reset, buttons.send),
@@ -269,7 +269,7 @@ async function handleEmbedButtonClick(interaction) {
                 new ActionRowBuilder().addComponents(
                   buttons.addEmbed.setDisabled(true),
                   buttons.editEmbed,
-                  buttons.deleteEmbed
+                  buttons.deleteEmbed,
                 ),
                 new ActionRowBuilder().addComponents(buttons.importJson, buttons.exportJson),
                 new ActionRowBuilder().addComponents(buttons.reset, buttons.send),
@@ -291,9 +291,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("add img")
                     .setPlaceholder("img url?")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -374,7 +374,7 @@ async function handleEmbedButtonClick(interaction) {
                 embedButtons.description,
                 embedButtons.editFields,
                 embedButtons.footerImage,
-                embedButtons.footer
+                embedButtons.footer,
               ),
               new ActionRowBuilder().addComponents(
                 embedButtons.image,
@@ -398,9 +398,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("color")
                     .setPlaceholder("color")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -416,9 +416,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("description")
                     .setPlaceholder("description")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Paragraph)
-                )
-              )
+                    .setStyle(TextInputStyle.Paragraph),
+                ),
+              ),
           );
           break;
         }
@@ -431,7 +431,7 @@ async function handleEmbedButtonClick(interaction) {
           embedButtons.fieldInline
             .setCustomId(`e.embed.editFields.${embedIndex}.inline.${fieldIndex}`)
             .setStyle(
-              embeds[embedIndex].fields[fieldIndex]?.inline ?? false ? ButtonStyle.Success : ButtonStyle.Danger
+              embeds[embedIndex].fields[fieldIndex]?.inline ?? false ? ButtonStyle.Success : ButtonStyle.Danger,
             );
           switch (fieldAction) {
             case "edit": {
@@ -440,7 +440,7 @@ async function handleEmbedButtonClick(interaction) {
                   new ActionRowBuilder().addComponents(
                     embedButtons.addFields,
                     embedButtons.selectField,
-                    embedButtons.deleteFields
+                    embedButtons.deleteFields,
                   ),
                   new ActionRowBuilder().addComponents(buttons.home),
                 ],
@@ -508,7 +508,7 @@ async function handleEmbedButtonClick(interaction) {
                   new ActionRowBuilder().addComponents(
                     embedButtons.fieldName,
                     embedButtons.fieldValue,
-                    embedButtons.fieldInline
+                    embedButtons.fieldInline,
                   ),
                   new ActionRowBuilder().addComponents(embedButtons.fieldDelete, buttons.home),
                 ],
@@ -527,9 +527,9 @@ async function handleEmbedButtonClick(interaction) {
                         .setLabel("name")
                         .setPlaceholder("name")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Short)
-                    )
-                  )
+                        .setStyle(TextInputStyle.Short),
+                    ),
+                  ),
               );
               break;
             }
@@ -545,9 +545,9 @@ async function handleEmbedButtonClick(interaction) {
                         .setLabel("value")
                         .setPlaceholder("value")
                         .setRequired(true)
-                        .setStyle(TextInputStyle.Paragraph)
-                    )
-                  )
+                        .setStyle(TextInputStyle.Paragraph),
+                    ),
+                  ),
               );
               break;
             }
@@ -562,7 +562,7 @@ async function handleEmbedButtonClick(interaction) {
                   new ActionRowBuilder().addComponents(
                     embedButtons.fieldName,
                     embedButtons.fieldValue,
-                    embedButtons.fieldInline
+                    embedButtons.fieldInline,
                   ),
                   new ActionRowBuilder().addComponents(buttons.home),
                 ],
@@ -577,7 +577,7 @@ async function handleEmbedButtonClick(interaction) {
                   new ActionRowBuilder().addComponents(
                     embedButtons.addFields,
                     embedButtons.selectField,
-                    embedButtons.deleteFields
+                    embedButtons.deleteFields,
                   ),
                   new ActionRowBuilder().addComponents(buttons.home),
                 ],
@@ -648,9 +648,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("Footer Image")
                     .setPlaceholder("Footer Image")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -666,9 +666,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("Footer")
                     .setPlaceholder("Footer")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -684,9 +684,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("Image")
                     .setPlaceholder("Image")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -702,9 +702,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("Thumbnail")
                     .setPlaceholder("Thumbnail")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }
@@ -720,9 +720,9 @@ async function handleEmbedButtonClick(interaction) {
                     .setLabel("Title")
                     .setPlaceholder("Title")
                     .setRequired(true)
-                    .setStyle(TextInputStyle.Short)
-                )
-              )
+                    .setStyle(TextInputStyle.Short),
+                ),
+              ),
           );
           break;
         }

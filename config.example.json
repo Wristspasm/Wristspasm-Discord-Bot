@@ -27,18 +27,21 @@
       "enabled": false,
       "autoAccept": false,
       "requirements": {
-        "bedwarsStars": 100,
-        "bedwarsStarsWithFKDR": 0,
-        "bedwarsFKDR": 0,
-        "skywarsStars": 0,
-        "skywarsStarsWithKDR": 0,
-        "skywarsKDR": 0,
-        "duelsWins": 0,
-        "duelsWinsWithWLR": 0,
-        "duelsWLR": 0,
-        "senitherWeight": 0,
-        "lilyWeight": 0,
-        "skyblockLevel": 0
+        "bedwarsStars": -1,
+        "bedwarsStarsWithFKDR": -1,
+        "bedwarsFKDR": -1,
+
+        "skywarsStars": -1,
+        "skywarsStarsWithKDR": -1,
+        "skywarsKDR": -1,
+
+        "duelsWins": -1,
+        "duelsWinsWithWLR": -1,
+        "duelsWLR": -1,
+
+        "senitherWeight": -1,
+        "lilyWeight": -1,
+        "skyblockLevel": -1
       }
     },
     "skyblockEventsNotifications": {
@@ -55,7 +58,8 @@
         "NEW_YEAR_CELEBRATION": true,
         "SEASON_OF_JERRY": true,
         "SPOOKY_FESTIVAL": true,
-        "TRAVELING_ZOO": true
+        "TRAVELING_ZOO": true,
+        "HOPPITY_HUNT": true
       },
       "customTime": {
         "2": ["BANK_INTEREST", "DARK_AUCTION", "JACOBS_CONTEST"]
@@ -100,6 +104,7 @@
     "commands": {
       "checkPerms": true,
       "commandRoles": ["COMMAND_ROLE_ID", "ADMIN_COMMAND_ROLE_ID"],
+      "blacklistRoles": ["BLACKLIST_ROLE_ID"],
       "users": ["486155512568741900"]
     },
     "other": {

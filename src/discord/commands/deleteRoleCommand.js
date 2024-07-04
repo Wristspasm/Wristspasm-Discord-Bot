@@ -12,7 +12,7 @@ module.exports = {
         role.name.includes("Bedwars") ||
         role.name.includes("Skywars") ||
         (role.name.includes("[") && role.name.includes("]")) ||
-        role.name.includes("Duels")
+        role.name.includes("Duels"),
     );
 
     const roles = [];

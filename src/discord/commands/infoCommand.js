@@ -35,7 +35,7 @@ module.exports = {
           }\`\nAuto Accept: \`${
             config.minecraft.guildRequirements.autoAccept ? "enabled" : "disabled"
           }\`\nGuild Experience Requirement: \`${config.minecraft.guild.guildExp.toLocaleString()}\`\nUptime: Online since <t:${Math.floor(
-            (Date.now() - client.uptime) / 1000
+            (Date.now() - client.uptime) / 1000,
           )}:R>\nVersion: \`${require("../../../package.json").version}\`\n`,
           inline: true,
         },
@@ -55,7 +55,7 @@ module.exports = {
             config.discord.other.filterMessages ? "enabled" : "disabled"
           }\`\nJoin Messages: \`${config.discord.other.joinMessage ? "enabled" : "disabled"}\``,
           inline: true,
-        }
+        },
       )
       .setFooter({
         text: "by @duckysolucky | /help [command] for more information",
