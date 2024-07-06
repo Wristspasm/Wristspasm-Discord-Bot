@@ -92,7 +92,7 @@ module.exports = {
         },
         {
           name: "Requirements",
-          value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+          value: `Guild Member: ${guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
         },
       )
       .setFooter({
