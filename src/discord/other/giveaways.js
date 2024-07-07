@@ -58,6 +58,10 @@ async function checkGiveaways() {
             name: "Ends At",
             value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
           },
+          {
+            name: "Requirements",
+            value: `Guild Member: ${giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+          },
         )
         .setFooter({
           text: `by @kathund. | /help [command] for more information`,
@@ -72,6 +76,11 @@ async function checkGiveaways() {
           .setLabel("Enter Giveaway")
           .setCustomId(`g.e.${giveaway.id}`)
           .setStyle(ButtonStyle.Secondary)
+          .setDisabled(true),
+        new ButtonBuilder()
+          .setLabel("Edit")
+          .setCustomId(`g.edit.${giveaway.id}`)
+          .setStyle(ButtonStyle.Primary)
           .setDisabled(true),
         new ButtonBuilder()
           .setLabel("Claim Giveaway")

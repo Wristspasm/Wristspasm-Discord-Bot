@@ -1,14 +1,13 @@
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 module.exports = {
   name: "update-nicknames",
   description: "Updates usernames of linked users.",
-  options: [],
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const linkedData = fs.readFileSync("data/linked.json");
@@ -75,12 +74,6 @@ async function printProgress(interaction, linked, uuid, id, username) {
 
 async function updateUsername(user, username, id, failedUsers, updatedUsers) {
   if (user === undefined || user.nickname === username || user.user.username === username) {
-    return;
-  }
-
-  if (user.roles.cache.has(config.discord.roles.commandRole)) {
-    console.log(user);
-    console.log(`Skipping ${username} (${id}) because they have the "Muted" role.`);
     return;
   }
 

@@ -25,6 +25,7 @@ const permissions = [
 module.exports = {
   name: "open-ticket",
   description: "Open a support ticket.",
+  defer: true,
   options: [
     {
       name: "reason",
@@ -50,12 +51,14 @@ module.exports = {
       await interaction.followUp({ embeds: [noPermissionEmbed], ephemeral: true });
       return;
     }
-    let channelPerms = [
+    const channelPerms = [
       { id: interaction.user.id, allow: permissions },
       { id: interaction.client.user.id, allow: permissions },
-      { id: config.discord.roles.commandRole, allow: permissions },
       { id: interaction.guild.roles.everyone.id, deny: permissions },
     ];
+    config.discord.commands.commandRoles.forEach((role) => {
+      channelPerms.push({ id: role, allow: permissions });
+    });
 
     let giveaway = null;
     let giveawayEmbed = null;
@@ -119,11 +122,13 @@ module.exports = {
     );
 
     const openMessage = await channel.send({
-      content: `<@${interaction.user.id}>`,
+      content: `<@${interaction.user.id}> | ${reason}`,
       embeds: [ticketEmbed],
       components: [row],
     });
-    const staffPing = await channel.send({ content: `<@&${config.discord.roles.commandRole}>` });
+    const staffPing = await channel.send({
+      content: `${config.discord.commands.commandRoles.map((role) => `<@&${role}>`).join(" ")}`,
+    });
     await delay(500);
     await openMessage.pin();
     await staffPing.delete();
@@ -214,7 +219,7 @@ module.exports = {
           },
         );
         await channel.send({ embeds: [reportEmbed] });
-        let msgs = [];
+        const msgs = [];
         msgs.push(`\n** Question ${msgsSent + 1}/${config.other.staffApplicationQuestions.length}**`);
         msgs.push(`- ${config.other.staffApplicationQuestions[msgsSent]}`);
         msgsSent++;

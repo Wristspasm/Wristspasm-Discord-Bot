@@ -3,8 +3,8 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "delete-roles",
   description: "Delete specific roles.",
-  options: [],
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const guildRoles = interaction.guild.roles.cache.filter(

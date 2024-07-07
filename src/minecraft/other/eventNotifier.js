@@ -11,8 +11,9 @@ if (config.minecraft.skyblockEventsNotifications.enabled) {
     try {
       const eventBOT = new minecraftCommand(bot);
       const EVENTS = getSkyblockCalendar();
-      for (const event in EVENTS.data.events) {
-        const eventData = EVENTS.data.events[event];
+
+      for (const event in EVENTS.events) {
+        const eventData = EVENTS.events[event];
         if (notifiers[event] === false) {
           continue;
         }

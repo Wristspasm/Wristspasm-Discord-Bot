@@ -7,6 +7,7 @@ module.exports = {
   name: "update-linked",
   description: "Removes role from unlinked users and sends them a DM to verify.",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const users = await interaction.guild.members.fetch();

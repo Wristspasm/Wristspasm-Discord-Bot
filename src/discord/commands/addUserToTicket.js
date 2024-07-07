@@ -15,6 +15,7 @@ module.exports = {
   name: "add-user-to-ticket",
   description: "Add a user to the ticket.",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "user",

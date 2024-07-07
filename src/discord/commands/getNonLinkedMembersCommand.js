@@ -8,8 +8,8 @@ const fs = require("fs");
 module.exports = {
   name: "get-non-linked-members",
   description: "Get a list of all members who have not linked their account.",
-  options: [],
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const users = await interaction.guild.members.fetch();

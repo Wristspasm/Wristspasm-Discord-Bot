@@ -1,7 +1,7 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const { Embed } = require("../../contracts/embedHandler.js");
 const { unlinkSync, writeFileSync } = require("fs");
 const config = require("../../../config.json");
+const { EmbedBuilder } = require("discord.js");
 
 function getTimeStamp(unixTimeStamp) {
   return new Date(unixTimeStamp).toLocaleString("en-US", {
@@ -21,6 +21,7 @@ module.exports = {
   name: "close-ticket",
   description: "Close a support ticket.",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "reason",
@@ -31,7 +32,7 @@ module.exports = {
   ],
 
   execute: async (interaction, channel = null) => {
-    const reason = interaction.options?.getString("reason") ?? "No Reason Provided";
+    const closeReason = interaction.options?.getString("reason") ?? "No Reason Provided";
     if (channel === null) {
       channel = interaction.channel;
     }
@@ -64,17 +65,31 @@ module.exports = {
     writeFileSync(`data/transcript-${interaction.channel.name}.txt`, TranscriptString);
 
     const firstMessage = (await channel.messages.fetchPinned()).first();
+    const openTimestamp = Math.floor(firstMessage.createdTimestamp / 1000);
+    let openReason = "No Reason Provided";
+    if (firstMessage.content.includes(" | ")) {
+      openReason = firstMessage.content.split(" | ")[1];
+    }
+    const closeTimestamp = Math.floor(Date.now() / 1000);
     const ticketOwnerId = firstMessage.mentions.users.first().id;
 
-    const ticketCloseEmbed = new Embed(
-      3447003,
-      "Ticket Closed",
-      `Ticket Opened by <@${ticketOwnerId}>\nTicket Closed by <@${interaction.user.id}>\n\nReason: ${reason}`,
-      {
+    const ticketCloseEmbed = new EmbedBuilder()
+      .setColor(3447003)
+      .setTitle("Ticket Closed")
+      .addFields(
+        {
+          name: "Ticket Open",
+          value: `by: <@${ticketOwnerId}>\nTimestamp: <t:${openTimestamp}> (<t:${openTimestamp}:R>)\nReason: ${openReason}`,
+        },
+        {
+          name: "Ticket Closed",
+          value: `by: <@${interaction.user.id}>\nTimestamp: <t:${closeTimestamp}> (<t:${closeTimestamp}:R>)\nReason: ${closeReason}`,
+        },
+      )
+      .setFooter({
         text: `by @kathund. | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
-      },
-    );
+      });
 
     var ticketLogsChannel = await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs);
     if (!ticketLogsChannel) {

@@ -7,6 +7,7 @@ module.exports = {
   name: "create-roles",
   description: "Revert skyblock roles",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     if (DISABLED) {

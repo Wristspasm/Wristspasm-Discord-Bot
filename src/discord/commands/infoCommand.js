@@ -6,6 +6,7 @@ module.exports = {
   name: "info",
   description: "Shows information about the bot.",
   requiresBot: true,
+  defer: true,
 
   execute: async (interaction) => {
     const commands = interaction.client.commands;
@@ -48,11 +49,11 @@ module.exports = {
             config.discord.channels.loggingChannel ? `<#${config.discord.channels.loggingChannel}>` : "None"
           }\nDebugging Channel: ${
             config.discord.channels.debugChannel ? `<#${config.discord.channels.debugChannel}>` : "None"
-          }\nCommand Role: <@&${config.discord.commands.commandRole}>\nMessage Mode: \`${
-            config.discord.other.messageMode
-          }\`\nFilter: \`${config.discord.other.filterMessages ? "enabled" : "disabled"}\`\nJoin Messages: \`${
-            config.discord.other.joinMessage ? "enabled" : "disabled"
-          }\``,
+          }\nCommand Role: ${config.discord.commands.commandRoles
+            .map((role) => `<@&${role}>`)
+            .join(", ")}\nMessage Mode: \`${config.discord.other.messageMode}\`\nFilter: \`${
+            config.discord.other.filterMessages ? "enabled" : "disabled"
+          }\`\nJoin Messages: \`${config.discord.other.joinMessage ? "enabled" : "disabled"}\``,
           inline: true,
         },
       )

@@ -5,6 +5,7 @@ module.exports = {
   description: "Kick the given user from the Guild.",
   moderatorOnly: true,
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "name",

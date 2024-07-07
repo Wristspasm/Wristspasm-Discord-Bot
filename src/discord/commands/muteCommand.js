@@ -8,7 +8,9 @@ module.exports = {
   name: "mute",
   description: "Mutes the given user for a given amount of time.",
   moderatorOnly: true,
+  requiresBot: true,
   ephemeral: true,
+  defer: true,
   options: [
     {
       name: "user",

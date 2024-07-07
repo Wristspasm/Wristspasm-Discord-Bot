@@ -1,5 +1,4 @@
 const WristSpasmError = require("../../contracts/errorHandler.js");
-const config = require("../../../config.json");
 const fs = require("fs");
 
 function formatUnixTime(milliseconds) {
@@ -25,6 +24,7 @@ module.exports = {
   name: "get-member-data",
   description: "Get member data",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const data = JSON.parse(fs.readFileSync("data/playerData.json"));

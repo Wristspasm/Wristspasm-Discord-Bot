@@ -10,6 +10,7 @@ module.exports = {
   name: "update-old-linked-data",
   description: "Updates old verification data to the new format",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     if (DISABLED === true) {

@@ -8,6 +8,7 @@ module.exports = {
   name: "overrideverify",
   description: "Connect your Discord account to Minecraft",
   moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "name",

@@ -7,6 +7,8 @@ const fs = require("fs");
 module.exports = {
   name: "linked",
   description: "Get an username / discord profile of specified user.",
+  moderatorOnly: true,
+  defer: true,
   options: [
     {
       name: "discord",

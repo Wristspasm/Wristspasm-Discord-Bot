@@ -1,5 +1,4 @@
 const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
 const axios = require("axios");
 
 class DuckCommand extends minecraftCommand {
@@ -15,7 +14,7 @@ class DuckCommand extends minecraftCommand {
   async onCommand(username, message) {
     // CREDITS: by @Kathund (https://github.com/Kathund)
     try {
-      const { data, status } = await axios.get(`https://raccoon.kath.lol/ducky`);
+      const { data, status } = await axios.get("https://imgs.kath.lol/ducky");
       if (status !== 200) {
         // eslint-disable-next-line no-throw-literal
         throw "An error occured while fetching the image. Please try again later.";
@@ -26,9 +25,7 @@ class DuckCommand extends minecraftCommand {
         throw "An error occured while fetching the image. Please try again later.";
       }
 
-      const upload = await uploadImage(data.url);
-
-      this.send(`/gc Funny Duck: ${upload.data.link}`);
+      this.send(`/gc Funny Duck: ${data.url}`);
     } catch (error) {
       this.send(`/gc [ERROR] ${error ?? "Something went wrong.."}`);
     }

@@ -3,6 +3,7 @@ const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = req
 module.exports = {
   name: "inactivity",
   description: "Send an inactivity notice to the guild staff",
+  defer: false,
 
   execute: async (interaction) => {
     const modal = new ModalBuilder().setCustomId("inactivityform").setTitle("Inactivity Form");

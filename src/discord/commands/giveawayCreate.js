@@ -7,10 +7,11 @@ module.exports = {
   description: "Create a giveaway",
   moderatorOnly: true,
   ephemeral: true,
+  defer: true,
   options: [
     {
       name: "prize",
-      description: "Minecraft Username",
+      description: "Giveaway Prize",
       type: 3,
       required: true,
     },
@@ -90,6 +91,10 @@ module.exports = {
           name: "Ends At",
           value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`,
         },
+        {
+          name: "Requirements",
+          value: `Guild Member: ${guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}\nVerified: ${verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"}`,
+        },
       )
       .setFooter({
         text: `by @kathund. | /help [command] for more information`,
@@ -114,6 +119,7 @@ module.exports = {
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setLabel("Enter Giveaway").setCustomId(`g.e.${giveaway.id}`).setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setLabel("Edit").setCustomId(`g.edit.${giveaway.id}`).setStyle(ButtonStyle.Primary),
       new ButtonBuilder()
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)

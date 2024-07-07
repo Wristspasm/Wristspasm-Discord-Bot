@@ -7,8 +7,8 @@ const fs = require("fs");
 module.exports = {
   name: "update-guild-members",
   description: "Removes role from players which have left the guild, they receive a DM to reapply.",
-  options: [],
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const users = await interaction.guild.members.fetch();

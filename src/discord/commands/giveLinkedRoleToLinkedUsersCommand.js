@@ -6,8 +6,8 @@ const fs = require("fs");
 module.exports = {
   name: "give-linked-users-role",
   description: "Give linked users a role.",
-  options: [],
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const users = await interaction.guild.members.fetch();

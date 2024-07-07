@@ -4,6 +4,7 @@ module.exports = {
   name: "guildtop",
   description: "Top 10 members with the most guild experience.",
   requiresBot: true,
+  defer: true,
   options: [
     {
       name: "time",

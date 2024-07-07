@@ -10,6 +10,7 @@ module.exports = {
   name: "gexpcheck",
   description: "Shows every play that got less than required amount of GEXP in the last 7 days",
   moderatorOnly: true,
+  defer: true,
 
   execute: async (interaction) => {
     const collector = interaction.channel.createMessageComponentCollector({

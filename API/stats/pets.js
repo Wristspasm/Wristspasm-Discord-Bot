@@ -19,9 +19,10 @@ const rarities = [
 module.exports = (profile) => {
   let output = [];
 
-  if (!("pets" in profile)) return output;
+  if (!("pets_data" in profile)) return output;
+  if (!("pets" in profile.pets_data)) return output;
 
-  for (const pet of profile.pets) {
+  for (const pet of profile.pets_data.pets) {
     if (!("tier" in pet)) {
       continue;
     }
