@@ -20,6 +20,11 @@ class StateHandler {
       return Logger.errorMessage(`Channel "Guild" not found!`);
     }
 
+    require("../other/statsChannel.js");
+    require("../other/weeklyPurge.js");
+    require("../other/giveaways.js");
+    require("../other/boar.js");
+
     channel.send({
       embeds: [
         {
