@@ -102,7 +102,7 @@ module.exports = {
                 new ButtonBuilder()
                   .setLabel("Leave Giveaway")
                   .setCustomId(`g.l.${giveaway.id}`)
-                  .setStyle(ButtonStyle.Danger),
+                  .setStyle(ButtonStyle.Danger)
               );
 
               return await interaction.followUp({
@@ -151,13 +151,13 @@ module.exports = {
                 {
                   name: "Requirements",
                   value: `Guild Member: ${
-                    giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                    giveaway.guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
                   }\nVerified: ${
                     giveaway.verifiedOnly
-                      ? "<:icons_Correct:1256841688895459348>"
-                      : "<:icons_Wrong:1256841707232690198>"
+                      ? "<:icons_Correct:1249308284075376641>"
+                      : "<:icons_Wrong:1249307619739570218>"
                   }`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -185,7 +185,7 @@ module.exports = {
                     .setLabel("Prize")
                     .setPlaceholder("Leave empty to keep the current")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Short),
+                    .setStyle(TextInputStyle.Short)
                 ),
                 new ActionRowBuilder().addComponents(
                   new TextInputBuilder()
@@ -193,7 +193,7 @@ module.exports = {
                     .setLabel("Winners")
                     .setPlaceholder("Leave empty to keep the current")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Short),
+                    .setStyle(TextInputStyle.Short)
                 ),
                 new ActionRowBuilder().addComponents(
                   new TextInputBuilder()
@@ -201,7 +201,7 @@ module.exports = {
                     .setLabel("End Timestamp")
                     .setPlaceholder("UNIX TIMESTAMP ONLY | Leave empty to keep the current")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Short),
+                    .setStyle(TextInputStyle.Short)
                 ),
                 new ActionRowBuilder().addComponents(
                   new TextInputBuilder()
@@ -209,7 +209,7 @@ module.exports = {
                     .setLabel("Guild Only")
                     .setPlaceholder("0 = OFF 1 = ON | Leave empty to keep the current")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Short),
+                    .setStyle(TextInputStyle.Short)
                 ),
                 new ActionRowBuilder().addComponents(
                   new TextInputBuilder()
@@ -217,9 +217,9 @@ module.exports = {
                     .setLabel("Verified Only")
                     .setPlaceholder("0 = OFF 1 = ON | Leave empty to keep the current")
                     .setRequired(false)
-                    .setStyle(TextInputStyle.Short),
-                ),
-              ),
+                    .setStyle(TextInputStyle.Short)
+                )
+              )
           );
         } else if (interaction.customId.startsWith("g.l.")) {
           const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
@@ -261,13 +261,13 @@ module.exports = {
                 {
                   name: "Requirements",
                   value: `Guild Member: ${
-                    giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                    giveaway.guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
                   }\nVerified: ${
                     giveaway.verifiedOnly
-                      ? "<:icons_Correct:1256841688895459348>"
-                      : "<:icons_Wrong:1256841707232690198>"
+                      ? "<:icons_Correct:1249308284075376641>"
+                      : "<:icons_Wrong:1249307619739570218>"
                   }`,
-                },
+                }
               )
               .setFooter({
                 text: `by @kathund. | /help [command] for more information`,
@@ -353,11 +353,11 @@ module.exports = {
               {
                 name: "Requirements",
                 value: `Guild Member: ${
-                  giveaway.guildOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                  giveaway.guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
                 }\nVerified: ${
-                  giveaway.verifiedOnly ? "<:icons_Correct:1256841688895459348>" : "<:icons_Wrong:1256841707232690198>"
+                  giveaway.verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
                 }`,
-              },
+              }
             )
             .setFooter({
               text: `by @kathund. | /help [command] for more information`,
@@ -397,7 +397,7 @@ module.exports = {
           const formattedTime = time * 86400;
           if (formattedTime > 21 * 86400) {
             throw new WristSpasmError(
-              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time.",
+              "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
             );
           }
 
@@ -406,7 +406,7 @@ module.exports = {
           const inactivityEmbed = new Embed(
             5763719,
             "Inactivity Request",
-            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`,
+            `\`Username:\` ${username}\n\`Requested:\` <t:${date}>\n\`Expiration:\` <t:${expiration}:R>\n\`Reason:\` ${reason}`
           );
           inactivityEmbed.setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
 
@@ -430,7 +430,7 @@ module.exports = {
           });
 
           const inactivityResponse = new SuccessEmbed(
-            `Inactivity request has been successfully sent to the guild staff.`,
+            `Inactivity request has been successfully sent to the guild staff.`
           );
 
           await interaction.reply({ embeds: [inactivityResponse], ephemeral: true });
@@ -456,7 +456,7 @@ module.exports = {
         const userID = interaction.user.id ?? "Unknown";
 
         const errorLog = new ErrorEmbed(
-          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``,
+          `Command: \`${commandName}\`\nOptions: \`${commandOptions}\`\nUser ID: \`${userID}\`\nUser: \`${username}\`\n\`\`\`${errorStack}\`\`\``
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,

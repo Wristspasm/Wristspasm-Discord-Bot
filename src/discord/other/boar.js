@@ -1,5 +1,6 @@
 const config = require("../../../config.json");
 const { readFileSync } = require("fs");
+const cron = require("node-cron");
 
 function boarPing() {
   const boarData = readFileSync("data/boar.json");
