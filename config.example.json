@@ -92,7 +92,8 @@
       "discordLogsChannel": "DISCORD_LOGS_CHANNEL_ID",
       "ticketsLogs": "TICKETS_LOGS_CHANNEL_ID",
       "ticketsCategory": "TICKETS_CATEGORY_ID",
-      "allowedBots": ["BOT_USER_ID"]
+      "allowedBots": ["BOT_USER_ID"],
+      "boarChannel": "BOAR_CHANNEL_ID"
     },
     "roles": {
       "linkedRole": "LINKED_ROLE_ID",
