@@ -16,4 +16,4 @@ function boarPing() {
   });
 }
 
-cron.schedule(`0 8 * * *`, () => boarPing(), { scheduled: true, timezone: "UTC" });
+cron.schedule(`0 0 * * *`, () => boarPing(), { scheduled: true, timezone: "UTC" });
