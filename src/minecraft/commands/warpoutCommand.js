@@ -34,21 +34,20 @@ class warpoutCommand extends minecraftCommand {
           bot.removeListener("message", warpoutListener);
           this.isOnCooldown = false;
 
-          this.send(`/gc ${user} is not online!`);
+          this.send(`/gc ${user} is offline!`);
         } else if (message.includes("You cannot invite that player!")) {
           bot.removeListener("message", warpoutListener);
           this.isOnCooldown = false;
 
           this.send(`/gc ${user} has party requests disabled!`);
         } else if (message.includes("invited") && message.includes("to the party! They have 60 seconds to accept.")) {
-          this.send(`/gc Succesfully invited ${user} to the party!`);
+          this.send(`/gc Partying ${user}...`);
         } else if (message.includes(" joined the party.")) {
-          this.send(`/gc ${user} joined the party! Warping them out of the game..`);
           this.send("/p warp");
         } else if (message.includes("warped to your server")) {
           bot.removeListener("message", warpoutListener);
           this.isOnCooldown = false;
-          this.send(`/gc ${user} warped out of the game! Disbanding party..`);
+          this.send(`/gc Successfully warped ${user}!`);
           this.send("/p disband");
 
           await delay(1500);
@@ -113,7 +112,7 @@ class warpoutCommand extends minecraftCommand {
         bot.removeListener("message", warpoutListener);
 
         if (this.isOnCooldown === true) {
-          this.send("/gc Party timed out");
+          this.send("/gc Party expired.");
           this.send("/p disband");
           this.send("\u00a7");
 
