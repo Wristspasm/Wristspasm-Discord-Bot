@@ -26,7 +26,7 @@ module.exports = {
     {
       name: "time",
       description: "How long will you be inactive for (in Days)",
-      type: 3,
+      type: 4,
       required: true,
     },
     {
@@ -56,7 +56,7 @@ module.exports = {
       throw new WristSpasmError(`${username} are not in the guild.`);
     }
 
-    const time = interaction.options.getString("time") * 86400;
+    const time = interaction.options.getInteger("time") * 86400;
     const expiration = toFixed(new Date().getTime() / 1000 + time, 0);
     const reason = interaction.options.getString("reason") || "None";
 
