@@ -4,6 +4,7 @@ const { getUUID } = require("../../contracts/API/mowojangAPI.js");
 const WristSpasmError = require("../../contracts/errorHandler.js");
 const config = require("../../../config.json");
 const { EmbedBuilder } = require("discord.js");
+const ms = require("ms");
 
 module.exports = {
   name: "overrideinactivity",
@@ -56,8 +57,7 @@ module.exports = {
       throw new WristSpasmError(`${username} are not in the guild.`);
     }
 
-    const time = interaction.options.getString("time") * 86400;
-    const expiration = toFixed(new Date().getTime() / 1000 + time, 0);
+    const expiration = Math.floor((Date.now() + ms(interaction.options.getString("time"))) / 1000);
     const reason = interaction.options.getString("reason") || "None";
 
     const channel = interaction.client.channels.cache.get(config.discord.channels.inactivity);
@@ -72,8 +72,8 @@ module.exports = {
       .setDescription(
         `\`Username:\` ${username}\n\`Requested:\` <t:${toFixed(
           new Date().getTime() / 1000,
-          0,
-        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`,
+          0
+        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,

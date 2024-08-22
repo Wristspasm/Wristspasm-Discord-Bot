@@ -19,6 +19,7 @@ const { writeAt } = require("../../contracts/helperFunctions.js");
 const config = require("../../../config.json");
 const Logger = require("../.././Logger.js");
 const fs = require("fs");
+const ms = require("ms");
 
 module.exports = {
   name: "interactionCreate",
@@ -368,7 +369,7 @@ module.exports = {
           fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
           return await interaction.reply({ content: "Giveaway has been successfully edited.", ephemeral: true });
         } else if (interaction.customId === "inactivityform") {
-          const time = interaction.fields.getTextInputValue("inactivitytime");
+          const time = Math.floor(ms(interaction.fields.getTextInputValue("inactivitytime")) / 1000);
           const reason = interaction.fields.getTextInputValue("inactivityreason") || "None";
 
           const linked = JSON.parse(fs.readFileSync("data/discordLinked.json", "utf8"));
@@ -390,19 +391,14 @@ module.exports = {
             throw new WristSpasmError("Guild data not found. Please contact an administrator.");
           }
 
-          if (isNaN(time) || time < 1) {
-            throw new WristSpasmError("Please enter a valid number.");
-          }
-
-          const formattedTime = time * 86400;
-          if (formattedTime > 21 * 86400) {
+          if (time > 21 * 86400) {
             throw new WristSpasmError(
               "You can only request inactivity for 21 days or less. Please contact an administrator if you need more time."
             );
           }
 
-          const expiration = (new Date().getTime() / 1000 + formattedTime).toFixed(0);
-          const date = (new Date().getTime() / 1000).toFixed(0);
+          const expiration = Math.floor(Date.now() / 1000) + time;
+          const date = Math.floor(new Date().getTime() / 1000);
           const inactivityEmbed = new Embed(
             5763719,
             "Inactivity Request",
@@ -422,10 +418,8 @@ module.exports = {
             uuid: uuid,
             discord: interaction.user.tag,
             discord_id: interaction.user.id,
-            requested: (new Date().getTime() / 1000).toFixed(0),
-            requested_formatted: new Date().toLocaleString(),
+            requested: date,
             expiration: expiration,
-            expiration_formatted: new Date(expiration * 1000).toLocaleString(),
             reason: reason,
           });
 
