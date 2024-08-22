@@ -95,7 +95,7 @@ module.exports = {
           value: `Guild Member: ${
             guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
           }\nVerified: ${verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"}`,
-        }
+        },
       )
       .setFooter({
         text: `by @kathund. | /help [command] for more information`,
@@ -125,7 +125,7 @@ module.exports = {
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)
         .setStyle(ButtonStyle.Secondary)
-        .setDisabled(true)
+        .setDisabled(true),
     );
     await giveaway.edit({ embeds: [giveawayEmbed], components: [row] });
 

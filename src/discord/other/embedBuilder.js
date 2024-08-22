@@ -431,7 +431,7 @@ async function handleEmbedButtonClick(interaction) {
           embedButtons.fieldInline
             .setCustomId(`e.embed.editFields.${embedIndex}.inline.${fieldIndex}`)
             .setStyle(
-              embeds[embedIndex].fields[fieldIndex]?.inline ?? false ? ButtonStyle.Success : ButtonStyle.Danger,
+              (embeds[embedIndex].fields[fieldIndex]?.inline ?? false) ? ButtonStyle.Success : ButtonStyle.Danger,
             );
           switch (fieldAction) {
             case "edit": {

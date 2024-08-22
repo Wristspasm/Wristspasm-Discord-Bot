@@ -40,7 +40,7 @@ module.exports = {
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)
         .setStyle(ButtonStyle.Success)
-        .setDisabled(false)
+        .setDisabled(false),
     );
     message.reply({
       content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`,
@@ -80,7 +80,7 @@ module.exports = {
           }\nVerified: ${
             giveaway.verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
           }`,
-        }
+        },
       )
       .setFooter({
         text: `by @kathund. | /help [command] for more information`,
@@ -104,7 +104,7 @@ module.exports = {
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)
         .setStyle(ButtonStyle.Success)
-        .setDisabled(false)
+        .setDisabled(false),
     );
     message.edit({ embeds: [giveawayEmbed], components: [row] });
 
