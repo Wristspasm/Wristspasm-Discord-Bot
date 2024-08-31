@@ -36,10 +36,10 @@ module.exports = (profile) => {
           score: MASTER_CATACOMBS?.best_score[i] ?? 0,
           name: getScoreName(MASTER_CATACOMBS?.best_score[i] ?? 0),
         },
-        fastest: MASTER_CATACOMBS?.fastest_time[i] ?? 0,
-        fastest_s: MASTER_CATACOMBS?.fastest_time_s[i] ?? 0,
+        fastest: MASTER_CATACOMBS?.fastest_time?.[i] || 0,
+        fastest_s: MASTER_CATACOMBS?.fastest_time_s?.[i] || 0,
         fastest_s_plus: MASTER_CATACOMBS?.fastest_time_s_plus?.[i] || 0,
-        mobs_killed: MASTER_CATACOMBS?.mobs_killed[i] ?? 0,
+        mobs_killed: MASTER_CATACOMBS?.mobs_killed?.[i] || 0,
       };
     }
 
