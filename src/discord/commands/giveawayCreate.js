@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const config = require("../../../config.json");
 const ms = require("ms");
 const fs = require("fs");
 
@@ -95,7 +96,7 @@ module.exports = {
           value: `Guild Member: ${
             guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
           }\nVerified: ${verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"}`,
-        },
+        }
       )
       .setFooter({
         text: `by @kathund. | /help [command] for more information`,
@@ -104,6 +105,7 @@ module.exports = {
 
     const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
     const giveaway = await channel.send({ embeds: [giveawayEmbed] });
+    await channel.send(`<@&${config.discord.roles.guildMemberRole}>`);
     giveawayData.push({
       host: host.id,
       winners,
@@ -125,7 +127,7 @@ module.exports = {
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)
         .setStyle(ButtonStyle.Secondary)
-        .setDisabled(true),
+        .setDisabled(true)
     );
     await giveaway.edit({ embeds: [giveawayEmbed], components: [row] });
 
