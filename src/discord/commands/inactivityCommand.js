@@ -11,7 +11,7 @@ module.exports = {
     const time = new TextInputBuilder()
       .setCustomId("inactivitytime")
       .setLabel("How long are you gonna be inactive for?")
-      .setStyle(TextInputStyle.Short)
+      .setStyle(TextInputStyle.Paragraph)
       .setMinLength(1)
       .setMaxLength(16)
       .setPlaceholder(
