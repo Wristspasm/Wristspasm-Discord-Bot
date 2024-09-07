@@ -14,7 +14,9 @@ module.exports = {
       .setStyle(TextInputStyle.Short)
       .setMinLength(1)
       .setMaxLength(16)
-      .setPlaceholder("1d = 1 day, 1w = 1 week, 1m = 1 month. Please format it like this or the bot wont set your inactivity!");
+      .setPlaceholder(
+        "1d = 1 day, 1w = 1 week, 1m = 1 month. Please format like this or you wont set your inactivity!"
+      );
 
     const reason = new TextInputBuilder()
       .setCustomId("inactivityreason")
