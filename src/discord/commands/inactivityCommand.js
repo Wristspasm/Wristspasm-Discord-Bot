@@ -13,8 +13,8 @@ module.exports = {
       .setLabel("How long are you gonna be inactive for?")
       .setStyle(TextInputStyle.Short)
       .setMinLength(1)
-      .setMaxLength(2)
-      .setPlaceholder("1-14 days");
+      .setMaxLength(16)
+      .setPlaceholder("1d = 1 day, 1w = 1 week, 1m = 1 month. Please format it like this or the bot wont set your inactivity!");
 
     const reason = new TextInputBuilder()
       .setCustomId("inactivityreason")
