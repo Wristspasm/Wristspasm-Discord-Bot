@@ -20,7 +20,7 @@ module.exports = {
     boar = boar.filter((user) => user !== interaction.user.id);
     writeFileSync("data/boar.json", JSON.stringify(boar, null, 2));
     const embed = new SuccessEmbed("You will no longer be pinged for boar", {
-      text: `by @kathund. | /help [command] for more information`,
+      text: `by @.kathund | /help [command] for more information`,
       iconURL: "https://i.imgur.com/uUuZx2E.png",
     });
     await interaction.followUp({ embeds: [embed] });

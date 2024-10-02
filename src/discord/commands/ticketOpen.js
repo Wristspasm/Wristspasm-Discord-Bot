@@ -44,7 +44,7 @@ module.exports = {
         "No Permission",
         "You are not a member of the guild and cannot apply for staff.",
         {
-          text: `by @kathund. | /help [command] for more information`,
+          text: `by @.kathund | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         }
       );
@@ -92,7 +92,7 @@ module.exports = {
             }
           )
           .setFooter({
-            text: `by @kathund. | /help [command] for more information`,
+            text: `by @.kathund | /help [command] for more information`,
             iconURL: "https://i.imgur.com/uUuZx2E.png",
           });
         giveaway.users.find((x) => x.id === interaction.user.id).claimed = true;
@@ -113,7 +113,7 @@ module.exports = {
       "Ticket Opened",
       `Ticket opened by <@${interaction.user.id}>\n\nReason: ${reason}`,
       {
-        text: `by @kathund. | /help [command] for more information`,
+        text: `by @.kathund | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
       }
     );
@@ -148,7 +148,7 @@ module.exports = {
             "Report a Guild Member",
             "Please provide the name of the player you are reporting.",
             {
-              text: `by @kathund. | /help [command] for more information`,
+              text: `by @.kathund | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
             }
           );
@@ -161,7 +161,7 @@ module.exports = {
             "Give a Suggestion",
             "Please provide a short description of your suggestion.",
             {
-              text: `by @kathund. | /help [command] for more information`,
+              text: `by @.kathund | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
             }
           );
@@ -174,7 +174,7 @@ module.exports = {
             "Questions or Concerns",
             "Please provide a detailed description of your question or concern.",
             {
-              text: `by @kathund. | /help [command] for more information`,
+              text: `by @.kathund | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
             }
           );
@@ -187,7 +187,7 @@ module.exports = {
             "Staff Application",
             'Please answer these questions in detail.\n\nSay "cancel" to close the ticket and stop the application.',
             {
-              text: `by @kathund. | /help [command] for more information`,
+              text: `by @.kathund | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
             }
           );
@@ -201,7 +201,7 @@ module.exports = {
             "General Support",
             "Please provide a detailed description of your issue.",
             {
-              text: `by @kathund. | /help [command] for more information`,
+              text: `by @.kathund | /help [command] for more information`,
               iconURL: "https://i.imgur.com/uUuZx2E.png",
             }
           );
@@ -218,7 +218,7 @@ module.exports = {
             config.other.staffApplicationQuestions[msgsSent]
           }`,
           {
-            text: `by @kathund. | /help [command] for more information`,
+            text: `by @.kathund | /help [command] for more information`,
             iconURL: "https://i.imgur.com/uUuZx2E.png",
           }
         );
@@ -250,7 +250,7 @@ module.exports = {
                 "Staff Application",
                 "Thank you for applying! Your application will be reviewed shortly.",
                 {
-                  text: `by @kathund. | /help [command] for more information`,
+                  text: `by @.kathund | /help [command] for more information`,
                   iconURL: "https://i.imgur.com/uUuZx2E.png",
                 }
               );
@@ -271,7 +271,7 @@ module.exports = {
                   config.other.staffApplicationQuestions[msgsSent]
                 }`,
                 {
-                  text: `by @kathund. | /help [command] for more information`,
+                  text: `by @.kathund | /help [command] for more information`,
                   iconURL: "https://i.imgur.com/uUuZx2E.png",
                 }
               );
@@ -287,7 +287,7 @@ module.exports = {
         "General Support",
         "Please provide a detailed description of your issue.",
         {
-          text: `by @kathund. | /help [command] for more information`,
+          text: `by @.kathund | /help [command] for more information`,
           iconURL: "https://i.imgur.com/uUuZx2E.png",
         }
       );
@@ -295,7 +295,7 @@ module.exports = {
     }
 
     const ticketOpenEmbed = new SuccessEmbed(`Ticket opened in <#${channel.id}>`, {
-      text: `by @kathund. | /help [command] for more information`,
+      text: `by @.kathund | /help [command] for more information`,
       iconURL: "https://i.imgur.com/uUuZx2E.png",
     });
 

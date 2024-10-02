@@ -84,10 +84,10 @@ module.exports = {
         {
           name: "Ticket Closed",
           value: `by: <@${interaction.user.id}>\nTimestamp: <t:${closeTimestamp}> (<t:${closeTimestamp}:R>)\nReason: ${closeReason}`,
-        },
+        }
       )
       .setFooter({
-        text: `by @kathund. | /help [command] for more information`,
+        text: `by @.kathund | /help [command] for more information`,
         iconURL: "https://i.imgur.com/uUuZx2E.png",
       });
 
