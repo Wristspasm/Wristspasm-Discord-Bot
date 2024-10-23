@@ -5,7 +5,6 @@ const ErrorHandler = require("./handlers/ErrorHandler.js");
 const ChatHandler = require("./handlers/ChatHandler.js");
 const CommandHandler = require("./CommandHandler.js");
 const config = require("../../config.json");
-const owoify = require("owoify-js").default;
 const mineflayer = require("mineflayer");
 const Logger = require("../Logger.js");
 const Filter = require("bad-words");
@@ -61,10 +60,6 @@ class MinecraftManager extends CommunicationBridge {
 
     if (config.discord.other.filterMessages) {
       message = filter.clean(message);
-    }
-
-    if (config.other.owoify.enabled === true && message.startsWith("!") === false) {
-      message = owoify(message, config.other.owoify.type);
     }
 
     message = replaceVariables(config.minecraft.bot.messageFormat, { username, message });

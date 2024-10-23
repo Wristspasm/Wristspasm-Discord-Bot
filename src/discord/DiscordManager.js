@@ -9,7 +9,6 @@ const config = require("../../config.json");
 const Logger = require(".././Logger.js");
 const path = require("node:path");
 const fs = require("fs");
-const owoify = require("owoify-js").default;
 
 class DiscordManager extends CommunicationBridge {
   constructor(app) {
@@ -96,16 +95,12 @@ class DiscordManager extends CommunicationBridge {
     if (message !== undefined && chat !== "debugChannel") {
       Logger.broadcastMessage(
         `${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`,
-        `Discord`,
+        `Discord`
       );
     }
 
     // ? custom message format (config.discord.other.messageFormat)
     if (config.discord.other.messageMode === "minecraft" && chat !== "debugChannel") {
-      if (config.other.owoify.enabled === true) {
-        message = owoify(message, config.other.owoify.type);
-      }
-
       message = replaceVariables(config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
     }
 
@@ -184,10 +179,6 @@ class DiscordManager extends CommunicationBridge {
   async onBroadcastCleanEmbed({ message, color, channel }) {
     Logger.broadcastMessage(message, "Event");
 
-    if (config.other.owoify.enabled === true) {
-      message = owoify(message, config.other.owoify.type);
-    }
-
     channel = await this.stateHandler.getChannel(channel);
     channel.send({
       embeds: [
@@ -201,10 +192,6 @@ class DiscordManager extends CommunicationBridge {
 
   async onBroadcastHeadedEmbed({ message, title, icon, color, channel }) {
     Logger.broadcastMessage(message, "Event");
-
-    if (config.other.owoify.enabled === true) {
-      message = owoify(message, config.other.owoify.type);
-    }
 
     channel = await this.stateHandler.getChannel(channel);
     channel.send({
@@ -223,10 +210,6 @@ class DiscordManager extends CommunicationBridge {
 
   async onPlayerToggle({ fullMessage, username, message, color, channel }) {
     Logger.broadcastMessage(message, "Event");
-
-    if (config.other.owoify.enabled === true) {
-      fullMessage = owoify(fullMessage, config.other.owoify.type);
-    }
 
     channel = await this.stateHandler.getChannel(channel);
     switch (config.discord.other.messageMode.toLowerCase()) {

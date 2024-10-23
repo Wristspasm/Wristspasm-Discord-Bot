@@ -124,10 +124,6 @@
   "other": {
     "staffApplicationQuestions": ["CHANGE THE CONFIG", "CHANGE THE CONFIG", "CHANGE THE CONFIG", "CHANGE THE CONFIG"],
     "logToFiles": true,
-    "owoify": {
-      "enabled": false,
-      "type": "owo"
-    },
     "autoUpdater": true,
     "autoUpdaterInterval": 12
   }
