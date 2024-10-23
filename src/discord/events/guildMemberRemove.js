@@ -9,15 +9,15 @@ module.exports = {
       .setDescription(`**${member.user} left the server**`)
       .setAuthor({
         name: member.user.tag,
-        iconURL: member.user.displayAvatarURL(),
+        iconURL: member.user.displayAvatarURL()
       })
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     const channel = member.guild.channels.cache.get(config.discord.channels.discordLogsChannel);
 
     channel.send({ embeds: [embed] });
-  },
+  }
 };

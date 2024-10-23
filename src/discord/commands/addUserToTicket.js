@@ -8,7 +8,7 @@ const permissions = [
   PermissionFlagsBits.ViewChannel,
   PermissionFlagsBits.AttachFiles,
   PermissionFlagsBits.AddReactions,
-  PermissionFlagsBits.EmbedLinks,
+  PermissionFlagsBits.EmbedLinks
 ];
 
 module.exports = {
@@ -21,8 +21,8 @@ module.exports = {
       name: "user",
       description: "The user to add to the ticket",
       type: 6,
-      required: true,
-    },
+      required: true
+    }
   ],
 
   execute: async (interaction) => {
@@ -40,8 +40,8 @@ module.exports = {
     const channelPermissions = [
       {
         id: `${user.id}`,
-        allow: permissions,
-      },
+        allow: permissions
+      }
     ];
     interaction.channel.permissionOverwrites.cache.forEach((value, key) => {
       if (key === user.id) return;
@@ -50,5 +50,5 @@ module.exports = {
     await interaction.channel.permissionOverwrites.set(channelPermissions);
 
     await interaction.followUp({ content: `<@${user.id}> has been added to this ticket by <@${interaction.user.id}>` });
-  },
+  }
 };

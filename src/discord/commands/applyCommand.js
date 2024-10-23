@@ -23,7 +23,7 @@ module.exports = {
 
     const [player, { profile }] = await Promise.all([
       hypixelRebornAPI.getPlayer(uuid, { guild: true }),
-      getLatestProfile(uuid),
+      getLatestProfile(uuid)
     ]);
 
     const skyblockLevel = (profile?.leveling?.experience || 0) / 100 ?? 0;
@@ -34,7 +34,7 @@ module.exports = {
       bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars;
     if (meetRequirements === false) {
       throw new WristSpasmError(
-        `You do not meet the requirements to join the guild. Please try again once you meet the requirements.`,
+        `You do not meet the requirements to join the guild. Please try again once you meet the requirements.`
       );
     }
 
@@ -44,7 +44,7 @@ module.exports = {
       .setDescription(`Guild Application has been successfully sent to the guild staff.`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.followUp({ embeds: [applicationEmbed] });
@@ -63,7 +63,7 @@ module.exports = {
     fields.push({
       name: "Guild",
       value: playersGuild,
-      inline: true,
+      inline: true
     });
     fields.push({ name: "Level", value: `\`${player.level}\``, inline: true });
     fields.push({ name: "First Login", value: `<t:${Math.floor(player.firstLogin / 1000)}:R>`, inline: true });
@@ -74,7 +74,7 @@ module.exports = {
     fields.push({
       name: "SkyCrypt",
       value: `[Click](https://sky.shiiyu.moe/stats/${player.nickname})`,
-      inline: true,
+      inline: true
     });
 
     const statsEmbed = new EmbedBuilder()
@@ -86,9 +86,9 @@ module.exports = {
       .setDescription(`${description}`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     interaction.client.channels.cache.get(config.discord.channels.joinRequests).send({ embeds: [statsEmbed] });
-  },
+  }
 };

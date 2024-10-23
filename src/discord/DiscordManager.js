@@ -27,8 +27,8 @@ class DiscordManager extends CommunicationBridge {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
-      ],
+        GatewayIntentBits.GuildMembers
+      ]
     });
 
     this.client = client;
@@ -73,7 +73,7 @@ class DiscordManager extends CommunicationBridge {
     if (webhooks.size === 0) {
       channel.createWebhook({
         name: "Hypixel Chat Bridge",
-        avatar: "https://imgur.com/tgwQJTX.png",
+        avatar: "https://imgur.com/tgwQJTX.png"
       });
 
       await this.getWebhook(discord, type);
@@ -119,14 +119,14 @@ class DiscordManager extends CommunicationBridge {
               color: this.hexToDec(color),
               timestamp: new Date(),
               footer: {
-                text: guildRank,
+                text: guildRank
               },
               author: {
                 name: username,
-                icon_url: `https://www.mc-heads.net/avatar/${username}`,
-              },
-            },
-          ],
+                icon_url: `https://www.mc-heads.net/avatar/${username}`
+              }
+            }
+          ]
         });
 
         if (message.includes("https://")) {
@@ -147,7 +147,7 @@ class DiscordManager extends CommunicationBridge {
         this.app.discord.webhook.send({
           content: message,
           username: username,
-          avatarURL: `https://www.mc-heads.net/avatar/${username}`,
+          avatarURL: `https://www.mc-heads.net/avatar/${username}`
         });
         break;
 
@@ -159,9 +159,9 @@ class DiscordManager extends CommunicationBridge {
         await channel.send({
           files: [
             new AttachmentBuilder(await messageToImage(message, username), {
-              name: `${username}.png`,
-            }),
-          ],
+              name: `${username}.png`
+            })
+          ]
         });
 
         if (message.includes("https://")) {
@@ -184,9 +184,9 @@ class DiscordManager extends CommunicationBridge {
       embeds: [
         {
           color: color,
-          description: message,
-        },
-      ],
+          description: message
+        }
+      ]
     });
   }
 
@@ -200,11 +200,11 @@ class DiscordManager extends CommunicationBridge {
           color: color,
           author: {
             name: title,
-            icon_url: icon,
+            icon_url: icon
           },
-          description: message,
-        },
-      ],
+          description: message
+        }
+      ]
     });
   }
 
@@ -221,10 +221,10 @@ class DiscordManager extends CommunicationBridge {
               timestamp: new Date(),
               author: {
                 name: `${message}`,
-                icon_url: `https://www.mc-heads.net/avatar/${username}`,
-              },
-            },
-          ],
+                icon_url: `https://www.mc-heads.net/avatar/${username}`
+              }
+            }
+          ]
         });
         break;
       case "webhook":
@@ -240,9 +240,9 @@ class DiscordManager extends CommunicationBridge {
           embeds: [
             {
               color: color,
-              description: `${message}`,
-            },
-          ],
+              description: `${message}`
+            }
+          ]
         });
 
         break;
@@ -250,9 +250,9 @@ class DiscordManager extends CommunicationBridge {
         await channel.send({
           files: [
             new AttachmentBuilder(await messageToImage(fullMessage), {
-              name: `${username}.png`,
-            }),
-          ],
+              name: `${username}.png`
+            })
+          ]
         });
         break;
       default:

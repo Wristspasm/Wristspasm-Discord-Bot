@@ -34,9 +34,9 @@ module.exports = {
       .setDescription(`Successfully updated old verification data to the new format`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.editReply({ embeds: [successfullyLinked] });
-  },
+  }
 };

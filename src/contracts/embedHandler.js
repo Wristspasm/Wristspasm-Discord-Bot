@@ -12,7 +12,7 @@ class Embed extends EmbedBuilder {
 
     this.setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: "https://imgur.com/tgwQJTX.png"
     });
 
     if (color) {
@@ -77,5 +77,5 @@ class SuccessEmbed extends Embed {
 module.exports = {
   Embed,
   ErrorEmbed,
-  SuccessEmbed,
+  SuccessEmbed
 };

@@ -27,7 +27,7 @@ module.exports = {
     for (const [uuid, id] of Object.entries(linked)) {
       const [username, user] = await Promise.all([
         getUsername(uuid),
-        interaction.guild.members.fetch(id).catch(() => {}),
+        interaction.guild.members.fetch(id).catch(() => {})
       ]);
 
       printProgress(interaction, linked, uuid, id, username);
@@ -41,7 +41,7 @@ module.exports = {
       .setDescription(`Successfully updated usernames for \`${updatedUsers.length}\` users.`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.editReply({ embeds: [successEmbed] });
@@ -53,7 +53,7 @@ module.exports = {
     if (failedUsers > 0) {
       printFailedNicknames(interaction, failedUsers);
     }
-  },
+  }
 };
 
 async function printProgress(interaction, linked, uuid, id, username) {
@@ -64,11 +64,11 @@ async function printProgress(interaction, linked, uuid, id, username) {
     .setColor(3066993)
     .setAuthor({ name: "Updating nicknames..." })
     .setDescription(
-      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`,
+      `Updating <@${id}>'s nickname (\`${username}\`)\n\nProgress: **${index}** / ${total} (\`${percentage}%\`)`
     )
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: "https://imgur.com/tgwQJTX.png"
     });
 
   await interaction.editReply({ embeds: [progressEmbed] });
@@ -98,7 +98,7 @@ async function printUpdatedUsernames(interaction, updatedUsers) {
     .setDescription(`${updatedUsers.map((id) => `- <@${id}>\n`).join("")}`)
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: "https://imgur.com/tgwQJTX.png"
     });
 
   await interaction.followUp({ embeds: [updatedNicknamesEmbed] });
@@ -111,7 +111,7 @@ async function printFailedNicknames(interaction, failedUsers) {
     .setDescription(`${failedUsers.map((id) => `- <@${id}>\n`).join("")}`)
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: "https://imgur.com/tgwQJTX.png"
     });
 
   await interaction.followUp({ embeds: [failedNicknamesEmbed] });

@@ -10,8 +10,8 @@ module.exports = {
       name: "time",
       description: "Days Ago",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -52,5 +52,5 @@ module.exports = {
     const embed = new Embed("#2ECC71", "Top 10 Guild Members", description);
 
     return await interaction.followUp({ embeds: [embed] });
-  },
+  }
 };

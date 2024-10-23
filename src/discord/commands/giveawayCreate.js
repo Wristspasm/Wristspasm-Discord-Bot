@@ -13,45 +13,45 @@ module.exports = {
       name: "prize",
       description: "Giveaway Prize",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "winners",
       description: "Number of winners",
       type: 4,
-      required: true,
+      required: true
     },
     {
       name: "duration",
       description: "Duration of the giveaway",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "host",
       description: "Host of the giveaway",
       type: 6,
-      required: false,
+      required: false
     },
     {
       name: "channel",
       description: "Channel to create the giveaway in",
       type: 7,
       required: false,
-      channel_types: [0],
+      channel_types: [0]
     },
     {
       name: "guild-only",
       description: "Whether the giveaway should be guild only",
       type: 5,
-      required: false,
+      required: false
     },
     {
       name: "verified-only",
       description: "Whether the giveaway should be verified only",
       type: 5,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -71,36 +71,36 @@ module.exports = {
         {
           name: "Prize",
           value: `${prize}`,
-          inline: true,
+          inline: true
         },
         {
           name: "Host",
           value: `<@${host.id}>`,
-          inline: true,
+          inline: true
         },
         {
           name: "Entries",
           value: "0",
-          inline: true,
+          inline: true
         },
         {
           name: "Winners",
-          value: `${winners}`,
+          value: `${winners}`
         },
         {
           name: "Ends At",
-          value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`,
+          value: `<t:${endTimestamp}:f> (<t:${endTimestamp}:R>)`
         },
         {
           name: "Requirements",
           value: `Guild Member: ${
             guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
-          }\nVerified: ${verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"}`,
+          }\nVerified: ${verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"}`
         }
       )
       .setFooter({
         text: `by @.kathund | /help [command] for more information`,
-        iconURL: "https://i.imgur.com/uUuZx2E.png",
+        iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 
     const giveawayData = JSON.parse(fs.readFileSync("data/giveaways.json", "utf-8"));
@@ -116,7 +116,7 @@ module.exports = {
       users: [],
       ended: false,
       guildOnly,
-      verifiedOnly,
+      verifiedOnly
     });
     fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
 
@@ -132,5 +132,5 @@ module.exports = {
     await giveaway.edit({ embeds: [giveawayEmbed], components: [row] });
 
     await interaction.followUp({ content: `Giveaway created! [View here](${giveaway.url})` });
-  },
+  }
 };

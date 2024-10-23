@@ -12,7 +12,7 @@ module.exports = {
         role.name.includes("Bedwars") ||
         role.name.includes("Skywars") ||
         (role.name.includes("[") && role.name.includes("]")) ||
-        role.name.includes("Duels"),
+        role.name.includes("Duels")
     );
 
     const roles = [];
@@ -22,7 +22,7 @@ module.exports = {
         color: role.color,
         hexColor: role.hexColor,
 
-        data: role,
+        data: role
       });
 
       // await role.delete();
@@ -36,5 +36,5 @@ module.exports = {
       .setColor("#00ff00");
 
     await interaction.editReply({ embeds: [successEmbed] });
-  },
+  }
 };

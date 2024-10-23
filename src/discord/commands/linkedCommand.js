@@ -14,14 +14,14 @@ module.exports = {
       name: "discord",
       description: "The Discord user to get the username of.",
       type: 6,
-      required: false,
+      required: false
     },
     {
       name: "name",
       description: "The Minecraft username to get the Discord profile of.",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -77,11 +77,11 @@ module.exports = {
       .setColor(3066993)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.editReply({ embeds: [embed] });
-  },
+  }
 };
 
 function getExtraData(playerDataParsed, uuid) {

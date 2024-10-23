@@ -30,5 +30,5 @@ module.exports = {
     modal.addComponents(inactivitytime, inactivityreason);
 
     await interaction.showModal(modal);
-  },
+  }
 };

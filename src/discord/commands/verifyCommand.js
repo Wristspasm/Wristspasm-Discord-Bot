@@ -15,8 +15,8 @@ module.exports = {
       name: "name",
       description: "Minecraft Username",
       type: 3,
-      required: true,
-    },
+      required: true
+    }
   ],
 
   execute: async (interaction) => {
@@ -39,7 +39,7 @@ module.exports = {
 
       if (discordUsername !== linkedAccount) {
         throw new WristSpasmError(
-          `The player '${username}' has linked their Discord account to a different account ('${discordUsername}').`,
+          `The player '${username}' has linked their Discord account to a different account ('${discordUsername}').`
         );
       }
 
@@ -65,7 +65,7 @@ module.exports = {
 
       await Promise.all([
         writeAt("data/discordLinked.json", `${interaction.user.id}`, `${uuid}`),
-        writeAt("data/minecraftLinked.json", `${uuid}`, `${interaction.user.id}`),
+        writeAt("data/minecraftLinked.json", `${uuid}`, `${interaction.user.id}`)
       ]);
 
       const successfullyLinked = new EmbedBuilder()
@@ -74,7 +74,7 @@ module.exports = {
         .setDescription(`Your account has been successfully linked to \`${nickname}\``)
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: "https://imgur.com/tgwQJTX.png"
         });
 
       await interaction.editReply({ embeds: [successfullyLinked] });
@@ -89,7 +89,7 @@ module.exports = {
         .replaceAll("Error: [hypixel-api-reborn] ", "")
         .replaceAll(
           "Unprocessable Entity! For help join our Discord Server https://discord.gg/NSEBNMM",
-          "This player does not exist. (Mojang API might be down)",
+          "This player does not exist. (Mojang API might be down)"
         );
 
       const errorEmbed = new EmbedBuilder()
@@ -98,7 +98,7 @@ module.exports = {
         .setDescription(`\`\`\`${error}\`\`\``)
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: "https://imgur.com/tgwQJTX.png"
         });
 
       await interaction.editReply({ embeds: [errorEmbed] });
@@ -110,17 +110,17 @@ module.exports = {
           .setDescription(
             `**Instructions:**\n1) Use your Minecraft client to connect to Hypixel.\n2) Once connected, and while in the lobby, right click "My Profile" in your hotbar. It is option #2.\n3) Click "Social Media" - this button is to the left of the Redstone block (the Status button).\n4) Click "Discord" - it is the second last option.\n5) Paste your Discord username into chat and hit enter. For reference: \`${
               interaction.user.username ?? interaction.user.tag
-            }\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`,
+            }\`\n6) You're done! Wait around 30 seconds and then try again.\n\n**Getting "The URL isn't valid!"?**\nHypixel has limitations on the characters supported in a Discord username. Try changing your Discord username temporarily to something without special characters, updating it in-game, and trying again.`
           )
           .setThumbnail("https://thumbs.gfycat.com/DentalTemptingLeonberger-size_restricted.gif")
           .setTimestamp()
           .setFooter({
             text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
+            iconURL: "https://imgur.com/tgwQJTX.png"
           });
 
         await interaction.followUp({ embeds: [verificationTutorialEmbed] });
       }
     }
-  },
+  }
 };

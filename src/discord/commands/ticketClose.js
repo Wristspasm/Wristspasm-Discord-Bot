@@ -13,7 +13,7 @@ function getTimeStamp(unixTimeStamp) {
     second: "numeric",
     hour12: false,
     timeZoneName: "short",
-    timeZone: "UTC",
+    timeZone: "UTC"
   });
 }
 
@@ -27,8 +27,8 @@ module.exports = {
       name: "reason",
       description: "The reason for opening a ticket",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction, channel = null) => {
@@ -79,16 +79,16 @@ module.exports = {
       .addFields(
         {
           name: "Ticket Open",
-          value: `by: <@${ticketOwnerId}>\nTimestamp: <t:${openTimestamp}> (<t:${openTimestamp}:R>)\nReason: ${openReason}`,
+          value: `by: <@${ticketOwnerId}>\nTimestamp: <t:${openTimestamp}> (<t:${openTimestamp}:R>)\nReason: ${openReason}`
         },
         {
           name: "Ticket Closed",
-          value: `by: <@${interaction.user.id}>\nTimestamp: <t:${closeTimestamp}> (<t:${closeTimestamp}:R>)\nReason: ${closeReason}`,
+          value: `by: <@${interaction.user.id}>\nTimestamp: <t:${closeTimestamp}> (<t:${closeTimestamp}:R>)\nReason: ${closeReason}`
         }
       )
       .setFooter({
         text: `by @.kathund | /help [command] for more information`,
-        iconURL: "https://i.imgur.com/uUuZx2E.png",
+        iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 
     var ticketLogsChannel = await interaction.client.channels.cache.get(config.discord.channels.ticketsLogs);
@@ -99,13 +99,13 @@ module.exports = {
 
     ticketLogsChannel.send({
       embeds: [ticketCloseEmbed],
-      files: [`data/transcript-${interaction.channel.name}.txt`],
+      files: [`data/transcript-${interaction.channel.name}.txt`]
     });
 
     try {
       await interaction.client.users.send(ticketOwnerId, {
         embeds: [ticketCloseEmbed],
-        files: [`data/transcript-${interaction.channel.name}.txt`],
+        files: [`data/transcript-${interaction.channel.name}.txt`]
       });
     } catch (e) {
       await interaction.followUp({ content: "User has DMs disabled", ephemeral: true });
@@ -115,5 +115,5 @@ module.exports = {
 
     await interaction.followUp({ content: "Ticket Closed", ephemeral: true });
     await channel.delete();
-  },
+  }
 };

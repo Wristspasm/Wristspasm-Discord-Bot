@@ -6,27 +6,27 @@ module.exports = {
       CRYSTAL_HOLLOWS_TRAVEL_SCROLL: {
         name: "Travel Scroll to the Crystal Hollows",
         id: "CRYSTAL_HOLLOWS_TRAVEL_SCROLL",
-        time: 600,
+        time: 600
       },
       SAPPHIRE_POLISHED_DRILL_ENGINE: {
         name: "Sapphire-polished Drill Engine",
         id: "SAPPHIRE_POLISHED_DRILL_ENGINE",
-        time: 1800,
+        time: 1800
       },
       BASE_CAMP_TRAVEL_SCROLL: {
         name: "Travel Scroll to the Dwarven Base Camp",
         id: "BASE_CAMP_TRAVEL_SCROLL",
-        time: 600,
+        time: 600
       },
       GOBLIN_OMELETTE_BLUE_CHEESE: {
         name: "Blue Cheese Goblin Omelette",
         id: "GOBLIN_OMELETTE_BLUE_CHEESE",
-        time: 1200,
+        time: 1200
       },
       AMBER_POLISHED_DRILL_ENGINE: {
         name: "Amber-polished Drill Engine",
         id: "AMBER_POLISHED_DRILL_ENGINE",
-        time: 3000,
+        time: 3000
       },
       GOBLIN_OMELETTE_SUNNY_SIDE: { name: "Sunny Side Goblin Omelette", id: "GOBLIN_OMELETTE_SUNNY_SIDE", time: 1200 },
       RUBY_POLISHED_DRILL_ENGINE: { name: "Ruby-polished Drill Engine", id: "RUBY_POLISHED_DRILL_ENGINE", time: 1200 },
@@ -124,7 +124,7 @@ module.exports = {
       BEACON_4: { name: "Beacon IV", id: "BEACON_4", time: 2400 },
       BEACON_5: { name: "Beacon V", id: "BEACON_5", time: 3000 },
       MOLE: { name: "[Lvl 1] Mole", id: "MOLE", time: 4320 },
-      CHISEL: { name: "Chisel", id: "CHISEL", time: 0.5 },
+      CHISEL: { name: "Chisel", id: "CHISEL", time: 0.5 }
     },
     quickForgeMultiplier: {
       1: 0.895,
@@ -146,8 +146,8 @@ module.exports = {
       17: 0.815,
       18: 0.81,
       19: 0.805,
-      20: 0.7,
-    },
+      20: 0.7
+    }
   },
   hotm: {
     perks: {
@@ -239,7 +239,7 @@ module.exports = {
       hungry_for_more: { name: "Dead Man's Chest", max: 50, type: "perk", level: 10 },
       excavator: { name: "Excavator", max: 50, type: "perk", level: 10 },
       rags_of_riches: { name: "Rags of Riches", max: 50, type: "perk", level: 10 },
-      hazardous_miner: { name: "Hazardous Miner", max: 1, type: "ability", level: 10 },
-    },
-  },
+      hazardous_miner: { name: "Hazardous Miner", max: 1, type: "ability", level: 10 }
+    }
+  }
 };

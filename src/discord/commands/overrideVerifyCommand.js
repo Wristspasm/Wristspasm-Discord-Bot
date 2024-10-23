@@ -15,14 +15,14 @@ module.exports = {
       name: "name",
       description: "Minecraft Username",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "user",
       description: "Discord User",
       type: 6,
-      required: true,
-    },
+      required: true
+    }
   ],
 
   execute: async (interaction) => {
@@ -49,7 +49,7 @@ module.exports = {
 
     await Promise.all([
       writeAt("data/discordLinked.json", `${id}`, `${uuid}`),
-      writeAt("data/minecraftLinked.json", `${uuid}`, `${id}`),
+      writeAt("data/minecraftLinked.json", `${uuid}`, `${id}`)
     ]);
 
     await interaction.guild.members
@@ -67,12 +67,12 @@ module.exports = {
       .setDescription(`\`${username}\` has been successfully linked to <@${id}>`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.followUp({ embeds: [successfullyLinked] });
 
     const updateRolesCommand = require("./rolesCommand.js");
     await updateRolesCommand.execute(interaction, await interaction.guild.members.fetch(id), "verify");
-  },
+  }
 };

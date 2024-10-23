@@ -54,9 +54,9 @@ module.exports = {
       .setColor(3066993)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.editReply({ embeds: [embed] });
-  },
+  }
 };

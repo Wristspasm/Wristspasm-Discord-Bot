@@ -71,15 +71,15 @@ module.exports = {
       .setDescription(
         `Removed <@&600313217603993617> role from \`${usersRemoved.length}\` users\n${usersRemoved
           .map((user) => `- <@${user}>\n`)
-          .join("")}`,
+          .join("")}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.editReply({ embeds: [successEmbed] });
-  },
+  }
 };
 
 async function sendDM(user, guildMemberRole, username, id, usersRemoved) {
@@ -90,11 +90,11 @@ async function sendDM(user, guildMemberRole, username, id, usersRemoved) {
     .setThumbnail("https://imgur.com/fNByP9j.png")
     .setColor(15548997)
     .setDescription(
-      `Your role as a Guild Member has been revoked within the WristSpasm Discord server. This action has been taken as you are no longer affiliated with the Guild. We appreciate your time with us and hope you had a positive experience.\n\nIf you wish to rejoin, please don't hesitate to reapply in the <#1072874886005014568> channel. If you are no longer a part of our community, you can disregard this message.\n\nFor any inquiries or concerns, please reach out to a staff member.`,
+      `Your role as a Guild Member has been revoked within the WristSpasm Discord server. This action has been taken as you are no longer affiliated with the Guild. We appreciate your time with us and hope you had a positive experience.\n\nIf you wish to rejoin, please don't hesitate to reapply in the <#1072874886005014568> channel. If you are no longer a part of our community, you can disregard this message.\n\nFor any inquiries or concerns, please reach out to a staff member.`
     )
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: "https://imgur.com/tgwQJTX.png"
     });
 
   await user.roles.remove(guildMemberRole);
@@ -109,7 +109,7 @@ async function sendDM(user, guildMemberRole, username, id, usersRemoved) {
   }
 
   await userDM.send({
-    embeds: [removedGuildMemberRoleEmbed],
+    embeds: [removedGuildMemberRoleEmbed]
   });
 
   usersRemoved.push(id);

@@ -25,14 +25,14 @@ class MayorCommand extends minecraftCommand {
         this.send(
           `/gc [MAYOR] ${data.mayor.name} is the current mayor of Skyblock! Perks: ${data.mayor.perks
             .map((perk) => perk.name)
-            .join(", ")}`,
+            .join(", ")}`
         );
       } else {
         const currentLeader = data.current.candidates.sort((a, b) => b.votes - a.votes)[0];
         this.send(
           `/gc [MAYOR] ${data.mayor.name} is the current mayor of Skyblock! Perks: ${data.mayor.perks
             .map((perk) => perk.name)
-            .join(", ")} | Current Election: ${currentLeader.name}`,
+            .join(", ")} | Current Election: ${currentLeader.name}`
         );
       }
     } catch (error) {

@@ -18,11 +18,11 @@ function parseHypixel(playerRes) {
       combat: achievements?.skyblock_combat || 0,
       fishing: achievements?.skyblock_angler || 0,
       alchemy: achievements?.skyblock_concoctor || 0,
-      taming: achievements?.skyblock_domesticator || 0,
+      taming: achievements?.skyblock_domesticator || 0
     },
     dungeons: {
-      secrets: achievements?.skyblock_treasure_hunter || 0,
-    },
+      secrets: achievements?.skyblock_treasure_hunter || 0
+    }
   };
 }
 

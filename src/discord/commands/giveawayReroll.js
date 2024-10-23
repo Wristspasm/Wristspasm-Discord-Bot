@@ -11,14 +11,14 @@ module.exports = {
       name: "id",
       description: "Giveaway id (Message id)",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "amount",
       description: "Amount of winners to reroll",
       type: 4,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -35,7 +35,7 @@ module.exports = {
     const winners = interaction.options.getInteger("winners") || giveaway.winners;
     if (winners > giveaway.winners) {
       return interaction.followUp({
-        content: "Amount of winners to reroll is higher than the original amount of winners!",
+        content: "Amount of winners to reroll is higher than the original amount of winners!"
       });
     }
     const channel = await interaction.guild.channels.fetch(giveaway.channel);
@@ -56,13 +56,13 @@ module.exports = {
         .setLabel("Claim Giveaway")
         .setCustomId(`t.o.g.${giveaway.id}`)
         .setStyle(ButtonStyle.Success)
-        .setDisabled(false),
+        .setDisabled(false)
     );
     message.reply({
       content: `Congratulations to ${newWinners.join(", ")} for winning the giveaway!`,
-      components: [claimRow],
+      components: [claimRow]
     });
     fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
     await interaction.followUp({ content: "Giveaway rerolled!" });
-  },
+  }
 };

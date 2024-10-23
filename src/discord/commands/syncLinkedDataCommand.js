@@ -40,7 +40,7 @@ module.exports = {
       .setDescription(`Linked data has been synced!`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     if (followUp === true) {
@@ -50,5 +50,5 @@ module.exports = {
     }
 
     await interaction.editReply({ embeds: [successEmbed] });
-  },
+  }
 };

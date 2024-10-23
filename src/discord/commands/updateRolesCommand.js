@@ -13,8 +13,8 @@ module.exports = {
       name: "index",
       description: "Index of member from which to start from (default: 0)",
       type: 4,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -55,11 +55,11 @@ module.exports = {
           `Updating roles for <@${user.id}>\n\nProgress: \`${index}/${totalMembers}\` (\`${(
             (index / totalMembers) *
             100
-          ).toFixed(2)}%\`)`,
+          ).toFixed(2)}%\`)`
         )
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: "https://imgur.com/tgwQJTX.png"
         });
 
       if (index >= indexValue) {
@@ -78,13 +78,13 @@ module.exports = {
       .setDescription(
         `Successfully updated role to \`${updatedMembers.length}\` users!\n${updatedMembers
           .map((user) => `• <@${user.id}>`)
-          .join("\n")}`,
+          .join("\n")}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.followUp({ embeds: [successEmbed] });
-  },
+  }
 };

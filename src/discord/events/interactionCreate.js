@@ -8,7 +8,7 @@ const {
   ButtonBuilder,
   EmbedBuilder,
   ButtonStyle,
-  ModalBuilder,
+  ModalBuilder
 } = require("discord.js");
 const { handleEmbedButtonClick, handleEmbedModelSubmit } = require("../other/embedBuilder.js");
 const { ErrorEmbed, Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
@@ -109,7 +109,7 @@ module.exports = {
               return await interaction.followUp({
                 content: "You have already entered the giveaway.",
                 components: [row],
-                ephemeral: true,
+                ephemeral: true
               });
             }
 
@@ -129,25 +129,25 @@ module.exports = {
                 {
                   name: "Prize",
                   value: `${giveaway.prize}`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Host",
                   value: `<@${giveaway.host}>`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Entries",
                   value: `${giveaway.users.length}`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Winners",
-                  value: `${giveaway.winners}`,
+                  value: `${giveaway.winners}`
                 },
                 {
                   name: "Ends At",
-                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`
                 },
                 {
                   name: "Requirements",
@@ -157,12 +157,12 @@ module.exports = {
                     giveaway.verifiedOnly
                       ? "<:icons_Correct:1249308284075376641>"
                       : "<:icons_Wrong:1249307619739570218>"
-                  }`,
+                  }`
                 }
               )
               .setFooter({
                 text: `by @.kathund | /help [command] for more information`,
-                iconURL: "https://i.imgur.com/uUuZx2E.png",
+                iconURL: "https://i.imgur.com/uUuZx2E.png"
               });
             const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
             await message.edit({ embeds: [giveawayEmbed] });
@@ -239,25 +239,25 @@ module.exports = {
                 {
                   name: "Prize",
                   value: `${giveaway.prize}`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Host",
                   value: `<@${giveaway.host}>`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Entries",
                   value: `${giveaway.users.length}`,
-                  inline: true,
+                  inline: true
                 },
                 {
                   name: "Winners",
-                  value: `${giveaway.winners}`,
+                  value: `${giveaway.winners}`
                 },
                 {
                   name: "Ends At",
-                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+                  value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`
                 },
                 {
                   name: "Requirements",
@@ -267,12 +267,12 @@ module.exports = {
                     giveaway.verifiedOnly
                       ? "<:icons_Correct:1249308284075376641>"
                       : "<:icons_Wrong:1249307619739570218>"
-                  }`,
+                  }`
                 }
               )
               .setFooter({
                 text: `by @.kathund | /help [command] for more information`,
-                iconURL: "https://i.imgur.com/uUuZx2E.png",
+                iconURL: "https://i.imgur.com/uUuZx2E.png"
               });
             const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
             await message.edit({ embeds: [giveawayEmbed] });
@@ -331,25 +331,25 @@ module.exports = {
               {
                 name: "Prize",
                 value: `${giveaway.prize}`,
-                inline: true,
+                inline: true
               },
               {
                 name: "Host",
                 value: `<@${giveaway.host}>`,
-                inline: true,
+                inline: true
               },
               {
                 name: "Entries",
                 value: `${giveaway.users.length}`,
-                inline: true,
+                inline: true
               },
               {
                 name: "Winners",
-                value: `${giveaway.winners}`,
+                value: `${giveaway.winners}`
               },
               {
                 name: "Ends At",
-                value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+                value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`
               },
               {
                 name: "Requirements",
@@ -357,12 +357,12 @@ module.exports = {
                   giveaway.guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
                 }\nVerified: ${
                   giveaway.verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
-                }`,
+                }`
               }
             )
             .setFooter({
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             });
           const message = await interaction.guild.channels.cache.get(giveaway.channel).messages.fetch(giveaway.id);
           await message.edit({ embeds: [giveawayEmbed] });
@@ -384,7 +384,7 @@ module.exports = {
 
           const [guild, username] = await Promise.all([
             hypixelRebornAPI.getGuild("name", "WristSpasm"),
-            getUsername(linked[interaction.user.id]),
+            getUsername(linked[interaction.user.id])
           ]);
 
           if (guild === undefined) {
@@ -420,7 +420,7 @@ module.exports = {
             discord_id: interaction.user.id,
             requested: date,
             expiration: expiration,
-            reason: reason,
+            reason: reason
           });
 
           const inactivityResponse = new SuccessEmbed(
@@ -454,11 +454,11 @@ module.exports = {
         );
         interaction.client.channels.cache.get(config.discord.channels.loggingChannel).send({
           content: `<@&987936050649391194> <@1169174913832202306>`,
-          embeds: [errorLog],
+          embeds: [errorLog]
         });
       }
     }
-  },
+  }
 };
 
 function isBotOnline() {

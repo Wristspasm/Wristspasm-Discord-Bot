@@ -21,8 +21,8 @@ module.exports = {
     writeFileSync("data/boar.json", JSON.stringify(boar, null, 2));
     const embed = new SuccessEmbed("You will now be pinged for boar", {
       text: `by @.kathund | /help [command] for more information`,
-      iconURL: "https://i.imgur.com/uUuZx2E.png",
+      iconURL: "https://i.imgur.com/uUuZx2E.png"
     });
     await interaction.followUp({ embeds: [embed] });
-  },
+  }
 };

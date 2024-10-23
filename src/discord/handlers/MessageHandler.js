@@ -31,7 +31,7 @@ class MessageHandler {
         username: message.member.displayName.replaceAll(" ", ""),
         message: content,
         replyingTo: await this.fetchReply(message),
-        discord: message,
+        discord: message
       };
 
       const images = content.split(" ").filter((line) => line.startsWith("http"));
@@ -153,7 +153,7 @@ class MessageHandler {
     const validChannelIds = [
       config.discord.channels.officerChannel,
       config.discord.channels.guildChatChannel,
-      config.discord.channels.debugChannel,
+      config.discord.channels.debugChannel
     ];
 
     return isValid && validChannelIds.includes(message.channel.id);

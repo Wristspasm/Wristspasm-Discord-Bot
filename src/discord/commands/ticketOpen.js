@@ -4,7 +4,7 @@ const {
   ButtonBuilder,
   EmbedBuilder,
   ChannelType,
-  ButtonStyle,
+  ButtonStyle
 } = require("discord.js");
 const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -19,7 +19,7 @@ const permissions = [
   PermissionFlagsBits.ViewChannel,
   PermissionFlagsBits.AttachFiles,
   PermissionFlagsBits.AddReactions,
-  PermissionFlagsBits.EmbedLinks,
+  PermissionFlagsBits.EmbedLinks
 ];
 
 module.exports = {
@@ -31,8 +31,8 @@ module.exports = {
       name: "reason",
       description: "The reason for opening a ticket",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction, type = null, giveawayId = null) => {
@@ -45,7 +45,7 @@ module.exports = {
         "You are not a member of the guild and cannot apply for staff.",
         {
           text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png",
+          iconURL: "https://i.imgur.com/uUuZx2E.png"
         }
       );
       await interaction.followUp({ embeds: [noPermissionEmbed], ephemeral: true });
@@ -54,7 +54,7 @@ module.exports = {
     const channelPerms = [
       { id: interaction.user.id, allow: permissions },
       { id: interaction.client.user.id, allow: permissions },
-      { id: interaction.guild.roles.everyone.id, deny: permissions },
+      { id: interaction.guild.roles.everyone.id, deny: permissions }
     ];
     config.discord.commands.commandRoles.forEach((role) => {
       channelPerms.push({ id: role, allow: permissions });
@@ -84,16 +84,16 @@ module.exports = {
             {
               name: "Prize",
               value: `${giveaway.prize}`,
-              inline: true,
+              inline: true
             },
             {
               name: "Host",
-              value: `<@${giveaway.host}>`,
+              value: `<@${giveaway.host}>`
             }
           )
           .setFooter({
             text: `by @.kathund | /help [command] for more information`,
-            iconURL: "https://i.imgur.com/uUuZx2E.png",
+            iconURL: "https://i.imgur.com/uUuZx2E.png"
           });
         giveaway.users.find((x) => x.id === interaction.user.id).claimed = true;
         fs.writeFileSync("data/giveaways.json", JSON.stringify(giveawayData, null, 2));
@@ -105,7 +105,7 @@ module.exports = {
       name: `ticket-${interaction.member.displayName ?? interaction.user.username}`,
       type: ChannelType.GuildText,
       parent: config.discord.channels.ticketsCategory,
-      permissionOverwrites: channelPerms,
+      permissionOverwrites: channelPerms
     });
 
     const ticketEmbed = new Embed(
@@ -114,7 +114,7 @@ module.exports = {
       `Ticket opened by <@${interaction.user.id}>\n\nReason: ${reason}`,
       {
         text: `by @.kathund | /help [command] for more information`,
-        iconURL: "https://i.imgur.com/uUuZx2E.png",
+        iconURL: "https://i.imgur.com/uUuZx2E.png"
       }
     );
 
@@ -125,12 +125,12 @@ module.exports = {
     const openMessage = await channel.send({
       content: `<@${interaction.user.id}> | ${reason}`,
       embeds: [ticketEmbed],
-      components: [row],
+      components: [row]
     });
     let staffPing;
     if (giveaway === null) {
       staffPing = await channel.send({
-        content: `${config.discord.commands.commandRoles.map((role) => `<@&${role}>`).join(" ")}`,
+        content: `${config.discord.commands.commandRoles.map((role) => `<@&${role}>`).join(" ")}`
       });
     }
     await delay(500);
@@ -149,7 +149,7 @@ module.exports = {
             "Please provide the name of the player you are reporting.",
             {
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             }
           );
           await openMessage.reply({ embeds: [reportEmbed] });
@@ -162,7 +162,7 @@ module.exports = {
             "Please provide a short description of your suggestion.",
             {
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             }
           );
           await openMessage.reply({ embeds: [suggestionEmbed] });
@@ -175,7 +175,7 @@ module.exports = {
             "Please provide a detailed description of your question or concern.",
             {
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             }
           );
           await openMessage.reply({ embeds: [questionEmbed] });
@@ -188,7 +188,7 @@ module.exports = {
             'Please answer these questions in detail.\n\nSay "cancel" to close the ticket and stop the application.',
             {
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             }
           );
           await openMessage.reply({ embeds: [questionEmbed] });
@@ -202,7 +202,7 @@ module.exports = {
             "Please provide a detailed description of your issue.",
             {
               text: `by @.kathund | /help [command] for more information`,
-              iconURL: "https://i.imgur.com/uUuZx2E.png",
+              iconURL: "https://i.imgur.com/uUuZx2E.png"
             }
           );
           await openMessage.reply({ embeds: [supportEmbed] });
@@ -219,7 +219,7 @@ module.exports = {
           }`,
           {
             text: `by @.kathund | /help [command] for more information`,
-            iconURL: "https://i.imgur.com/uUuZx2E.png",
+            iconURL: "https://i.imgur.com/uUuZx2E.png"
           }
         );
         await channel.send({ embeds: [reportEmbed] });
@@ -251,7 +251,7 @@ module.exports = {
                 "Thank you for applying! Your application will be reviewed shortly.",
                 {
                   text: `by @.kathund | /help [command] for more information`,
-                  iconURL: "https://i.imgur.com/uUuZx2E.png",
+                  iconURL: "https://i.imgur.com/uUuZx2E.png"
                 }
               );
               await channel.send({ embeds: [reportEmbed] });
@@ -272,7 +272,7 @@ module.exports = {
                 }`,
                 {
                   text: `by @.kathund | /help [command] for more information`,
-                  iconURL: "https://i.imgur.com/uUuZx2E.png",
+                  iconURL: "https://i.imgur.com/uUuZx2E.png"
                 }
               );
               await channel.send({ embeds: [reportEmbed] });
@@ -288,7 +288,7 @@ module.exports = {
         "Please provide a detailed description of your issue.",
         {
           text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png",
+          iconURL: "https://i.imgur.com/uUuZx2E.png"
         }
       );
       if (!giveaway) await openMessage.reply({ embeds: [supportEmbed] });
@@ -296,9 +296,9 @@ module.exports = {
 
     const ticketOpenEmbed = new SuccessEmbed(`Ticket opened in <#${channel.id}>`, {
       text: `by @.kathund | /help [command] for more information`,
-      iconURL: "https://i.imgur.com/uUuZx2E.png",
+      iconURL: "https://i.imgur.com/uUuZx2E.png"
     });
 
     await interaction.followUp({ embeds: [ticketOpenEmbed], ephemeral: true });
-  },
+  }
 };

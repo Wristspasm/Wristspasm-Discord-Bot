@@ -15,7 +15,7 @@ module.exports = {
   execute: async (interaction) => {
     const collector = interaction.channel.createMessageComponentCollector({
       compnentType: "DROPDOWN",
-      time: 60 * 1000,
+      time: 60 * 1000
     });
 
     const inactivity = JSON.parse(fs.readFileSync("data/inactivity.json", "utf8"));
@@ -59,7 +59,7 @@ module.exports = {
         .setDescription(`**Progress:** \`${progress}%\` (\`${position}/${members.length}\`)`)
         .setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: "https://imgur.com/tgwQJTX.png"
         });
 
       interaction.editReply({ embeds: [progressEmbed] });
@@ -82,7 +82,7 @@ module.exports = {
       .setDescription(`**Skipped players:**\n${skippedPlayers}`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     const dropdownMenu = new StringSelectMenuBuilder()
@@ -92,35 +92,35 @@ module.exports = {
         {
           label: "10,000",
           description: "Show everyone below 10,000 Guild Experience",
-          value: "command.guildexpcheck.10000",
+          value: "command.guildexpcheck.10000"
         },
         {
           label: "20,000",
           description: "Show everyone below 20,000 Guild Experience",
-          value: "command.guildexpcheck.20000",
+          value: "command.guildexpcheck.20000"
         },
         {
           label: "30,000",
           description: "Show everyone below 30,000 Guild Experience",
-          value: "command.guildexpcheck.30000",
+          value: "command.guildexpcheck.30000"
         },
         {
           label: "40,000",
           description: "Show everyone below 40,000 Guild Experience",
-          value: "command.guildexpcheck.40000",
+          value: "command.guildexpcheck.40000"
         },
         {
           label: `${config.minecraft.guild.guildExp.toLocaleString()}`,
           description: `Show everyone below ${config.minecraft.guild.guildExp.toLocaleString()} Guild Experience`,
-          value: `command.guildexpcheck.${config.minecraft.guild.guildExp}`,
-        },
+          value: `command.guildexpcheck.${config.minecraft.guild.guildExp}`
+        }
       );
 
     collector.resetTimer();
     await interaction.editReply({
       embeds: [embed],
       files: ["data/guildExperience.txt"],
-      components: [new ActionRowBuilder().addComponents(dropdownMenu)],
+      components: [new ActionRowBuilder().addComponents(dropdownMenu)]
     });
 
     collector.on("collect", async (i) => {
@@ -153,7 +153,7 @@ module.exports = {
         const output = {
           files: [{ attachment: Buffer.from(string), name: "guildExperience.txt" }],
           content: `**Weekly Guild Experience** (${guildExp.toLocaleString()})`,
-          ephemeral: true,
+          ephemeral: true
         };
 
         if (i.replied === false) {
@@ -187,7 +187,7 @@ module.exports = {
           .setDescription(`**Weekly Guild Experience** (${guildExp.toLocaleString()})\n\n${string}`)
           .setFooter({
             text: `by @duckysolucky | /help [command] for more information`,
-            iconURL: "https://imgur.com/tgwQJTX.png",
+            iconURL: "https://imgur.com/tgwQJTX.png"
           });
 
         await i.update({ embeds: [responseEmbed], files: [], content: "", components: [] });
@@ -196,8 +196,8 @@ module.exports = {
 
     collector.on("end", () => {
       interaction.editReply({
-        components: [],
+        components: []
       });
     });
-  },
+  }
 };

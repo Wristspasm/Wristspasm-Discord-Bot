@@ -15,32 +15,32 @@ module.exports = {
       choices: [
         {
           name: "Made by DuckySoLucky",
-          value: "duckysolucky",
+          value: "duckysolucky"
         },
         {
           name: "Made by Kathund",
-          value: "kathund",
+          value: "kathund"
         },
         {
           name: "Made by george_filos",
-          value: "george_filos",
+          value: "george_filos"
         },
         {
           name: "Success Embed",
-          value: "success",
+          value: "success"
         },
         {
           name: "Error Embed",
-          value: "error",
-        },
-      ],
+          value: "error"
+        }
+      ]
     },
     {
       name: "message-import",
       description: "Import a message to edit | Only discord links",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -55,21 +55,21 @@ module.exports = {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @duckysolucky | /help [command] for more information`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: "https://imgur.com/tgwQJTX.png"
         })
       );
     } else if (preset === "kathund") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png",
+          iconURL: "https://i.imgur.com/uUuZx2E.png"
         })
       );
     } else if (preset === "george_filos") {
       embeds.push(
         new EmbedBuilder().setColor(3447003).setFooter({
           text: `by @george_filos | /help [command] for more information`,
-          iconURL: "https://cdn.discordapp.com/avatars/177083022305263616/4ee1d5f278a36a61aa9164b9263c8722.webp",
+          iconURL: "https://cdn.discordapp.com/avatars/177083022305263616/4ee1d5f278a36a61aa9164b9263c8722.webp"
         })
       );
     } else if (preset === "success") {
@@ -118,8 +118,8 @@ module.exports = {
         new ActionRowBuilder().addComponents(buttons.editMessage, buttons.addImage, buttons.deleteImage),
         new ActionRowBuilder().addComponents(buttons.addEmbed, buttons.editEmbed, buttons.deleteEmbed),
         new ActionRowBuilder().addComponents(buttons.importJson, buttons.exportJson),
-        new ActionRowBuilder().addComponents(buttons.reset, buttons.send),
-      ],
+        new ActionRowBuilder().addComponents(buttons.reset, buttons.send)
+      ]
     });
-  },
+  }
 };

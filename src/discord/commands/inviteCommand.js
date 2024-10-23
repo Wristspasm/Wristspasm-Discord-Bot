@@ -11,8 +11,8 @@ module.exports = {
       name: "name",
       description: "Minecraft Username",
       type: 3,
-      required: true,
-    },
+      required: true
+    }
   ],
 
   execute: async (interaction) => {
@@ -22,7 +22,7 @@ module.exports = {
     const embed = new SuccessEmbed(`Successfully invited **${name}** to the guild.`);
 
     await interaction.followUp({
-      embeds: [embed],
+      embeds: [embed]
     });
-  },
+  }
 };

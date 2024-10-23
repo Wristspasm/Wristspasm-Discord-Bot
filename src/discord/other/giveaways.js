@@ -29,7 +29,7 @@ async function checkGiveaways() {
       );
       message.reply({
         content: `Congratulations to ${winners.join(", ")} for winning the giveaway!`,
-        components: [claimRow],
+        components: [claimRow]
       });
       const giveawayEmbed = new EmbedBuilder()
         .setColor(3447003)
@@ -38,25 +38,25 @@ async function checkGiveaways() {
           {
             name: "Prize",
             value: `${giveaway.prize}`,
-            inline: true,
+            inline: true
           },
           {
             name: "Host",
             value: `<@${giveaway.host}>`,
-            inline: true,
+            inline: true
           },
           {
             name: "Entries",
             value: `${giveaway.users.length}`,
-            inline: true,
+            inline: true
           },
           {
             name: "Winners",
-            value: `${giveaway.winners}`,
+            value: `${giveaway.winners}`
           },
           {
             name: "Ends At",
-            value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`,
+            value: `<t:${giveaway.endTimestamp}:f> (<t:${giveaway.endTimestamp}:R>)`
           },
           {
             name: "Requirements",
@@ -64,12 +64,12 @@ async function checkGiveaways() {
               giveaway.guildOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
             }\nVerified: ${
               giveaway.verifiedOnly ? "<:icons_Correct:1249308284075376641>" : "<:icons_Wrong:1249307619739570218>"
-            }`,
+            }`
           }
         )
         .setFooter({
           text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png",
+          iconURL: "https://i.imgur.com/uUuZx2E.png"
         });
 
       giveaway.ended = true;

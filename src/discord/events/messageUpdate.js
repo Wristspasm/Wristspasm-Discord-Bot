@@ -13,19 +13,19 @@ module.exports = {
       .setDescription(`**Message edited in ${oldMessage.channel} [Message](${oldMessage.url})**`)
       .setAuthor({
         name: oldMessage.author.tag,
-        iconURL: oldMessage.author.displayAvatarURL(),
+        iconURL: oldMessage.author.displayAvatarURL()
       })
       .addFields(
         { name: "Before", value: oldMessage.content, inline: false },
-        { name: "After", value: newMessage.content, inline: false },
+        { name: "After", value: newMessage.content, inline: false }
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     const channel = oldMessage.guild.channels.cache.get(config.discord.channels.discordLogsChannel);
 
     channel.send({ embeds: [embed] });
-  },
+  }
 };

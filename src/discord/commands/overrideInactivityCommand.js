@@ -16,26 +16,26 @@ module.exports = {
       name: "discord",
       description: "Discord User",
       type: 6,
-      required: true,
+      required: true
     },
     {
       name: "minecraft",
       description: "Minecraft Username",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "time",
       description: "How long will you be inactive for (in Days)",
       type: 3,
-      required: true,
+      required: true
     },
     {
       name: "reason",
       description: "Why are you going to be offline (optional)?",
       type: 3,
-      required: false,
-    },
+      required: false
+    }
   ],
 
   execute: async (interaction) => {
@@ -72,12 +72,12 @@ module.exports = {
       .setDescription(
         `\`Username:\` ${username}\n\`Requested:\` <t:${toFixed(
           new Date().getTime() / 1000,
-          0,
-        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`,
+          0
+        )}>\n\`Expiration:\` <t:${toFixed(expiration, 0)}:R>\n\`Reason:\` ${reason}`
       )
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await channel.send({ embeds: [inactivityEmbed] });
@@ -88,7 +88,7 @@ module.exports = {
       .setDescription(`Inactivity request for ${username} has been successfully created.`)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: "https://imgur.com/tgwQJTX.png"
       });
 
     await interaction.followUp({ embeds: [inactivityResponse] });
@@ -102,7 +102,7 @@ module.exports = {
       requested_formatted: new Date().toLocaleString(),
       expiration: expiration,
       expiration_formatted: new Date(expiration * 1000).toLocaleString(),
-      reason: reason,
+      reason: reason
     });
-  },
+  }
 };

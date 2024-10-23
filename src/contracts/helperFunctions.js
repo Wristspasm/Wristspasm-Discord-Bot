@@ -301,5 +301,5 @@ module.exports = {
   parseTimestamp,
   formatUsername,
   formatNumber,
-  replaceVariables,
+  replaceVariables
 };

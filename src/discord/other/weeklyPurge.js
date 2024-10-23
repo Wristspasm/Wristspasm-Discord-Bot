@@ -45,7 +45,7 @@ async function purge() {
 
       await channel.send({
         content: "The weekly purge is too large to send as a message, so here's a file instead.",
-        files: ["data/weeklyPurge.txt"],
+        files: ["data/weeklyPurge.txt"]
       });
     } else {
       const embed = new Embed(3447003, "Weekly Purge", list);

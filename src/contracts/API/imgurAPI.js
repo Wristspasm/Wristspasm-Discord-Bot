@@ -2,13 +2,13 @@ const config = require("../../../config.json");
 const { ImgurClient } = require("imgur");
 
 const imgurClient = new ImgurClient({
-  clientId: config.minecraft.API.imgurAPIkey,
+  clientId: config.minecraft.API.imgurAPIkey
 });
 
 async function uploadImage(image) {
   const response = await imgurClient.upload({
     image: image,
-    type: "stream",
+    type: "stream"
   });
 
   if (response.success === false) {

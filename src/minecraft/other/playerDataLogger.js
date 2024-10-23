@@ -9,7 +9,7 @@ const DEFAULT_DATA = {
   lastLogout: null,
   online: false,
   playtime: 0,
-  messages: 0,
+  messages: 0
 };
 
 if (typeof bot === "undefined") {

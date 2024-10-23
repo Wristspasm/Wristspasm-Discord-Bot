@@ -34,7 +34,7 @@ module.exports = {
 
     const [guild, profile] = await Promise.all([
       hypixelRebornAPI.getGuild("name", "WristSpasm").catch(() => undefined),
-      getLatestProfile(uuid).catch(() => undefined),
+      getLatestProfile(uuid).catch(() => undefined)
     ]).catch((e) => {
       console.log(e);
     });
@@ -75,7 +75,7 @@ module.exports = {
       "1204151071686004756", // @[160]
       "1204151079919427584", // @[120]
       "1204151076811571232", // @[80]
-      "1204151073506599095", // @[40]
+      "1204151073506599095" // @[40]
     ].reverse();
     const skyblockLvLReqs = [40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440];
     if (skyblockLevel) {
@@ -97,11 +97,11 @@ module.exports = {
     const updateRole = new SuccessEmbed(`Your roles have been successfully synced with \`${username ?? "Unknown"}\`!`);
     if (type === "verify") {
       updateRole.setDescription(
-        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`,
+        `<@${user.user.id}> roles have been successfully synced with \`${username ?? "Unknown"}\`!`
       );
       await interaction.followUp({ embeds: [updateRole], ephemeral: true });
     } else {
       await interaction.editReply({ embeds: [updateRole] });
     }
-  },
+  }
 };

@@ -48,7 +48,7 @@ module.exports = {
         lastLoginUnix: lastLogin,
         lastLogout: `${new Date(lastLogout) ?? "Unknown"}`,
         lastLogoutUnix: lastLogout,
-        messagesSent: `${messages?.toLocaleString() ?? 0}`,
+        messagesSent: `${messages?.toLocaleString() ?? 0}`
       };
     }
 
@@ -59,12 +59,12 @@ module.exports = {
             JSON.stringify(
               Object.values(output).sort((a, b) => b.playtimeUnix - a.playtimeUnix),
               null,
-              2,
-            ),
+              2
+            )
           ),
-          name: "memberData.json",
-        },
-      ],
+          name: "memberData.json"
+        }
+      ]
     });
-  },
+  }
 };

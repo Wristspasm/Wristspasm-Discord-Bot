@@ -44,10 +44,10 @@ module.exports = {
         name: role.name,
         color: role.color,
         position: role.data.rawPosition,
-        mentionable: role.data.mentionable,
+        mentionable: role.data.mentionable
       });
     });
 
     await interaction.editReply("Skyblock roles created");
-  },
+  }
 };
