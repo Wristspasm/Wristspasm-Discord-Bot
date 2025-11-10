@@ -67,7 +67,7 @@ class MinecraftManager extends CommunicationBridge {
     const chat = channel === config.discord.channels.officerChannel ? "/oc" : "/gc";
 
     if (replyingTo) {
-      message = message.replace(username, `${username} replying to ${replyingTo}`);
+      message = message.replace(username, `${username} -> ${replyingTo}`);
     }
 
     let successfullySent = false;
